@@ -21,8 +21,8 @@
   --pink: #ff8ab6;
   --pink-ink: #3a0d1f;
 
-  --sans: 'Instrument Sans', system-ui, sans-serif;
-  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Bricolage Grotesque', system-ui, sans-serif;
+  --hand: 'Shantell Sans', 'Comic Sans MS', cursive;
 
   --gutter: clamp(16px, 2.6vw, 44px);
   --radius: 18px;
@@ -36,6 +36,13 @@
   --muted: #8f8b84;
   --soft: #262422;
   --line: rgba(241, 237, 230, 0.14);
+}
+
+/* Eje "bounce" de Shantell Sans: lo animamos para que las letras "tiemblen"
+   como en una animación dibujada a mano (line boil) */
+@property --bnce { syntax: '<number>'; inherits: true; initial-value: 0; }
+@keyframes boil {
+  0% { --bnce: -70; } 25% { --bnce: 50; } 50% { --bnce: -30; } 75% { --bnce: 80; } 100% { --bnce: -70; }
 }
 
 /* 2. BASE ----------------------------------------------------------------- */
@@ -61,7 +68,12 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3, p, figure { margin: 0; }
-em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
+/* Palabras destacadas: tipografía a mano */
+em, .hand {
+  font-family: var(--hand); font-style: normal; font-weight: 600; letter-spacing: -0.01em;
+  font-variation-settings: 'INFM' 100, 'BNCE' var(--bnce);
+}
+em { --bnce: 30; }
 ::selection { background: var(--pink); color: var(--pink-ink); }
 
 :focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; border-radius: 6px; }
@@ -87,13 +99,14 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
   background: var(--ink); color: var(--bg);
 }
 .loader__word {
-  display: flex; font-size: clamp(48px, 13vw, 220px); font-weight: 600; letter-spacing: -0.03em; line-height: 1;
+  display: flex; font-family: var(--hand); font-size: clamp(48px, 13vw, 220px); font-weight: 750; letter-spacing: -0.03em; line-height: 1.1;
+  font-variation-settings: 'INFM' 100, 'BNCE' var(--bnce); animation: boil 0.45s steps(1) infinite;
 }
 .loader__word span { display: inline-block; }
 .loader__word .e { color: var(--pink); }
 .loader__count {
   position: absolute; right: var(--gutter); bottom: var(--gutter);
-  font-family: var(--serif); font-style: italic; font-size: clamp(28px, 4vw, 56px);
+  font-family: var(--hand); font-variation-settings: 'INFM' 100, 'BNCE' var(--bnce); font-size: clamp(28px, 4vw, 56px);
 }
 
 .cursor {
@@ -123,12 +136,16 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
 
 /* El logo usa mix-blend-mode para verse siempre, sobre fondo claro u oscuro */
 .logo {
-  position: fixed; top: 18px; left: 0; right: 0; z-index: 60;
-  width: max-content; margin-inline: auto;
-  display: flex; font-size: clamp(26px, 3.6vw, 62px); font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+  position: fixed; top: 20px; left: var(--gutter); z-index: 60;
+  display: flex; align-items: baseline;
+  font-family: var(--hand); font-weight: 750; font-size: clamp(24px, 2.1vw, 32px); line-height: 1; letter-spacing: -0.02em;
+  font-variation-settings: 'INFM' 100, 'BNCE' var(--bnce);
   color: #fff; mix-blend-mode: difference;
 }
+.logo:hover { animation: boil 0.5s steps(1) infinite; }
 .logo span { display: inline-block; transform-origin: 50% 100%; }
+/* Las "e" de más: se pliegan hasta dejar una sola */
+.logo .e-extra, .loader__word .e-extra { overflow: hidden; vertical-align: bottom; max-width: 1em; }
 
 .header__actions {
   position: absolute; right: var(--gutter); top: 16px; display: flex; gap: 10px;
@@ -183,7 +200,7 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
 @keyframes pulse { 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 
 .hero__title {
-  font-size: clamp(34px, 4.6vw, 80px); line-height: 1.02; font-weight: 500; letter-spacing: -0.025em;
+  font-size: clamp(34px, 4.6vw, 80px); line-height: 1.02; font-weight: 650; font-stretch: 82%; letter-spacing: -0.015em;
 }
 .hero__title em { color: inherit; position: relative; }
 
@@ -209,14 +226,14 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
   overflow: hidden; border-block: 1px solid var(--line);
   padding: 18px 0; white-space: nowrap;
 }
-.marquee__track { display: inline-flex; align-items: center; gap: 0.45em; font-size: clamp(36px, 6.5vw, 112px); font-weight: 500; letter-spacing: -0.03em; line-height: 1; will-change: transform; }
-.marquee__track span:nth-child(4n+1) { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.marquee__track { display: inline-flex; align-items: center; gap: 0.45em; font-size: clamp(36px, 6.5vw, 112px); font-weight: 650; font-stretch: 82%; letter-spacing: -0.02em; line-height: 1; will-change: transform; }
+.marquee__track span:nth-child(4n+1) { font-family: var(--hand); font-weight: 600; letter-spacing: -0.01em; font-variation-settings: 'INFM' 100, 'BNCE' var(--bnce); --bnce: 40; }
 .marquee__track i { font-style: normal; color: var(--pink); font-size: 0.6em; }
 
 /* Sobre mí */
 .about { padding: clamp(80px, 14vw, 200px) var(--gutter) clamp(60px, 10vw, 140px); }
 .about__statement {
-  max-width: 22ch; font-size: clamp(30px, 4.4vw, 76px); line-height: 1.06; letter-spacing: -0.025em; font-weight: 500;
+  max-width: 22ch; font-size: clamp(30px, 4.4vw, 76px); line-height: 1.06; letter-spacing: -0.015em; font-weight: 650; font-stretch: 82%;
 }
 .about__statement .word { display: inline-block; }
 .about__grid {
@@ -239,8 +256,8 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
 /* 6. PROYECTOS ------------------------------------------------------------ */
 .work { position: relative; padding: clamp(60px, 9vw, 140px) var(--gutter) clamp(80px, 12vw, 180px); }
 .work__head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
-.section-title { font-size: clamp(44px, 8vw, 140px); line-height: 0.95; font-weight: 500; letter-spacing: -0.04em; }
-.section-title sup { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 0.32em; letter-spacing: 0; vertical-align: top; position: relative; top: 0.3em; }
+.section-title { font-size: clamp(44px, 8vw, 140px); line-height: 0.95; font-weight: 650; font-stretch: 82%; letter-spacing: -0.02em; }
+.section-title sup { font-family: var(--hand); font-variation-settings: 'INFM' 100, 'BNCE' var(--bnce); font-weight: 500; font-size: 0.32em; letter-spacing: 0; vertical-align: top; position: relative; top: 0.3em; }
 
 .filters { display: flex; flex-wrap: wrap; gap: 6px; }
 .filter {
@@ -260,8 +277,8 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
 }
 .row__num { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .row__title {
-  font-size: clamp(32px, 5.6vw, 96px); line-height: 1; font-weight: 500; letter-spacing: -0.035em;
-  transition: transform 0.6s var(--ease-out), font-style 0s;
+  font-size: clamp(32px, 5.6vw, 96px); line-height: 1; font-weight: 600; font-stretch: 78%; letter-spacing: -0.02em;
+  transition: transform 0.6s var(--ease-out), font-stretch 0.6s var(--ease-out), font-weight 0.6s var(--ease-out);
 }
 .row__meta { text-align: right; font-size: 14px; color: var(--muted); }
 .row__meta strong { display: block; color: var(--ink); font-weight: 500; }
@@ -270,7 +287,7 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
 @media (hover: hover) {
   .work__list:hover .row__link { opacity: 0.28; }
   .work__list .row__link:hover { opacity: 1; }
-  .row__link:hover .row__title { transform: translateX(clamp(12px, 2vw, 36px)); }
+  .row__link:hover .row__title { transform: translateX(clamp(12px, 2vw, 36px)); font-stretch: 100%; font-weight: 750; }
 }
 
 /* Previsualización flotante (tamaño del rectángulo del frame 2 del Figma) */
@@ -295,7 +312,7 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
   position: relative;
 }
 .contact__title {
-  margin-top: 14px; font-size: clamp(48px, 10vw, 180px); line-height: 0.92; font-weight: 500; letter-spacing: -0.045em;
+  margin-top: 14px; font-size: clamp(48px, 10vw, 180px); line-height: 0.92; font-weight: 650; font-stretch: 82%; letter-spacing: -0.027em;
 }
 .contact__email {
   align-self: flex-start;
@@ -345,8 +362,8 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
 
 .project__content { padding: 110px var(--gutter) 60px; }
 .p-head { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gutter); align-items: end; }
-.p-head__num { grid-column: 1 / -1; font-family: var(--serif); font-style: italic; font-size: clamp(22px, 2.4vw, 36px); color: var(--muted); }
-.p-head__title { grid-column: 1 / span 9; font-size: clamp(54px, 11vw, 200px); line-height: 0.9; font-weight: 500; letter-spacing: -0.05em; }
+.p-head__num { grid-column: 1 / -1; font-family: var(--hand); font-variation-settings: 'INFM' 100, 'BNCE' var(--bnce); font-size: clamp(22px, 2.4vw, 36px); color: var(--muted); }
+.p-head__title { grid-column: 1 / span 9; font-size: clamp(54px, 11vw, 200px); line-height: 0.9; font-weight: 650; font-stretch: 82%; letter-spacing: -0.03em; }
 .p-head__kicker { grid-column: 1 / span 8; font-size: clamp(20px, 2vw, 30px); letter-spacing: -0.01em; }
 .p-head__meta { grid-column: 10 / span 3; grid-row: 2 / span 2; align-self: end; display: grid; gap: 14px; font-size: 14px; }
 .p-head__meta dt { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
@@ -373,7 +390,7 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
 }
 .p-next__label { font-size: 13px; color: var(--muted); }
 .p-next__title {
-  display: block; font-size: clamp(54px, 11vw, 200px); line-height: 0.95; font-weight: 500; letter-spacing: -0.05em;
+  display: block; font-size: clamp(54px, 11vw, 200px); line-height: 0.95; font-weight: 650; font-stretch: 82%; letter-spacing: -0.03em;
   transition: transform 0.7s var(--ease-out), color 0.3s;
 }
 .p-next:hover .p-next__title { transform: translateX(2vw); }
@@ -410,7 +427,7 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spa
 
 @media (max-width: 520px) {
   .round-btn { width: 44px; height: 44px; }
-  .logo { left: var(--gutter); right: auto; margin: 0; top: 26px; font-size: 24px; }
+  .logo { top: 26px; font-size: 24px; }
   .pill { height: 50px; }
   .pill__link { font-size: 13px; }
   .p-block__media, .p-block--no-info .p-block__media { grid-template-columns: 1fr; }

@@ -128,10 +128,6 @@
     const loader = $('.loader');
     const counter = { v: 0 };
 
-    const eBounce = gsap.to('.loader__word .e', {
-      scaleY: 1.35, transformOrigin: '50% 100%', duration: 0.35, ease: 'sine.inOut',
-      stagger: { each: 0.08, repeat: -1, yoyo: true },
-    });
 
     const count = gsap.to(counter, {
       v: 100, duration: REDUCED ? 0.2 : 1.8, ease: 'power2.inOut',
@@ -151,7 +147,6 @@
       defaults: { ease: 'expo.out', duration: 1.2 },
       onComplete: () => {
         heroLines.revert();
-        eBounce.kill();
         document.body.classList.remove('is-loading');
         lenis?.start();
         ScrollTrigger.refresh();
@@ -159,7 +154,9 @@
       },
     });
 
-    tl.to('.loader__word span', { yPercent: -120, opacity: 0, stagger: 0.03, duration: 0.6, ease: 'power3.in' })
+    // Las cuatro "e" se pliegan en una sola: ayleeeeta → ayleta
+    tl.add(collapseEs('.loader__word', 0.6))
+      .to('.loader__word span', { yPercent: -120, opacity: 0, stagger: 0.03, duration: 0.6, ease: 'power3.in' }, '+=0.25')
       .to('.loader__count', { opacity: 0, duration: 0.3 }, '<')
       .to(loader, { clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'expo.inOut' }, '-=0.15')
       .set(loader, { display: 'none' })
@@ -277,9 +274,9 @@
      6. MICROINTERACCIONES
      ------------------------------------------------------------------------ */
 
-  // El logo y los botones se esconden al bajar y vuelven al subir
+  // Los botones se esconden al bajar y vuelven al subir
   function autoHideHeader() {
-    const els = ['.logo', '.header__actions'];
+    const els = ['.header__actions'];
     let hidden = false;
     ScrollTrigger.create({
       start: 0, end: 'max',
@@ -293,13 +290,46 @@
   }
 
   // Las "E" del logo se estiran al pasar el ratón
-  function logoHover() {
-    const es = $$('.logo .e');
-    $('.logo').addEventListener('mouseenter', () => {
-      gsap.fromTo(es, { scaleY: 1 }, {
-        scaleY: 1.45, duration: 0.22, ease: 'power2.out', stagger: 0.05, yoyo: true, repeat: 1, overwrite: true,
-      });
+  /* Logo: las "e" de ayleeeeta se pliegan en una sola */
+  function collapseEs(scope, duration = 0.7) {
+    const extras = $$('.e-extra', $(scope));
+    const first = $('.e:not(.e-extra)', $(scope));
+    return gsap.timeline()
+      .to(extras, {
+        maxWidth: 0, opacity: 0, xPercent: -60, scaleX: 0.4,
+        duration, ease: 'power3.inOut', stagger: { each: 0.07, from: 'end' }, overwrite: true,
+      })
+      // la "e" que queda se "traga" a las demás con un pequeño rebote
+      .fromTo(first, { scaleX: 1.35, scaleY: 0.85 }, { scaleX: 1, scaleY: 1, duration: 0.8, ease: 'elastic.out(1, 0.4)' }, '-=0.2');
+  }
+
+  function expandEs(scope, duration = 0.7) {
+    const extras = $$('.e-extra', $(scope));
+    return gsap.to(extras, {
+      maxWidth: '1em', opacity: 1, xPercent: 0, scaleX: 1,
+      duration, ease: 'back.out(2)', stagger: 0.07, overwrite: true,
     });
+  }
+
+  function logoAnimation() {
+    const logo = $('.logo');
+    let collapsed = false;
+    let hovering = false;
+    const set = (c) => {
+      if (c === collapsed) return;
+      collapsed = c;
+      c ? collapseEs('.logo') : expandEs('.logo');
+    };
+
+    // Al bajar de la portada → "ayleta"; al volver arriba → "ayleeeeta"
+    ScrollTrigger.create({
+      start: 120, end: 'max',
+      onToggle: (self) => { if (!hovering) set(self.isActive); },
+    });
+
+    // Al pasar el ratón se vuelven a desplegar (y tiemblan, ver CSS)
+    logo.addEventListener('mouseenter', () => { hovering = true; set(false); });
+    logo.addEventListener('mouseleave', () => { hovering = false; set(window.scrollY > 120); });
   }
 
   // Tarjeta del hero: inclinación 3D + alter ego animado
@@ -632,7 +662,7 @@
   marquee();
   pillNav();
   autoHideHeader();
-  logoHover();
+  logoAnimation();
   heroCard();
   cursor();
   magnetic();

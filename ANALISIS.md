@@ -46,4 +46,5 @@ Referencia: la categoría *Portfolio* de awwwards.com (henne.studio, mildsugar, 
 - **Frame 1** → cabecera con *AYLEEEETA* centrado, dos botones redondos arriba a la derecha (tema y contacto), texto grande abajo a la izquierda, tarjeta vertical a la derecha y la **barra rosa** inferior convertida en navegación (Hola · Proyectos · Contacto) con una línea de progreso del scroll.
 - **Frame 2** → la imagen centrada se usa como la previsualización flotante de los proyectos.
 - Paleta: papel cálido `#f5f2ec`, tinta `#161514` y el rosa del Figma `#ff8ab6` como único acento.
-- Tipografías: *Instrument Sans* (texto) + *Instrument Serif* en cursiva para las palabras con intención (*personalidad*, *bonito*).
+- Tipografías: *Bricolage Grotesque* (variable: los títulos van estrechos y se ensanchan al pasar el ratón) + *Shantell Sans*, hecha a mano, para el logo y las palabras destacadas. Su eje "bounce" se anima a saltos para que las letras tiemblen como un dibujo animado (*line boil*). Referencia más cercana a tu estilo en Awwwards: **Shelby's Desk** (shelbykho.com), donde el aire hecho a mano viene de los dibujos y el personaje, no de la tipografía.
+- Logo: *ayleeeeta* arriba a la izquierda; al bajar, las cuatro "e" se pliegan en una (*ayleta*) y al subir o pasar el ratón se despliegan.
