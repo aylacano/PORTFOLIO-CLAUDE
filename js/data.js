@@ -145,8 +145,10 @@ const PROJECTS = [
         title: 'Web',
         subtitle: 'Archivo del tiempo y museo portátil',
         media: [
-          flip(['assets/img/estrat/web-inicio.png', 'assets/img/estrat/web-archivo.png'], 727, 1440),
-          flip(['assets/img/estrat/web-museo.png', 'assets/img/estrat/web-contacto.png'], 1440, 1399),
+          img('assets/img/estrat/web-inicio.png', 727, 1440),
+          img('assets/img/estrat/web-archivo.png', 946, 1440),
+          img('assets/img/estrat/web-museo.png', 1440, 1399),
+          img('assets/img/estrat/web-contacto.png', 1440, 1399),
         ],
       },
     ],

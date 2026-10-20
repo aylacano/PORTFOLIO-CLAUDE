@@ -710,10 +710,10 @@
       if (REDUCED) return;
       if (CAN_HOVER) {
         let t = null;
-        fb.addEventListener('mouseenter', () => { step(); t = setInterval(step, 450); });
+        fb.addEventListener('mouseenter', () => { step(); t = setInterval(step, 900); });
         fb.addEventListener('mouseleave', () => clearInterval(t));
       } else {
-        setTimeout(() => projectFlips.push(setInterval(step, 1600)), k * 400);
+        setTimeout(() => projectFlips.push(setInterval(step, 2600)), k * 600);
       }
     });
 
