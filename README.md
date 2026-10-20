@@ -6,11 +6,15 @@ Web estática (HTML + CSS + JavaScript) sin proceso de build: se publica tal cua
 ## Estructura
 
 ```
-index.html        → estructura: presentación, proyectos y contacto
-css/style.css     → estilos (colores y tipografías en las variables del principio)
-js/data.js        → TODO el contenido: textos, CV, proyectos y pegatinas  ← lo que más vas a editar
-js/main.js        → animaciones e interacciones
-assets/           → favicon y, en el futuro, tus imágenes y vídeos
+index.html        → portada: presentación, carrusel de proyectos y contacto
+sobre-mi.html     → sobre mí: texto, ayleeeeta, currículum y contacto
+lab.html          → lab: todos los proyectos en una cuadrícula con filtros
+css/style.css     → estilos (colores y medidas en las variables del principio)
+js/data.js        → contenido: textos, CV, proyectos y pegatinas  ← lo que más vas a editar
+js/lab-data.js    → piezas del Lab (incluye proyectos sin página propia)
+js/main.js        → animaciones e interacciones (sirve para las 3 páginas)
+assets/img        → imágenes optimizadas · assets/thumbs → miniaturas de 700 px
+assets/video      → vídeos optimizados
 ```
 
 ## Cómo verla en tu ordenador
@@ -54,7 +58,7 @@ avconvert -s "original.mov" -p Preset1280x720 -o assets/video/nombre.mp4
 
 ## Si no ves los cambios online
 
-El navegador guarda copias de la web. En `index.html`, los archivos llevan `?v=2026102101`: cambia ese número (en los 3 sitios) cada vez que subas cambios y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
+El navegador guarda copias de la web. En `index.html`, los archivos llevan `?v=2026102101`: cambia ese número (en las 3 páginas) cada vez que subas cambios y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
 
 ## Publicar en GitHub Pages
 

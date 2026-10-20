@@ -21,8 +21,10 @@ const vid = (src, w, h) => ({ type: 'video', src, w, h });
 const cargoImg = (path, w, h) => img(`${CARGO}/w/1600/i/${path}`, w, h);
 const cargoVid = (path, w, h) => vid(`${CARGO}/m/${path}`, w, h);
 
-/* Miniatura más ligera (solo funciona con imágenes de Cargo; las locales ya están optimizadas) */
-const thumb = (media, width = 800) => media.src.replace('/w/1600/', `/w/${width}/`);
+/* Miniatura ligera: en Cargo pide un tamaño menor; las locales están en assets/thumbs (700 px) */
+const thumb = (media, width = 800) => (media.src.startsWith('assets/img/')
+  ? media.src.replace('assets/img/', 'assets/thumbs/')
+  : media.src.replace('/w/1600/', `/w/${width}/`));
 
 /* --------------------------------------------------------------------------
    SOBRE MÍ
@@ -46,12 +48,12 @@ const PROFILE = {
       ['2018—2020', 'Bachillerato Artístico', 'Escola d’Art Pau Gargallo, Badalona'],
     ],
     Experiencia: [
-      ['', 'Libro ‘Rocker’ de Marco Antonio López Vilaplana', 'Fotografía · 66 RPM Edicions'],
       ['2025', 'Escola Miguel de Unamuno', 'Diseño del logotipo'],
       ['2025', 'Séducation', 'Gestión y comunicación de RRSS'],
       ['2024', 'Padawan Branding & Carolina Kairos', 'Prácticas en diseño gráfico, multimedia y RRSS'],
       ['2022', 'Festival Cruïlla, Barcelona', 'Voluntariado'],
       ['2021', 'AVV Bufalà, Badalona', 'Edición de vídeo y diseño interactivo'],
+      ['2015', 'Libro ‘Rocker’ de Marco Antonio López Vilaplana', 'Fotografía · 66 RPM Edicions'],
     ],
     Premios: [
       ['2024', 'Inspirathon UDIT', 'Diseño de merchandising'],
@@ -90,6 +92,7 @@ const FILTERS = {
   editorial: 'Editorial',
   packaging: 'Packaging',
   rrss: 'Redes sociales',
+  foto: 'Fotografía',
 };
 
 /* --------------------------------------------------------------------------

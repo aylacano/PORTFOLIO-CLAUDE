@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://freight.cargo.site">
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
   <!-- ?v= obliga al navegador a descargar la versión nueva cuando cambia (súbelo en cada cambio) -->
-  <link rel="stylesheet" href="css/style.css?v=2026102101">
+  <link rel="stylesheet" href="css/style.css?v=2026102201">
 
   <!-- Tema: claro por defecto, o el que se haya elegido antes -->
   <script>
@@ -31,7 +31,7 @@
     document.documentElement.dataset.theme = t || 'light';
   </script>
 </head>
-<body class="is-loading">
+<body class="is-loading" data-page="home">
 
   <a class="skip-link" href="#proyectos">Saltar a los proyectos</a>
 
@@ -62,20 +62,21 @@
   <!-- ============ BARRA SUPERIOR ============ -->
   <header class="topbar">
     <div class="topbar__side">
-      <a class="logo" href="#proyectos" aria-label="Ayleeeeta, volver al inicio">
+      <a class="logo" href="index.html" aria-label="Ayleeeeta, volver al inicio">
         <span>A</span><span>y</span><span>l</span><span class="e">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span>t</span><span>a</span>
       </a>
     </div>
-    <nav class="topnav tiny" aria-label="Secciones">
-      <a href="#proyectos" class="is-active">Proyectos</a>
-      <a href="#sobre-mi">Sobre mí</a>
+    <nav class="topnav tiny" aria-label="Páginas">
+      <a href="index.html" class="is-active" aria-current="page">Proyectos</a>
+      <a href="lab.html">Lab</a>
+      <a href="sobre-mi.html">Sobre mí</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <div class="topbar__right tiny">
-      <button class="sound-btn" id="sound-toggle" type="button" aria-label="Sonido (próximamente)" aria-pressed="false" data-cursor="Sonido">
-        <span class="sound-btn__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <button class="pink-btn sound-btn" id="sound-toggle" type="button" aria-label="Sonido (próximamente)" aria-pressed="false" data-cursor="Sonido">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.2h3.6L12 5v14l-4.9-4.2H3.5z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><g class="sound-on" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></g><g class="sound-off" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg>
       </button>
-      <button class="switch" id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Modo oscuro" data-cursor="Tema">
+      <button class="pink-btn switch" id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Modo oscuro" data-cursor="Tema">
         <svg class="switch__icon switch__icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
         <svg class="switch__icon switch__icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="currentColor"/></svg>
         <span class="switch__knob" aria-hidden="true"></span>
@@ -142,31 +143,6 @@
       </section>
     </div>
 
-    <!-- ============ SOBRE MÍ ============ -->
-    <section class="grid about" id="sobre-mi">
-      <aside class="side">
-        <div class="side__sticky">
-          <p class="tiny muted">Sobre mí</p>
-          <dl class="meta"><dt>Idiomas:</dt><dd id="languages"></dd></dl>
-          <div class="meta"><p class="muted">Herramientas:</p><ul class="chips" id="tools"></ul></div>
-        </div>
-      </aside>
-      <div class="main">
-        <p class="about__statement" data-words>
-          Me gradué en Diseño Gráfico y Multimedia en Madrid y me encanta que cada proyecto tenga un personaje, un gesto o un movimiento que lo haga inolvidable.
-        </p>
-        <div class="alter">
-          <div class="alter__info">
-            <p class="tiny muted">Alter ego</p>
-            <h3 class="alter__title" id="alter-title"></h3>
-            <p class="alter__text" id="alter-text"></p>
-          </div>
-          <div class="alter__grid" id="alter"></div>
-        </div>
-        <div class="cv" id="cv"></div>
-      </div>
-    </section>
-
     <!-- ============ CONTACTO ============ -->
     <section class="grid contact" id="contacto">
       <aside class="side">
@@ -211,7 +187,7 @@
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 
-  <script src="js/data.js?v=2026102101"></script>
-  <script src="js/main.js?v=2026102101"></script>
+  <script src="js/data.js?v=2026102201"></script>
+  <script src="js/main.js?v=2026102201"></script>
 </body>
 </html>

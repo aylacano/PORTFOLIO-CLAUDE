@@ -141,39 +141,31 @@ em { font-style: normal; }
 .topnav a.is-active { color: var(--ink); }
 .topnav a:hover { color: var(--pink); }
 
-/* Interruptor de tema: pastilla con sol y luna, y una bolita que se desliza */
-.switch {
-  position: relative; width: 52px; height: 28px; border-radius: 99px;
-  background: var(--soft); border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: space-between; padding: 0 7px;
-  transition: background-color 0.3s, border-color 0.3s;
+/* Botones de la barra: rosas, y al revés (oscuros con icono rosa) al pasar el ratón */
+.pink-btn {
+  height: 28px; border-radius: 99px; background: var(--pink); color: var(--pink-ink);
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
 }
-.switch__icon { width: 12px; height: 12px; color: var(--muted); position: relative; z-index: 1; transition: color 0.3s; }
+.pink-btn:hover { background: var(--pink-ink); color: var(--pink); }
+
+/* Sonido: altavoz (con ondas = encendido, con cruz = apagado) */
+.sound-btn { width: 28px; display: grid; place-items: center; }
+.sound-btn svg { width: 15px; height: 15px; }
+.sound-btn .sound-on { display: none; }
+.sound-btn[aria-pressed='true'] .sound-on { display: inline; }
+.sound-btn[aria-pressed='true'] .sound-off { display: none; }
+
+/* Tema: interruptor con sol y luna y una bolita que se desliza */
+.switch { position: relative; width: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 7px; }
+.switch__icon { width: 12px; height: 12px; position: relative; z-index: 1; transition: color 0.3s; }
 .switch__knob {
-  position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
-  background: var(--ink); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.45s var(--ease-out), background-color 0.3s;
+  position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%;
+  background: currentColor; transition: transform 0.45s var(--ease-out);
 }
 .switch[aria-checked='true'] .switch__knob { transform: translateX(24px); }
-/* El icono activo queda encima de la bolita, en color claro */
-.switch[aria-checked='false'] .switch__icon--sun, .switch[aria-checked='true'] .switch__icon--moon { color: var(--bg); }
-.switch:hover { border-color: var(--pink); }
-.switch:hover .switch__knob { background: var(--pink); }
-
-/* Botón de sonido: barritas de ecualizador (planas = apagado, bailando = encendido) */
-.sound-btn {
-  height: 28px; padding: 0 10px; border-radius: 99px; display: grid; place-items: center;
-  background: var(--soft); border: 1px solid var(--line); transition: background-color 0.3s, border-color 0.3s;
-}
-.sound-btn__bars { display: flex; align-items: center; gap: 2px; height: 12px; }
-.sound-btn__bars i { display: block; width: 2px; height: 3px; border-radius: 2px; background: var(--ink); transition: height 0.3s var(--ease-out); }
-.sound-btn[aria-pressed='true'] .sound-btn__bars i { animation: eq 0.9s ease-in-out infinite; }
-.sound-btn[aria-pressed='true'] .sound-btn__bars i:nth-child(2) { animation-delay: -0.3s; }
-.sound-btn[aria-pressed='true'] .sound-btn__bars i:nth-child(3) { animation-delay: -0.6s; }
-.sound-btn[aria-pressed='true'] .sound-btn__bars i:nth-child(4) { animation-delay: -0.15s; }
-@keyframes eq { 0%, 100% { height: 3px; } 50% { height: 12px; } }
-.sound-btn:hover { background: var(--pink); border-color: var(--pink); }
-.sound-btn:hover .sound-btn__bars i { background: var(--pink-ink); }
+/* El icono que queda encima de la bolita cambia de color para verse */
+.switch[aria-checked='false'] .switch__icon--sun, .switch[aria-checked='true'] .switch__icon--moon { color: var(--pink); }
+.switch:hover[aria-checked='false'] .switch__icon--sun, .switch:hover[aria-checked='true'] .switch__icon--moon { color: var(--pink-ink); }
 .topbar__progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
 .topbar__right { padding: 0 var(--pad); display: flex; align-items: center; gap: 6px; }
 
@@ -196,6 +188,10 @@ em { font-style: normal; }
 .side__row--top, .main__row--top { align-items: flex-start; }
 .side__sticky { position: sticky; top: calc(var(--bar) + var(--pad)); display: grid; gap: 18px; }
 
+/* Páginas Sobre mí y Lab: empiezan debajo de la barra */
+.page { padding-top: var(--bar); }
+.page .about .main { padding-top: clamp(30px, 5vw, 70px); }
+
 /* 6. PORTADA -------------------------------------------------------------- */
 .home {
   height: 100svh; padding-top: var(--bar);
@@ -205,7 +201,7 @@ em { font-style: normal; }
 /* Presentación */
 .side__top { display: flex; justify-content: space-between; align-items: flex-start; }
 /* Fotos de perfil: cuadradas, a color, alternándose como un stop-motion */
-.hero__card { position: relative; width: min(72%, 250px); aspect-ratio: 1; overflow: hidden; background: var(--soft); }
+.hero__card { position: relative; width: min(54%, 170px); aspect-ratio: 4 / 5; overflow: hidden; background: var(--soft); }
 .hero__card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; visibility: hidden; }
 /* Grano propio de la foto, más marcado que el de la web */
 .hero__card::after {
@@ -296,6 +292,39 @@ em { font-style: normal; }
 .alter__grid > * { break-inside: avoid; margin-bottom: 10px; background: var(--soft); }
 .alter__grid img, .alter__grid video { width: 100%; height: auto; }
 
+/* Lab */
+.lab__intro { font-size: 14px; max-width: 30ch; }
+.chips--buttons { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.chips--buttons button {
+  padding: 4px 9px; border: 1px solid var(--line); border-radius: 99px; font-size: 11px; font-weight: 550;
+  transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+}
+.chips--buttons button:hover { background: var(--pink); color: var(--pink-ink); border-color: var(--pink); }
+.chips--buttons button[aria-pressed='true'] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.lab .main { padding-top: var(--pad); padding-bottom: clamp(60px, 8vw, 120px); }
+.lab__grid { columns: 4 220px; column-gap: 10px; }
+.lab__item { break-inside: avoid; margin: 0 0 16px; cursor: pointer; }
+.lab__item[hidden] { display: none; }
+.lab__media { overflow: hidden; background: var(--soft); }
+.lab__media img, .lab__media video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease-out); }
+.lab__item:hover .lab__media img, .lab__item:hover .lab__media video { transform: scale(1.04); }
+.lab__item figcaption { display: flex; justify-content: space-between; gap: 10px; margin-top: 6px; transition: color 0.25s; }
+.lab__item:hover figcaption { color: var(--pink); }
+
+.lightbox {
+  position: fixed; inset: 0; z-index: 120; background: var(--bg);
+  display: grid; grid-template-columns: 60px 1fr 60px; align-items: center; padding: 50px var(--pad);
+}
+.lightbox[hidden] { display: none; }
+.lightbox__figure { grid-column: 2; display: grid; place-items: center; height: calc(100svh - 120px); margin: 0; }
+.lightbox__figure img, .lightbox__figure video { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.lightbox__nav { width: 44px; height: 44px; border-radius: 50%; background: var(--soft); font-size: 18px; transition: background-color 0.25s, color 0.25s; }
+.lightbox__nav:hover { background: var(--pink); color: var(--pink-ink); }
+.lightbox__nav--prev { grid-column: 1; grid-row: 1; }
+.lightbox__nav--next { grid-column: 3; grid-row: 1; justify-self: end; }
+.lightbox__close { position: absolute; top: 10px; right: var(--pad); padding: 7px 12px; border-radius: 99px; background: var(--soft); }
+.lightbox__caption { position: absolute; left: 0; right: 0; bottom: 16px; text-align: center; }
+
 /* 8. CONTACTO ------------------------------------------------------------- */
 .contact { min-height: calc(100svh - var(--bar)); }
 .contact__main { padding-bottom: 76px; }
@@ -372,33 +401,38 @@ em { font-style: normal; }
   .topbar { grid-template-columns: auto 1fr auto; }
   .topbar__side { border-right: 0; }
   .topbar__side { padding-right: 0; }
-  .logo { font-size: 18px; }
-  .topnav { justify-content: flex-end; gap: 10px; padding: 0 8px; }
+  .logo { font-size: 17px; }
+  .topbar__side { padding-left: 12px; }
+  .topnav { justify-content: flex-end; gap: 9px; padding: 0 8px; font-size: 10.5px; }
+  .topnav a { white-space: nowrap; }
   .topbar__right { padding-left: 0; }
-  .switch { width: 46px; height: 26px; }
+  .switch { width: 42px; height: 24px; padding: 0 5px; }
   .switch[aria-checked='true'] .switch__knob { transform: translateX(18px); }
-  .switch__knob { width: 18px; height: 18px; }
-  .sound-btn { height: 26px; padding: 0 8px; }
+  .switch__icon { width: 10px; height: 10px; }
+  .switch__knob { width: 16px; height: 16px; }
+  .sound-btn { width: 24px; height: 24px; }
 
   .grid { grid-template-columns: 1fr; }
   .side { border-right: 0; border-bottom: 1px solid var(--line); }
 
   .home { height: auto; display: block; }
   .work__main { padding-bottom: var(--pad); }
-  .track { overflow-x: auto; overflow-y: hidden; }
-  .hero__card { width: 150px; }
+  .hero__card { width: 130px; }
   .hero__main { min-height: 40svh; padding-top: 40px; }
   .statement { max-width: none; }
 
   .work { display: flex; flex-direction: column-reverse; }
   .work__info { display: none; }
   .stickers { height: 300px; flex: none; margin-top: 0; border-top: 0; }
-  .track {
-    display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
-    margin: 0 calc(var(--pad) * -1); padding: 0 var(--pad); scrollbar-width: none;
-  }
-  .track::-webkit-scrollbar { display: none; }
-  .card { position: relative; flex: 0 0 72vw; width: 72vw; height: 72vw; scroll-snap-align: start; }
+  /* Móvil: los proyectos, uno debajo de otro */
+  .track { display: grid; grid-template-columns: 1fr; gap: 12px; overflow: visible; }
+  .card { position: relative; width: 100%; height: auto; aspect-ratio: 4 / 5; }
+  .lab__grid { columns: 2; }
+  .lightbox { grid-template-columns: 1fr; padding: 56px 10px 70px; }
+  .lightbox__figure { grid-column: 1; height: calc(100svh - 140px); }
+  .lightbox__nav { position: absolute; bottom: 40px; }
+  .lightbox__nav--prev { left: 16px; }
+  .lightbox__nav--next { right: 16px; }
   .card__label { opacity: 1; transform: none; }
 
   .about .main { padding-top: 30px; }

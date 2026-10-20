@@ -24,43 +24,52 @@
   // Imagen de la tarjeta del carrusel: la portada, o su "poster" si la portada es un vídeo
   const cardImage = (p) => (p.cover.type === 'image' ? p.cover : (p.poster || p.blocks[0].media.find((m) => m.type === 'image')));
 
+  // Rellena un elemento solo si existe en esta página
+  const fill = (sel, fn) => { const el = $(sel); if (el) fn(el); };
+
   function renderProfile() {
-    $('#photos').innerHTML = PROFILE.photos.map((src, i) => `<img src="${src}" alt="${i ? '' : 'Ayla Cano'}" width="675" height="900"${i ? '' : ' class="is-on"'}>`).join('');
-    $('.contact__email-text').textContent = PROFILE.email;
-    $('#mail-link').href = $('#mail-link-2').href = `mailto:${PROFILE.email}`;
-    $('#mail-link-2 span').textContent = PROFILE.email;
-    $('#mail-link-2 span').dataset.text = PROFILE.email;
-    $('#instagram-link').href = $('#instagram-link-2').href = PROFILE.instagram;
-    $('#year').textContent = new Date().getFullYear();
+    fill('#photos', (el) => { el.innerHTML = PROFILE.photos.map((src, i) => `<img src="${src}" alt="${i ? '' : 'Ayla Cano'}" width="512" height="640"${i ? '' : ' class="is-on"'}>`).join(''); });
+    fill('.contact__email-text', (el) => { el.textContent = PROFILE.email; });
+    $$('#mail-link, #mail-link-2').forEach((a) => { a.href = `mailto:${PROFILE.email}`; });
+    fill('#mail-link-2 span', (el) => { el.textContent = PROFILE.email; el.dataset.text = PROFILE.email; });
+    $$('#instagram-link, #instagram-link-2').forEach((a) => { a.href = PROFILE.instagram; });
+    fill('#year', (el) => { el.textContent = new Date().getFullYear(); });
 
     // "Disponible para proyectos — octubre ’26" (se actualiza solo cada mes)
-    const now = new Date();
-    const month = now.toLocaleDateString('es-ES', { month: 'long' });
-    $('#available').textContent = `${month[0].toUpperCase()}${month.slice(1)} ’${String(now.getFullYear()).slice(2)}`;
+    fill('#available', (el) => {
+      const now = new Date();
+      const month = now.toLocaleDateString('es-ES', { month: 'long' });
+      el.textContent = `${month[0].toUpperCase()}${month.slice(1)} ’${String(now.getFullYear()).slice(2)}`;
+    });
 
-    $('#cv').innerHTML = Object.entries(PROFILE.cv).map(([title, items]) => `
-      <div class="cv__col">
-        <h3 class="tiny muted">${title}</h3>
-        ${items.map(([year, what, where]) => `
-          <div class="cv__item">
-            <span class="cv__year">${year}</span>
-            <span class="cv__what">${what}</span>
-            <span class="cv__where">${where}</span>
-          </div>`).join('')}
-      </div>`).join('');
+    fill('#cv', (el) => {
+      el.innerHTML = Object.entries(PROFILE.cv).map(([title, items]) => `
+        <div class="cv__col">
+          <h3 class="tiny muted">${title}</h3>
+          ${items.map(([year, what, where]) => `
+            <div class="cv__item">
+              <span class="cv__year">${year}</span>
+              <span class="cv__what">${what}</span>
+              <span class="cv__where">${where}</span>
+            </div>`).join('')}
+        </div>`).join('');
+    });
 
-    $('#tools').innerHTML = PROFILE.tools.map((t) => `<li>${t}</li>`).join('');
-    $('#languages').innerHTML = PROFILE.languages.join('<br>');
+    fill('#tools', (el) => { el.innerHTML = PROFILE.tools.map((t) => `<li>${t}</li>`).join(''); });
+    fill('#languages', (el) => { el.innerHTML = PROFILE.languages.join('<br>'); });
 
     // Ayleeeeta en "Sobre mí"
-    $('#alter-title').textContent = ALTER_EGO.title;
-    $('#alter-text').textContent = ALTER_EGO.text;
-    $('#alter').innerHTML = ALTER_EGO.media.map((m) => (m.type === 'video'
-      ? `<figure><video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video></figure>`
-      : `<figure><img src="${m.src}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}"></figure>`)).join('');
+    fill('#alter', (el) => {
+      $('#alter-title').textContent = ALTER_EGO.title;
+      $('#alter-text').textContent = ALTER_EGO.text;
+      el.innerHTML = ALTER_EGO.media.map((m) => (m.type === 'video'
+        ? `<figure><video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video></figure>`
+        : `<figure><img src="${thumb(m)}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}"></figure>`)).join('');
+    });
   }
 
   function renderCards() {
+    if (!$('#track')) return;
     $('#track').innerHTML = PROJECTS.map((p, i) => {
       const still = cardImage(p);
       const isVideo = p.cover.type === 'video';
@@ -82,7 +91,7 @@
      ------------------------------------------------------------------------ */
   let lenis = null;
   if (!REDUCED) {
-    lenis = new Lenis({ lerp: 0.09 });
+    lenis = new Lenis({ lerp: 0.14, wheelMultiplier: 1.1 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -105,21 +114,22 @@
     const target = $(href);
     if (!target) return;
     e.preventDefault();
-    if (!$('.project').hidden) closeProject();
+    if ($('.project') && !$('.project').hidden) closeProject();
     scrollToTarget(href === '#proyectos' || href === '#hola' ? 0 : target);
   });
 
-  $('#back-top').addEventListener('click', () => scrollToTarget(0));
+  $('#back-top')?.addEventListener('click', () => scrollToTarget(0));
 
   /* ------------------------------------------------------------------------
      3. LOGO: trazo que vibra + las "E" que se pliegan
      ------------------------------------------------------------------------ */
 
-  // Cambia de "dibujo" 8 veces por segundo (como un GIF de 3 fotogramas)
+  // La ilustración de carga cambia de "dibujo" ~6 veces por segundo (solo mientras se ve)
+  let boilTimer = null;
   function lineBoil() {
-    if (REDUCED) return;
+    if (REDUCED || !$('[data-boil]')) return;
     let frame = 0;
-    setInterval(() => {
+    boilTimer = setInterval(() => {
       frame = (frame + 1) % 3;
       $$('[data-boil]').forEach((el) => { el.style.filter = `url(#boil-${el.dataset.boil}-${frame})`; });
     }, 170);
@@ -166,25 +176,36 @@
   const splitLines = (el) => SplitText.create(el, { type: 'lines', mask: 'lines' });
 
   async function intro() {
-    const counter = { v: 0 };
-    const count = gsap.to(counter, {
-      v: 100, duration: REDUCED ? 0.2 : 1.6, ease: 'power2.inOut',
-      onUpdate: () => { $('.loader__num').textContent = Math.round(counter.v); },
-    });
+    let seen = false;
+    try { seen = sessionStorage.getItem('ayleeeeta-intro') === '1'; sessionStorage.setItem('ayleeeeta-intro', '1'); } catch (e) {}
+    const loader = $('.loader');
+    const showLoader = loader && !seen && !REDUCED;
 
-    await Promise.all([
-      count.then(),
-      Promise.race([Promise.all([document.fonts.ready, imageReady($('#photos img')), imageReady($('.loader__img'))]), timeout(4000)]),
-    ]);
+    if (showLoader) {
+      const counter = { v: 0 };
+      const count = gsap.to(counter, {
+        v: 100, duration: 1.4, ease: 'power2.inOut',
+        onUpdate: () => { $('.loader__num').textContent = Math.round(counter.v); },
+      });
+      await Promise.all([
+        count.then(),
+        Promise.race([Promise.all([document.fonts.ready, imageReady($('.loader__img'))]), timeout(3500)]),
+      ]);
+    } else {
+      if (loader) loader.style.display = 'none';
+      await Promise.race([document.fonts.ready, timeout(1200)]);
+    }
 
-    window.scrollTo(0, 0);
+    if (!location.hash.startsWith('#') || location.hash.startsWith('#/')) window.scrollTo(0, 0);
     scrollAnimations(); // después de cargar las fuentes, para medir bien las líneas
-    const lines = splitLines($('.statement'));
+    const statement = $('.statement');
+    const lines = statement ? splitLines(statement) : null;
 
     const tl = gsap.timeline({
-      defaults: { ease: 'expo.out', duration: 1.1 },
+      defaults: { ease: 'expo.out', duration: 1 },
       onComplete: () => {
-        lines.revert();
+        lines?.revert();
+        clearInterval(boilTimer);
         document.body.classList.remove('is-loading');
         lenis?.start();
         ScrollTrigger.refresh();
@@ -193,15 +214,20 @@
       },
     });
 
-    tl.to('.loader__img, .loader__count', { yPercent: -40, opacity: 0, stagger: 0.05, duration: 0.5, ease: 'power3.in' }, '+=0.2')
-      .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 0.8, ease: 'expo.inOut' }, '-=0.1')
-      .set('.loader', { display: 'none' })
-      .from('.topbar', { yPercent: -100, duration: 0.8 }, '-=0.4')
-      .from('.logo span', { yPercent: 110, opacity: 0, stagger: 0.04 }, '<0.1')
-      .from(lines.lines, { yPercent: 110, stagger: 0.07 }, '<')
-      .from('.hero__card', { clipPath: 'inset(100% 0 0 0)', duration: 1.2 }, '<0.1')
-      .from('.card', { y: 60, opacity: 0, stagger: 0.05 }, '<0.1')
-      .from('.side .meta, .main__row, .work__info, .stickers__hint, .dot', { opacity: 0, y: 10, stagger: 0.03, duration: 0.8 }, '<0.2');
+    if (showLoader) {
+      tl.to('.loader__img, .loader__count', { yPercent: -40, opacity: 0, stagger: 0.05, duration: 0.45, ease: 'power3.in' }, '+=0.15')
+        .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 0.7, ease: 'expo.inOut' }, '-=0.1')
+        .set('.loader', { display: 'none' });
+    }
+    const has = (sel) => $$(sel).length > 0;
+    tl.from('.topbar', { yPercent: -100, duration: 0.7 }, showLoader ? '-=0.35' : 0)
+      .from('.logo span', { yPercent: 110, opacity: 0, stagger: 0.03 }, '<0.1');
+    if (lines) tl.from(lines.lines, { yPercent: 110, stagger: 0.06 }, '<');
+    if (has('.hero__card')) tl.from('.hero__card', { clipPath: 'inset(100% 0 0 0)', duration: 1.1 }, '<0.1');
+    if (has('.card')) tl.from('.card', { y: 50, opacity: 0, stagger: 0.04 }, '<0.1');
+    if (has('.page .side__sticky')) tl.from('.page .side__sticky > *', { y: 16, opacity: 0, stagger: 0.04, duration: 0.8 }, '<0.1');
+    if (has('.lab__item')) tl.from('.lab__item', { y: 40, opacity: 0, stagger: 0.025, duration: 0.9 }, '<');
+    tl.from('.side .meta, .main__row, .work__info, .stickers__hint, .dot', { opacity: 0, y: 10, stagger: 0.02, duration: 0.7 }, '<0.15');
 
     if (REDUCED) tl.progress(1);
   }
@@ -211,6 +237,7 @@
      ------------------------------------------------------------------------ */
   function carousel() {
     const track = $('#track');
+    if (!track) return;
     const cards = $$('.card', track);
     const n = cards.length;
     let active = -1;
@@ -267,7 +294,7 @@
         p: n - 1, ease: 'none',
         onUpdate: () => { layout(); setActive(Math.round(state.p)); },
         scrollTrigger: {
-          trigger: '.home', start: 'top top', end: () => `+=${(n - 1) * innerHeight * 0.45}`,
+          trigger: '.home', start: 'top top', end: () => `+=${(n - 1) * innerHeight * 0.32}`,
           pin: true, scrub: 0.6, invalidateOnRefresh: true,
           snap: { snapTo: 1 / (n - 1), duration: { min: 0.2, max: 0.6 }, delay: 0.08, ease: 'power2.inOut' },
         },
@@ -295,14 +322,13 @@
       };
     });
 
-    // Móvil: carrusel con scroll horizontal nativo
+    // Móvil: los proyectos van en vertical; el vídeo se reproduce cuando la tarjeta se ve
     mm.add(`not all and ${DESKTOP}`, () => {
-      const onScroll = () => {
-        const w = cards[0].offsetWidth + 10;
-        setActive(Math.round(track.scrollLeft / w));
-      };
-      track.addEventListener('scroll', onScroll, { passive: true });
-      return () => track.removeEventListener('scroll', onScroll);
+      const io = new IntersectionObserver((entries) => entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) setActive(+target.dataset.index);
+      }), { threshold: 0.6 });
+      cards.forEach((c) => io.observe(c));
+      return () => io.disconnect();
     });
   }
 
@@ -321,8 +347,10 @@
       </div>`).join(''));
     const els = $$('.sticker', box);
 
-    const engine = Engine.create();
+    const engine = Engine.create({ enableSleeping: true });
     engine.gravity.y = 1;
+    let visible = true;
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(box);
 
     const mouse = Mouse.create(box);
     // Matter bloquea la rueda del ratón: se lo quitamos para que la página siga haciendo scroll
@@ -366,9 +394,10 @@
 
     // La física avanza con el reloj de GSAP y mueve los elementos HTML
     gsap.ticker.add(() => {
-      if (document.hidden) return;
+      if (document.hidden || !visible) return;
       Engine.update(engine, 1000 / 60);
       bodies.forEach((b, i) => {
+        if (b.isSleeping) return; // quieta: no hace falta moverla
         const [w, h] = sizes[i];
         els[i].style.transform = `translate(${b.position.x - w / 2}px, ${b.position.y - h / 2}px) rotate(${b.angle}rad)`;
       });
@@ -397,21 +426,27 @@
 
     // Texto de "sobre mí": las palabras se van "encendiendo" con el scroll
     const statement = $('[data-words]');
-    const words = SplitText.create(statement, { type: 'words', wordsClass: 'word' });
-    gsap.fromTo(words.words, { opacity: 0.15 }, {
-      opacity: 1, stagger: 0.1, ease: 'none',
-      scrollTrigger: { trigger: statement, start: 'top 80%', end: 'bottom 50%', scrub: true },
-    });
+    if (statement) {
+      const words = SplitText.create(statement, { type: 'words', wordsClass: 'word' });
+      gsap.fromTo(words.words, { opacity: 0.15 }, {
+        opacity: 1, stagger: 0.1, ease: 'none',
+        scrollTrigger: { trigger: statement, start: 'top 85%', end: 'bottom 55%', scrub: true },
+      });
+    }
 
-    gsap.from('.cv__item, .cv__col h3', {
-      y: 24, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.03,
-      scrollTrigger: { trigger: '.cv', start: 'top 85%', once: true },
-    });
+    if ($('.cv')) {
+      gsap.from('.cv__item, .cv__col h3', {
+        y: 24, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.03,
+        scrollTrigger: { trigger: '.cv', start: 'top 85%', once: true },
+      });
+    }
 
-    gsap.from('.contact__email, .contact .side .meta', {
-      y: 24, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.06,
-      scrollTrigger: { trigger: '.contact', start: 'top 70%', once: true },
-    });
+    if ($('.contact')) {
+      gsap.from('.contact__email, .contact .side .meta', {
+        y: 24, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.06,
+        scrollTrigger: { trigger: '.contact', start: 'top 70%', once: true },
+      });
+    }
   }
 
   /* ------------------------------------------------------------------------
@@ -419,9 +454,14 @@
      ------------------------------------------------------------------------ */
   function topNav() {
     const links = $$('.topnav a');
+    const page = { home: 0, lab: 1, about: 2 }[document.body.dataset.page] ?? 0;
     const setActive = (i) => links.forEach((l, j) => l.classList.toggle('is-active', j === i));
-    ScrollTrigger.create({ trigger: '#sobre-mi', start: 'top 60%', end: 'bottom 60%', onToggle: (s) => s.isActive && setActive(1), onLeaveBack: () => setActive(0) });
-    ScrollTrigger.create({ trigger: '#contacto', start: 'top 60%', end: () => ScrollTrigger.maxScroll(window) + 100, onToggle: (s) => s.isActive && setActive(2) });
+    if ($('#contacto')) {
+      ScrollTrigger.create({
+        trigger: '#contacto', start: 'top 60%', end: () => ScrollTrigger.maxScroll(window) + 100,
+        onToggle: (s) => setActive(s.isActive ? 3 : page),
+      });
+    }
     // Línea de progreso bajo la barra superior
     ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (s) => gsap.set('.topbar__progress', { scaleX: s.progress }) });
   }
@@ -521,7 +561,7 @@
   }
 
   function copyEmail() {
-    $('#copy-email').addEventListener('click', async () => {
+    $('#copy-email')?.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(PROFILE.email);
         toast('Email copiado ✓');
@@ -534,6 +574,7 @@
   // Hora de Madrid
   function clock() {
     const fmt = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' });
+    if (!$('#clock')) return;
     const tick = () => { $('#clock').textContent = fmt.format(new Date()); };
     tick();
     setInterval(tick, 15000);
@@ -670,14 +711,134 @@
   }
 
   function openFromHash() {
+    if (!overlay) {
+      if (location.hash.length > 1 && !location.hash.startsWith('#/') && $(location.hash)) scrollToTarget(location.hash);
+      return;
+    }
     const m = location.hash.match(/^#\/proyecto\/([\w-]+)/);
     if (m) openProject(m[1]);
-    else closeProject();
+    else {
+      closeProject();
+      // Llegada desde otra página con #contacto, #sobre-mi…
+      if (location.hash.length > 1 && !location.hash.startsWith('#/') && $(location.hash)) scrollToTarget(location.hash);
+    }
   }
 
-  window.addEventListener('hashchange', openFromHash);
-  $('.project__close').addEventListener('click', closeProject);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProject(); });
+  if (overlay) {
+    window.addEventListener('hashchange', openFromHash);
+    $('.project__close').addEventListener('click', closeProject);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProject(); });
+  }
+
+  /* ------------------------------------------------------------------------
+     11. LAB: todos los proyectos en una cuadrícula + visor
+     ------------------------------------------------------------------------ */
+  function lab() {
+    const grid = $('#lab');
+    if (!grid || typeof LAB === 'undefined') return;
+
+    // Convierte los grupos de lab-data.js en una lista de piezas
+    const groups = LAB.map((g) => {
+      if (g.project) {
+        const p = PROJECTS.find((x) => x.slug === g.project);
+        if (!p) return [];
+        const pool = [p.poster, p.cover, ...p.blocks.flatMap((b) => b.media)].filter(Boolean);
+        const images = pool.filter((m) => m.type === 'image');
+        const media = (images.length ? images : pool).filter((m, i, arr) => arr.findIndex((x) => x.src === m.src) === i).slice(0, g.count);
+        return media.map((m) => ({ m, title: p.title, kicker: p.kicker, year: p.year, tags: p.tags, link: `index.html#/proyecto/${p.slug}` }));
+      }
+      return g.media.map((m) => ({ m, title: g.title, kicker: g.kicker, year: g.year, tags: g.tags }));
+    });
+    // Intercala los proyectos (1.ª pieza de cada uno, luego la 2.ª…) para que la cuadrícula quede variada
+    const items = [];
+    for (let r = 0; groups.some((g) => g[r]); r++) groups.forEach((g) => { if (g[r]) items.push(g[r]); });
+
+    grid.innerHTML = items.map((it, i) => `
+      <figure class="lab__item" data-index="${i}" data-tags="${it.tags.join(' ')}" data-cursor="${it.link ? 'Ver proyecto' : 'Ampliar'}" tabindex="0" role="button" aria-label="${esc(it.title)}">
+        <div class="lab__media" style="aspect-ratio: ${it.m.w} / ${it.m.h}">
+          ${it.m.type === 'video'
+            ? `<video src="${it.m.src}#t=0.5" muted loop playsinline preload="metadata"></video>`
+            : `<img src="${thumb(it.m, 700)}" alt="" loading="lazy" decoding="async">`}
+        </div>
+        <figcaption class="tiny"><span>${esc(it.title)}</span><span class="muted">${it.year || ''}</span></figcaption>
+      </figure>`).join('');
+
+    // Filtros por disciplina
+    const used = Object.keys(FILTERS).filter((k) => items.some((it) => it.tags.includes(k)));
+    $('#lab-filters').innerHTML = ['todo', ...used].map((k) => `<button type="button" data-filter="${k}" aria-pressed="${k === 'todo'}">${k === 'todo' ? 'Todo' : FILTERS[k]}</button>`).join('');
+    const els = $$('.lab__item', grid);
+    const count = () => { $('#lab-count').textContent = els.filter((el) => !el.hidden).length; };
+    count();
+    $('#lab-filters').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-filter]');
+      if (!b) return;
+      $$('[data-filter]').forEach((x) => x.setAttribute('aria-pressed', x === b));
+      const k = b.dataset.filter;
+      els.forEach((el) => { el.hidden = k !== 'todo' && !el.dataset.tags.split(' ').includes(k); });
+      count();
+      if (!REDUCED) gsap.fromTo(els.filter((el) => !el.hidden), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'expo.out', stagger: 0.02 });
+      ScrollTrigger.refresh();
+    });
+
+    // Los vídeos de la cuadrícula se mueven solo cuando se ven
+    const io = new IntersectionObserver((entries) => entries.forEach(({ target, isIntersecting }) => {
+      isIntersecting ? target.play().catch(() => {}) : target.pause();
+    }), { threshold: 0.3 });
+    $$('video', grid).forEach((v) => io.observe(v));
+
+    // Visor
+    const box = $('.lightbox');
+    const fig = $('.lightbox__figure');
+    const cap = $('.lightbox__caption');
+    let current = 0;
+    const visible = () => els.filter((el) => !el.hidden).map((el) => +el.dataset.index);
+    const show = (i) => {
+      current = i;
+      const it = items[i];
+      fig.innerHTML = it.m.type === 'video'
+        ? `<video src="${it.m.src}" muted loop playsinline autoplay controls></video>`
+        : `<img src="${it.m.src}" alt="${esc(it.title)}">`;
+      cap.textContent = [it.title, it.kicker, it.year].filter(Boolean).join(' · ');
+    };
+    const open = (i) => {
+      show(i);
+      box.hidden = false;
+      lenis?.stop();
+      document.documentElement.style.overflow = 'hidden';
+      if (!REDUCED) gsap.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+      $('.lightbox__close').focus({ preventScroll: true });
+    };
+    const close = () => {
+      box.hidden = true;
+      fig.innerHTML = '';
+      document.documentElement.style.overflow = '';
+      lenis?.start();
+      els[current]?.focus({ preventScroll: true });
+    };
+    const step = (d) => {
+      const v = visible();
+      show(v[(v.indexOf(current) + d + v.length) % v.length]);
+    };
+
+    grid.addEventListener('click', (e) => {
+      const el = e.target.closest('.lab__item');
+      if (!el) return;
+      const it = items[+el.dataset.index];
+      if (it.link) location.href = it.link;
+      else open(+el.dataset.index);
+    });
+    grid.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.closest('.lab__item')) e.target.click(); });
+    $('.lightbox__close').addEventListener('click', close);
+    $('.lightbox__nav--prev').addEventListener('click', () => step(-1));
+    $('.lightbox__nav--next').addEventListener('click', () => step(1));
+    box.addEventListener('click', (e) => { if (e.target === box) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (box.hidden) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'ArrowLeft') step(-1);
+    });
+  }
 
   /* ------------------------------------------------------------------------
      ARRANQUE
@@ -685,6 +846,7 @@
   lineBoil();
   logoAnimation();
   carousel();
+  lab();
   topNav();
   photos();
   alterVideos();
