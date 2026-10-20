@@ -271,20 +271,22 @@ const PROJECTS = [
     title: 'Flores',
     kicker: 'Vídeo experimental MixMedia',
     tags: ['motion'],
-    year: '',
-    cover: cargoVid('H2468110961745735590090998471052/Compo-efectos.MP4', 1280, 720),
-    poster: cargoImg('B2468116223052293317234472180108/Fotogramas_Mesa_de_trabajo_1_copia-06.png', 2482, 3508),
+    year: '2024',
+    cover: vid('assets/video/flores.mp4', 1280, 720),
+    // En la portada de la web: el fotograma del paso de cebra (con el semáforo)
+    cardVideo: false,
+    card: img('assets/img/flores/portada.jpg', 720, 720),
     blocks: [
       {
         text: [
-          'Vídeo experimental con la técnica MixMedia: fotografías frame a frame editadas a mano con herramientas manuales.',
-          'Las flores pueden significar amor, declaración, desamor, perdón, e incluso muerte, pérdida y tristeza. Quería representar cómo un mismo elemento puede variar tanto su significado.',
+          'Fotografías frame a frame retocadas a mano: un vídeo sobre todo lo que puede significar una flor, del amor a la pérdida.',
+          'El mismo elemento, mil lecturas distintas.',
         ],
         media: [
-          cargoImg('B2468116223052293317234472180108/Fotogramas_Mesa_de_trabajo_1_copia-06.png', 2482, 3508),
-          cargoImg('V2468116223033846573160762628492/Fotogramas_Mesa_de_trabajo_1_copia-04.png', 2481, 3508),
-          cargoImg('L2468116222738698667981409802636/Fotogramas_Mesa_de_trabajo_1_copia-03.png', 2481, 3508),
-          cargoImg('R2468116223070740061308181731724/Fotogramas_Mesa_de_trabajo_1_copia-12.png', 2482, 3508),
+          img('assets/img/flores/fotograma-1.jpg', 1273, 1800),
+          img('assets/img/flores/fotograma-2.jpg', 1273, 1800),
+          img('assets/img/flores/fotograma-3.jpg', 1273, 1800),
+          img('assets/img/flores/fotograma-4.jpg', 1273, 1800),
         ],
       },
     ],
