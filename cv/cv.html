@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  CV DE AYLA (A4) — mismo diseño que su CV original, con los datos al día.
+  CV DE AYLA (A4) — mismo diseño que su CV (CV_AylaCano 2.pdf), con los datos al día.
   El contenido está escrito aquí mismo: para cambiar algo, edítalo y vuelve
   a generar el PDF (ver README → "Currículum en PDF").
 -->
@@ -8,138 +8,103 @@
 <head>
   <meta charset="utf-8">
   <title>CV — Ayla Cano López</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
   <style>
     @page { size: A4; margin: 0; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --blue: #1e1ef5; --pink: #ff1f8f; --green: #a6f20a; --ink: #222; --muted: #555; --track: #eee; }
+    :root { --ink: #2b2b2b; --muted: #555; --pink: #ffa8cf; --track: #dcdcdc; }
     html, body { width: 210mm; height: 297mm; }
     body {
-      font-family: 'Inter', sans-serif; font-weight: 300; color: var(--ink); background: #fff;
+      font-family: 'Inter', sans-serif; font-optical-sizing: auto; font-weight: 300; color: var(--ink); background: #fff;
       -webkit-print-color-adjust: exact; print-color-adjust: exact;
-      padding: 10mm 12mm 8mm 13mm; font-size: 9.2pt; line-height: 1.28;
+      padding: 8mm 7mm 8mm 7mm; font-size: 10.3pt; line-height: 1.3; letter-spacing: -0.035em;
     }
-    ul { list-style: none; }
-    h2 { font-family: 'Poppins', sans-serif; font-weight: 800; color: var(--blue); font-size: 15.5pt; line-height: 1; margin-bottom: 3.2mm; letter-spacing: -0.01em; }
+    b, strong { font-weight: 600; }
 
-    .top { display: grid; grid-template-columns: 40mm 1fr; gap: 9mm; align-items: center; margin-bottom: 6mm; }
-    .photo { width: 40mm; height: 40mm; border-radius: 5mm; object-fit: cover; object-position: 50% 15%; filter: grayscale(1); }
-    .about h2 { color: var(--pink); font-size: 14pt; margin-bottom: 2mm; }
-    .about p { font-size: 10.6pt; line-height: 1.38; font-weight: 400; color: #333; }
+    /* Cabecera: nombre, contacto, presentación y foto */
+    .head { display: grid; grid-template-columns: 1fr 49mm; gap: 8mm; }
+    .name { font-size: 22pt; font-weight: 400; letter-spacing: -0.06em; line-height: 1; margin: 1mm 0 2.5mm; }
+    .contact { font-size: 7.6pt; line-height: 1.3; letter-spacing: -0.02em; }
+    .web { margin-top: 4.5mm; font-size: 11pt; font-weight: 600; }
+    .intro { margin-top: 10mm; max-width: 118mm; font-size: 11.4pt; line-height: 1.32; color: #444; }
+    .intro b { color: var(--ink); }
+    .photo { width: 49mm; height: 65mm; object-fit: cover; object-position: 50% 20%; border: 0.3mm solid #999; }
 
-    .cols { display: grid; grid-template-columns: 82mm 1fr; gap: 9mm; }
-    .left > section, .right > section { margin-bottom: 5mm; }
+    /* Cuerpo: dos columnas */
+    .cols { display: grid; grid-template-columns: 79mm 1fr; gap: 3mm; margin-top: 16mm; }
+    h2 { font-size: 15.5pt; font-weight: 600; color: var(--pink); letter-spacing: -0.06em; margin-bottom: 2.4mm; }
+    section { margin-bottom: 6mm; }
+    .entry { margin-bottom: 2.6mm; }
+    .entry b { display: block; }
+    .list li { list-style: none; font-weight: 400; }
+    .list + .list { margin-top: 4mm; }
 
-    .name { font-size: 16.5pt; margin-bottom: 4.5mm; }
-    .contact li { display: flex; align-items: center; gap: 3mm; margin-bottom: 3mm; font-weight: 400; }
-    .contact svg { width: 5mm; height: 5mm; color: var(--pink); flex: none; }
-
-    .star { width: 4.6mm; height: 4.6mm; color: var(--pink); flex: none; margin-top: 0.2mm; }
-    .skills li { display: flex; align-items: center; gap: 3mm; font-weight: 600; margin-bottom: 2.6mm; }
-
-    .lang { margin-bottom: 3.6mm; }
-    .lang b { font-weight: 500; font-size: 12pt; margin-right: 2mm; }
-    .lang span { font-size: 8.6pt; color: var(--muted); }
-    .bar { height: 5mm; width: 58mm; border-radius: 99px; background: var(--track); margin-top: 1.6mm; overflow: hidden; }
-    .bar i { display: block; height: 100%; border-radius: 99px; background: var(--green); }
-
-    .tools { display: grid; grid-template-columns: repeat(4, 13mm); gap: 3mm 4mm; }
-    .tool {
-      width: 13mm; height: 13mm; border-radius: 50%; display: grid; place-items: center;
-      background: conic-gradient(var(--pink) calc(var(--p) * 1%), var(--track) 0);
-      font-family: 'Poppins', sans-serif; font-weight: 800; color: var(--pink); font-size: 8.4pt; position: relative;
-    }
-    .tool::before { content: ''; position: absolute; inset: 1.4mm; border-radius: 50%; background: #fff; }
-    .tool span { position: relative; }
-
-    .entry { display: grid; grid-template-columns: 5mm 1fr; gap: 2.2mm; margin-bottom: 2mm; }
-    .entry b { display: block; font-weight: 600; }
-    .entry .where { color: var(--muted); }
+    .lang { margin-top: 3.4mm; }
+    .lang b { font-weight: 600; }
+    .bar { width: 49mm; height: 1.5mm; border-radius: 99px; background: var(--track); margin-top: 2mm; overflow: hidden; }
+    .bar i { display: block; height: 100%; border-radius: 99px; background: var(--pink); }
   </style>
 </head>
 <body>
-  <svg width="0" height="0" style="position:absolute">
-    <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.2 5.1L19 2.6l-1.1 5.4L23.5 9l-4.2 3.6 3.7 4.1-5.5.4.4 5.5-4.4-3.4L10.6 24 9 18.7l-5.2 2 1.4-5.3L0 13.4l4.6-3-3.3-4.5 5.5.1L6.6.6l4.6 3z"/></symbol>
-  </svg>
-
-  <header class="top">
-    <img class="photo" src="../assets/img/perfil/foto-1.jpg" alt="Ayla Cano López">
-    <div class="about">
-      <h2>Sobre mí</h2>
-      <p>Soy Ayla, diseñadora gráfica y multimedia graduada en UDIT (Madrid). Me defino como una persona creativa y curiosa: diseño, ilustro y animo, y tengo muchas ganas de seguir aprendiendo y crecer profesionalmente.</p>
+  <header class="head">
+    <div>
+      <h1 class="name">Ayla Cano López</h1>
+      <p class="contact">+34 655 030 727<br>@ayleeeeta<br>aylacanolopez@gmail.com</p>
+      <p class="web">https://aylacano.github.io/PORTFOLIO-CLAUDE/</p>
+      <p class="intro">
+        /Soy <b>Ayla</b>, una chica de Barcelona graduada en <b>Diseño Gráfico y Multimedia</b> en Madrid.<br>
+        Me defino como una persona creativa, curiosa, con interés en seguir formándome para crecer profesionalmente, con muchas ganas de aprender y poder mejorar en todos los aspectos.
+      </p>
     </div>
+    <img class="photo" src="../assets/img/perfil/foto-1.jpg" alt="Ayla Cano López">
   </header>
 
   <div class="cols">
-    <div class="left">
+    <div>
       <section>
-        <h2 class="name">Ayla Cano López</h2>
-        <ul class="contact">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>+34 655 030 727</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"/></svg>@ayleeeeta</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>aylacanolopez@gmail.com</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>aylacano.github.io/PORTFOLIO-CLAUDE</li>
-        </ul>
+        <h2>ESTUDIOS</h2>
+        <div class="entry"><b>/2022-2026</b>Grado Universitario Diseño Gráfico y Multimedia<br>·UDIT, Madrid</div>
+        <div class="entry"><b>/2020-2022</b>CFGS de Gráfica Interactiva<br>·Escuela de Arte y Superior de Diseño Pau Gargallo, Badalona</div>
+        <div class="entry"><b>/2018-2020</b>Bachillerato Artístico<br>·Escuela de Arte y Superior de Diseño Pau Gargallo, Badalona</div>
       </section>
 
       <section>
         <h2>HABILIDADES</h2>
-        <ul class="skills">
-          <li><svg class="star"><use href="#star"/></svg>Trabajo en equipo</li>
-          <li><svg class="star"><use href="#star"/></svg>Competencias digitales</li>
-          <li><svg class="star"><use href="#star"/></svg>Pensamiento creativo</li>
+        <ul class="list">
+          <li>/Trabajo en equipo</li>
+          <li>/Competencias digitales</li>
+          <li>/Pensamiento creativo</li>
         </ul>
-      </section>
-
-      <section>
-        <div class="lang"><b>Catalán</b><span>nativo</span><div class="bar"><i style="width:100%"></i></div></div>
-        <div class="lang"><b>Castellano</b><span>nativo</span><div class="bar"><i style="width:100%"></i></div></div>
-        <div class="lang"><b>Inglés</b><span>básico</span><div class="bar"><i style="width:50%"></i></div></div>
-      </section>
-
-      <section>
-        <h2>HERRAMIENTAS</h2>
-        <!-- --p = cuánto se rellena el círculo (0–100) -->
-        <div class="tools">
-          <div class="tool" style="--p:85"><span>Ps</span></div>
-          <div class="tool" style="--p:80"><span>Id</span></div>
-          <div class="tool" style="--p:90"><span>Ai</span></div>
-          <div class="tool" style="--p:75"><span>Pr</span></div>
-          <div class="tool" style="--p:80"><span>Ae</span></div>
-          <div class="tool" style="--p:70"><span>Lr</span></div>
-          <div class="tool" style="--p:60"><span>Xd</span></div>
-          <div class="tool" style="--p:80"><span>Fg</span></div>
-          <div class="tool" style="--p:85"><span>Pc</span></div>
-          <div class="tool" style="--p:50"><span>C4D</span></div>
-          <div class="tool" style="--p:60"><span>Ff</span></div>
-        </div>
+        <ul class="list">
+          <li>/Pack Adobe</li>
+          <li>/Figma</li>
+          <li>/Procreate</li>
+          <li>/Cinema 4D</li>
+          <li>/VisualCode</li>
+        </ul>
+        <div class="lang"><b>Catalán</b> (nativo)<div class="bar"><i style="width:100%"></i></div></div>
+        <div class="lang"><b>Castellano</b> (nativo)<div class="bar"><i style="width:100%"></i></div></div>
+        <div class="lang"><b>Inglés</b> (básico)<div class="bar"><i style="width:50%"></i></div></div>
       </section>
     </div>
 
-    <div class="right">
-      <section>
-        <h2>ESTUDIOS</h2>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2022—2026</b>Grado Universitario en Diseño Gráfico y Multimedia<div class="where">·UDIT, Madrid</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2020—2022</b>CFGS de Gráfica Interactiva<div class="where">·Escola d’Art Pau Gargallo, Badalona</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2018—2020</b>Bachillerato Artístico<div class="where">·Escola d’Art Pau Gargallo, Badalona</div></div></div>
-      </section>
-
+    <div>
       <section>
         <h2>EXPERIENCIA</h2>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2025</b>Escola Miguel de Unamuno<div class="where">·Diseño del logotipo</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2025</b>Séducation<div class="where">·Gestión y comunicación de RRSS</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2024</b>Padawan Branding &amp; Carolina Kairos<div class="where">·Prácticas en diseño gráfico, multimedia y RRSS</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2022</b>Festival Cruïlla<div class="where">·Azafata voluntaria</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2022</b>Pull&amp;Bear<div class="where">·Dependienta</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2021</b>AVV Bufalà<div class="where">·Creación y edición de vídeo ·Diseño interactivo</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2015</b>Libro ‘Rocker’ de Marco Antonio López Vilaplana<div class="where">·Fotografía · 66 RPM Edicions</div></div></div>
+        <div class="entry"><b>/2025</b>Escola Miguel de Unamuno<br>·Diseño del logotipo</div>
+        <div class="entry"><b>/2025</b>Séducation<br>·Gestión y comunicación de RRSS</div>
+        <div class="entry"><b>/2024</b>Padawan Branding &amp; Carolina Kairos<br>·Prácticas en diseño gráfico, multimedia y RRSS</div>
+        <div class="entry"><b>/2022</b>Festival Cruïlla<br>·Azafata voluntariado</div>
+        <div class="entry"><b>/2022</b>Pull&amp;Bear<br>·Dependienta</div>
+        <div class="entry"><b>/2021</b>Avv Bufalà<br>·Creación y edición de video<br>·Diseño interactivo</div>
+        <div class="entry"><b>/2015</b>Libro ‘Rocker’ de Marco Antonio López Vilaplana<br>·Fotografía · 66 RPM Edicions</div>
       </section>
 
       <section>
         <h2>PREMIOS</h2>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2024</b>Premio Inspirathon UDIT<div class="where">·Diseño de merchandising</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2023</b>Premio Inspirathon Hotel Thompson<div class="where">·Diseño de amenities del hotel</div></div></div>
-        <div class="entry"><svg class="star"><use href="#star"/></svg><div><b>2022</b>Premio Talent Creatiu i Empresa<div class="where">·Diseño de app y vídeo educativo</div></div></div>
+        <div class="entry"><b>/2024</b>Premio Inspirathon UDIT<br>·Diseño Merchandising</div>
+        <div class="entry"><b>/2023</b>Premio Inspirathon Hotel Thompson<br>·Diseño Amenities del hotel</div>
+        <div class="entry"><b>/2022</b>Premio Talent Creatiu i Empresa<br>·Diseño App</div>
       </section>
     </div>
   </div>
