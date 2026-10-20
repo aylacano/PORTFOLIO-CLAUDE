@@ -99,6 +99,8 @@
     gsap.ticker.lagSmoothing(0);
     lenis.stop();
     window.lenis = lenis; // útil para depurar desde la consola
+    // Si la página cambia de alto (p. ej. al fijar el carrusel), Lenis recalcula hasta dónde se puede bajar
+    ScrollTrigger.addEventListener('refresh', () => lenis.resize());
   }
 
   const scrollToTarget = (target) => {
@@ -258,6 +260,19 @@
     // Escritorio: tarjetas cuadradas; la activa es grande y las demás pequeñas, alineadas abajo
     mm.add(DESKTOP, () => {
       const state = { p: 0 };
+      // Pausa: el proyecto grande se queda quieto durante parte del scroll
+      // antes de pasar al siguiente (HOLD = qué parte del recorrido está parado)
+      const HOLD = 0.55;
+      const held = (v) => {
+        const i = Math.floor(v);
+        const f = v - i;
+        const a = HOLD / 2;
+        if (f <= a) return i;
+        if (f >= 1 - a) return i + 1;
+        const t = (f - a) / (1 - HOLD);
+        return i + t * t * (3 - 2 * t); // suavizado
+      };
+      let shown = 0;
 
       const layout = () => {
         const W = track.clientWidth;
@@ -265,21 +280,20 @@
         const big = Math.min(H, W * 0.5);
         const small = big * 0.42;
         const gap = 10;
-        const sizes = cards.map((_, i) => small + (big - small) * Math.max(0, 1 - Math.abs(i - state.p)));
+        const sizes = cards.map((_, i) => small + (big - small) * Math.max(0, 1 - Math.abs(i - shown)));
         let acc = 0;
         const xs = sizes.map((s) => { const x = acc; acc += s + gap; return x; });
-        const f = Math.min(Math.floor(state.p), n - 1);
-        const shift = xs[f] + (f + 1 < n ? (xs[f + 1] - xs[f]) * (state.p - f) : 0);
+        const f = Math.min(Math.floor(shown), n - 1);
+        const shift = xs[f] + (f + 1 < n ? (xs[f + 1] - xs[f]) * (shown - f) : 0);
         cards.forEach((c, i) => gsap.set(c, { width: sizes[i], height: sizes[i], x: xs[i] - shift }));
       };
 
       const tween = gsap.to(state, {
         p: n - 1, ease: 'none',
-        onUpdate: () => { layout(); setActive(Math.round(state.p)); },
+        onUpdate: () => { shown = held(state.p); layout(); setActive(Math.round(shown)); },
         scrollTrigger: {
-          trigger: '.home', start: 'top top', end: () => `+=${(n - 1) * innerHeight * 0.5}`,
+          trigger: '.home', start: 'top top', end: () => `+=${(n - 1) * innerHeight * 0.75}`,
           pin: true, scrub: 1, invalidateOnRefresh: true,
-          snap: { snapTo: 1 / (n - 1), duration: { min: 0.3, max: 0.8 }, delay: 0.3, ease: 'sine.inOut' },
         },
       });
 
@@ -437,7 +451,7 @@
      ------------------------------------------------------------------------ */
   function topNav() {
     const links = $$('.topnav a');
-    const page = { home: 0, lab: 1, about: 2 }[document.body.dataset.page] ?? 0;
+    const page = { home: 0, about: 1, lab: 2 }[document.body.dataset.page] ?? 0;
     const setActive = (i) => links.forEach((l, j) => l.classList.toggle('is-active', j === i));
     if ($('#contacto')) {
       ScrollTrigger.create({
