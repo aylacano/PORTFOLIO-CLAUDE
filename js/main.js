@@ -70,13 +70,10 @@
       }).join('');
     });
 
-    // Fotos de pequeña
-    fill('#beta', (el) => {
-      el.innerHTML = BETA.map((b, i) => `
-        <figure class="beta__item" style="--r:${[-3, 2, -1.5][i % 3]}deg">
-          <img src="${thumb(b)}" alt="Ayla de pequeña" loading="lazy" decoding="async" width="${b.w}" height="${b.h}">
-          <figcaption class="tiny">${b.caption}</figcaption>
-        </figure>`).join('');
+    // Fotos de pequeña (en Sobre mí, en lugar de la foto de la portada)
+    fill('#kid-photos', (el) => {
+      el.innerHTML = BETA.map((b, i) => `<img src="${thumb(b)}" alt="Ayla de pequeña" width="${b.w}" height="${b.h}"${i ? '' : ' class="is-on"'}>`).join('');
+      $('#kid-caption').textContent = BETA[0].caption;
     });
   }
 
@@ -504,6 +501,19 @@
     $('#photos').addEventListener('mouseleave', () => { speed = 450; });
   }
 
+  // Fotos de pequeña: van pasando una a una, con su pie de foto
+  function kidPhotos() {
+    const imgs = $$('#kid-photos img');
+    if (imgs.length < 2 || REDUCED) return;
+    let i = 0;
+    setInterval(() => {
+      imgs[i].classList.remove('is-on');
+      i = (i + 1) % imgs.length;
+      imgs[i].classList.add('is-on');
+      $('#kid-caption').textContent = BETA[i].caption;
+    }, 1400);
+  }
+
   // Calendarios en stop-motion: cambian de color cada medio segundo
   function flipbooks() {
     if (REDUCED) return;
@@ -910,6 +920,7 @@
   lab();
   topNav();
   photos();
+  kidPhotos();
   flipbooks();
   alterVideos();
   cursor();

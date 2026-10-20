@@ -280,6 +280,7 @@ em { font-style: normal; }
 .about .main { justify-content: flex-start; gap: clamp(40px, 6vw, 90px); padding-top: clamp(24px, 3vw, 44px); padding-bottom: clamp(60px, 8vw, 120px); }
 .about__statement { font-size: clamp(24px, 2.5vw, 46px); line-height: 1; font-weight: 700; letter-spacing: -0.03em; max-width: 26ch; }
 /* Foto grande en Sobre mí y botón del CV */
+.about__kid { display: grid; gap: 6px; }
 .about__photo { width: 100%; max-width: 280px; }
 .cv-btn {
   justify-self: start; display: inline-flex; gap: 8px; align-items: center; padding: 9px 14px; border-radius: 99px;
@@ -302,18 +303,6 @@ em { font-style: normal; }
 .cv__year { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .cv__what { font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; }
 .cv__where { font-size: 13px; color: var(--muted); }
-
-/* Versión beta: fotos de pequeña, como copias sueltas sobre la mesa */
-.beta { display: grid; gap: 12px; border-top: 1px solid var(--line); padding-top: var(--pad); }
-.beta__photos { display: flex; gap: clamp(14px, 2.5vw, 34px); flex-wrap: wrap; align-items: flex-start; }
-.beta__item {
-  width: clamp(140px, 15vw, 210px); padding: 8px 8px 10px; background: #fff; color: #1b1a19;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12); transform: rotate(var(--r));
-  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
-}
-.beta__item:hover { transform: rotate(0deg) scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18); }
-.beta__item img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
-.beta__item figcaption { margin-top: 8px; }
 
 /* Stop-motion de los calendarios */
 .flipbook { position: relative; }
@@ -478,7 +467,6 @@ body[data-page='lab'] #theme-toggle { display: none; }
   .cv { grid-template-columns: 1fr; }
   .alter { grid-template-columns: 1fr; }
   .alter__grid { columns: 2; }
-  .beta__item { width: calc(50% - 10px); }
   .cv__col + .cv__col { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
 
   .p-head, .p-block { grid-template-columns: 1fr; }
