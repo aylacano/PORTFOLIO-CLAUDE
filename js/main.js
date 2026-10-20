@@ -643,6 +643,9 @@
     if (m.type === 'flipbook') {
       return `<figure class="p-media flipbook${wide}" style="aspect-ratio:${m.w} / ${m.h}">${m.frames.map((f, i) => `<img src="${f.src}" alt="" loading="lazy" decoding="async"${i ? '' : ' class="is-on"'}>`).join('')}</figure>`;
     }
+    if (m.type === 'video' && m.silent) {
+      return `<figure class="p-media${wide}"><video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video></figure>`;
+    }
     if (m.type === 'video') {
       return `<figure class="p-media is-video${wide}" data-cursor="Sonido"><video src="${m.src}"${poster ? ` poster="${poster.src}"` : ''} muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video>${SOUND_BTN}</figure>`;
     }

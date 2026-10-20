@@ -216,17 +216,21 @@ const PROJECTS = [
     title: 'Rocko +',
     kicker: 'Autopromoción de un canal de televisión',
     tags: ['motion', 'branding'],
-    year: '',
-    cover: vid('assets/video/rocko-logo.mp4', 842, 596),
+    year: '2025',
+    // Lo primero que se ve al entrar: el spot del canal
+    cover: vid('assets/video/rocko-spot.mp4', 960, 540),
+    // En la portada de la web, el logo quieto (no la animación)
+    cardVideo: false,
     poster: img('assets/img/rocko/logo-1.png', 843, 596),
     blocks: [
       {
         text: [
-          'Un canal de televisión dedicado al rock: conciertos, entrevistas, nuevos artistas, documentales y películas sobre la vida de los rockeros. Desde Extremoduro, Platero y Tú o Marea hasta Guns N’ Roses o Patti Smith.',
-          '¡24 horas de ruido del bueno! Rocko +, el canal que no se calla… ni se callará.',
+          'Un canal de televisión 24 horas dedicado al rock: conciertos, entrevistas, documentales y nuevos grupos.',
+          'Rocko +, el canal que no se calla… ni se callará.',
         ],
         media: [
-          vid('assets/video/rocko-spot.mp4', 1280, 720),
+          // silent: el vídeo no tiene audio, así que no lleva el botón de sonido
+          { ...vid('assets/video/rocko-logo.mp4', 842, 596), silent: true },
           img('assets/img/rocko/logo-1.png', 843, 596),
           img('assets/img/rocko/logo-2.png', 843, 596),
         ],
