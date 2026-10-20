@@ -187,8 +187,9 @@ const PROJECTS = [
     tags: ['editorial'],
     year: '2025',
     cover: img('assets/img/casicasi/foto-1.jpg', 1199, 1800),
-    // Imagen de la portada de la web (_MG_9893 recortada en cuadrado)
-    card: img('assets/img/casicasi/portada.jpg', 900, 900),
+    // Imagen de la portada de la web (_MG_9893), apoyada abajo y cortada por arriba
+    card: img('assets/img/casicasi/foto-7.jpg', 1200, 1800),
+    cardPosition: '50% 100%',
     blocks: [
       {
         credit: 'En colaboración con Eva Sahuquillo, Laura Lozano y Sara Sánchez',
@@ -206,7 +207,7 @@ const PROJECTS = [
             'assets/img/casicasi/foto-5.jpg',
             'assets/img/casicasi/foto-6.jpg',
           ], 1800, 1574),
-          img('assets/img/casicasi/foto-7.jpg', 1800, 1200),
+          img('assets/img/casicasi/foto-7.jpg', 1200, 1800),
         ],
       },
     ],

@@ -85,7 +85,7 @@
       // Si no hay imagen (p. ej. RRSS), la tarjeta muestra un fotograma del propio vídeo
       return `
       <a class="card" href="#/proyecto/${p.slug}" data-index="${i}" data-cursor="Ver">
-        ${still ? `<img src="${thumb(still, 900)}" alt="${esc(p.title)}" ${i > 3 ? 'loading="lazy"' : ''} decoding="async">` : ''}
+        ${still ? `<img src="${thumb(still, 900)}" alt="${esc(p.title)}" ${i > 3 ? 'loading="lazy"' : ''} decoding="async"${p.cardPosition ? ` style="object-position:${p.cardPosition}"` : ''}>` : ''}
         ${isVideo ? `<video muted loop playsinline ${still ? `preload="none" data-src="${p.cover.src}"` : `preload="metadata" src="${p.cover.src}#t=0.5" class="is-still"`}></video>` : ''}
         <span class="card__cover" aria-hidden="true"><b>${pad(i + 1)}</b><strong>${esc(p.title)}</strong></span>
         <span class="card__label"><span>${pad(i + 1)}</span>${esc(p.title)}</span>
