@@ -693,7 +693,29 @@
     });
 
     projectFlips.forEach(clearInterval);
-    projectFlips = flipbooks(content, 650);
+    projectFlips = [];
+    // Para no marear: en ordenador el stop-motion solo se mueve al pasar el ratón;
+    // en móvil cambia despacio y cada pieza empieza en un momento distinto
+    $$('.flipbook', content).forEach((fb, k) => {
+      const frames = $$('img', fb);
+      fb.insertAdjacentHTML('beforeend', `<span class="flipbook__count tiny">1/${frames.length}</span>`);
+      const count = $('.flipbook__count', fb);
+      let i = 0;
+      const step = () => {
+        frames[i].classList.remove('is-on');
+        i = (i + 1) % frames.length;
+        frames[i].classList.add('is-on');
+        count.textContent = `${i + 1}/${frames.length}`;
+      };
+      if (REDUCED) return;
+      if (CAN_HOVER) {
+        let t = null;
+        fb.addEventListener('mouseenter', () => { step(); t = setInterval(step, 450); });
+        fb.addEventListener('mouseleave', () => clearInterval(t));
+      } else {
+        setTimeout(() => projectFlips.push(setInterval(step, 1600)), k * 400);
+      }
+    });
 
     mediaObserver?.disconnect();
     mediaObserver = new IntersectionObserver((entries) => {

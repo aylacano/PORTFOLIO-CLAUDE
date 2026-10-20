@@ -308,6 +308,8 @@ em { font-style: normal; }
 .flipbook { position: relative; }
 .flipbook img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; visibility: hidden; }
 .flipbook img.is-on { visibility: visible; }
+/* Contador de fotos del stop-motion (1/3) */
+.flipbook__count { position: absolute; left: 8px; bottom: 8px; z-index: 2; padding: 3px 8px; border-radius: 99px; background: var(--bg); color: var(--ink); }
 
 /* Ayleeeeta, el alter ego */
 .alter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr); gap: var(--pad); border-top: 1px solid var(--line); padding-top: var(--pad); }
