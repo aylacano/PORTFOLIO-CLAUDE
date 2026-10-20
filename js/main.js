@@ -21,11 +21,11 @@
   const tagNames = (p) => p.tags.map((t) => FILTERS[t]).join(', ');
   const esc = (s = '') => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-  // Imagen de la tarjeta del carrusel: la portada, o la primera imagen si la portada es un vídeo
-  const cardImage = (p) => (p.cover.type === 'image' ? p.cover : (p.preview?.[0] || p.blocks[0].media.find((m) => m.type === 'image')));
+  // Imagen de la tarjeta del carrusel: la portada, o su "poster" si la portada es un vídeo
+  const cardImage = (p) => (p.cover.type === 'image' ? p.cover : (p.poster || p.blocks[0].media.find((m) => m.type === 'image')));
 
   function renderProfile() {
-    $('.hero__photo').src = thumb(PROFILE.photo, 600);
+    $('#photos').innerHTML = PROFILE.photos.map((src, i) => `<img src="${src}" alt="${i ? '' : 'Ayla Cano'}" width="675" height="900"${i ? '' : ' class="is-on"'}>`).join('');
     $('.contact__email-text').textContent = PROFILE.email;
     $('#mail-link').href = $('#mail-link-2').href = `mailto:${PROFILE.email}`;
     $('#mail-link-2 span').textContent = PROFILE.email;
@@ -51,15 +51,27 @@
 
     $('#tools').innerHTML = PROFILE.tools.join(', ');
     $('#languages').innerHTML = PROFILE.languages.join('<br>');
+
+    // Ayleeeeta en "Sobre mí"
+    $('#alter-title').textContent = ALTER_EGO.title;
+    $('#alter-text').textContent = ALTER_EGO.text;
+    $('#alter').innerHTML = ALTER_EGO.media.map((m) => (m.type === 'video'
+      ? `<figure><video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video></figure>`
+      : `<figure><img src="${m.src}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}"></figure>`)).join('');
   }
 
   function renderCards() {
-    $('#track').innerHTML = PROJECTS.map((p, i) => `
+    $('#track').innerHTML = PROJECTS.map((p, i) => {
+      const still = cardImage(p);
+      const isVideo = p.cover.type === 'video';
+      // Si no hay imagen (p. ej. RRSS), la tarjeta muestra un fotograma del propio vídeo
+      return `
       <a class="card" href="#/proyecto/${p.slug}" data-index="${i}" data-cursor="Ver">
-        <img src="${thumb(cardImage(p), 900)}" alt="${esc(p.title)}" ${i > 3 ? 'loading="lazy"' : ''} decoding="async">
-        ${p.cover.type === 'video' ? `<video muted loop playsinline preload="none" data-src="${p.cover.src}"></video>` : ''}
+        ${still ? `<img src="${thumb(still, 900)}" alt="${esc(p.title)}" ${i > 3 ? 'loading="lazy"' : ''} decoding="async">` : ''}
+        ${isVideo ? `<video muted loop playsinline ${still ? `preload="none" data-src="${p.cover.src}"` : `preload="metadata" src="${p.cover.src}#t=0.5" class="is-still"`}></video>` : ''}
         <span class="card__label"><span>${pad(i + 1)}</span>${esc(p.title)}</span>
-      </a>`).join('');
+      </a>`;
+    }).join('');
   }
 
   renderProfile();
@@ -113,30 +125,17 @@
     }, 125);
   }
 
-  // Letras un poco torcidas, como rotuladas a mano
-  function naiveLetters() {
-    const tilt = [-4, 3, -2, 2, -3, 4, -2, 3, -3];
-    ['.logo', '.loader__word'].forEach((s) => {
-      $$('span', $(s)).forEach((l, i) => gsap.set(l, { rotation: tilt[i % tilt.length], y: `${(i % 2 ? -1 : 1) * 0.03}em` }));
+  // Las "E" se pliegan recortándose (sin fundidos ni deformaciones): AYLEEEETA → AYLETA
+  function collapseEs() {
+    return gsap.to($$('.logo .e-extra'), {
+      width: 0, duration: 0.45, ease: 'power2.inOut', stagger: { each: 0.06, from: 'end' }, overwrite: true,
     });
   }
 
-  function collapseEs(scope, duration = 0.7) {
-    const extras = $$('.e-extra', $(scope));
-    const first = $('.e:not(.e-extra)', $(scope));
-    return gsap.timeline()
-      .to(extras, {
-        maxWidth: 0, opacity: 0, xPercent: -60, scaleX: 0.4,
-        duration, ease: 'power3.inOut', stagger: { each: 0.07, from: 'end' }, overwrite: true,
-      })
-      // la "E" que queda se "traga" a las demás con un pequeño rebote
-      .fromTo(first, { scaleX: 1.35, scaleY: 0.85 }, { scaleX: 1, scaleY: 1, duration: 0.8, ease: 'elastic.out(1, 0.4)' }, '-=0.2');
-  }
-
-  function expandEs(scope, duration = 0.7) {
-    return gsap.to($$('.e-extra', $(scope)), {
-      maxWidth: '1em', opacity: 1, xPercent: 0, scaleX: 1,
-      duration, ease: 'back.out(2)', stagger: 0.07, overwrite: true,
+  function expandEs() {
+    return gsap.to($$('.logo .e-extra'), {
+      width: (i, el) => el.scrollWidth, duration: 0.45, ease: 'power2.inOut', stagger: 0.06, overwrite: true,
+      onComplete: () => gsap.set($$('.logo .e-extra'), { clearProps: 'width' }),
     });
   }
 
@@ -147,7 +146,7 @@
     const set = (c) => {
       if (c === collapsed) return;
       collapsed = c;
-      c ? collapseEs('.logo') : expandEs('.logo');
+      c ? collapseEs() : expandEs();
     };
     // Al empezar a hacer scroll → "AYLETA"; arriba del todo → "AYLEEEETA"
     ScrollTrigger.create({ start: 80, end: () => ScrollTrigger.maxScroll(window) + 100, onToggle: (self) => { if (!hovering) set(self.isActive); } });
@@ -175,7 +174,7 @@
 
     await Promise.all([
       count.then(),
-      Promise.race([Promise.all([document.fonts.ready, imageReady($('.hero__photo'))]), timeout(4000)]),
+      Promise.race([Promise.all([document.fonts.ready, imageReady($('#photos img')), imageReady($('.loader__img'))]), timeout(4000)]),
     ]);
 
     window.scrollTo(0, 0);
@@ -194,10 +193,7 @@
       },
     });
 
-    // Las cuatro "E" se pliegan en una sola: AYLEEEETA → AYLETA
-    tl.add(collapseEs('.loader__word', 0.6))
-      .to('.loader__word span', { yPercent: -120, opacity: 0, stagger: 0.03, duration: 0.5, ease: 'power3.in' }, '+=0.25')
-      .to('.loader__count', { opacity: 0, duration: 0.3 }, '<')
+    tl.to('.loader__img, .loader__count', { yPercent: -40, opacity: 0, stagger: 0.05, duration: 0.5, ease: 'power3.in' }, '+=0.2')
       .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 0.8, ease: 'expo.inOut' }, '-=0.1')
       .set('.loader', { display: 'none' })
       .from('.topbar', { yPercent: -100, duration: 0.8 }, '-=0.4')
@@ -205,8 +201,7 @@
       .from(lines.lines, { yPercent: 110, stagger: 0.07 }, '<')
       .from('.hero__card', { clipPath: 'inset(100% 0 0 0)', duration: 1.2 }, '<0.1')
       .from('.card', { y: 60, opacity: 0, stagger: 0.05 }, '<0.1')
-      .from('.side .meta, .main__row, .work__info, .stickers__hint, .dot', { opacity: 0, y: 10, stagger: 0.03, duration: 0.8 }, '<0.2')
-      .from('.pill', { yPercent: 160, duration: 0.9 }, '<');
+      .from('.side .meta, .main__row, .work__info, .stickers__hint, .dot', { opacity: 0, y: 10, stagger: 0.03, duration: 0.8 }, '<0.2');
 
     if (REDUCED) tl.progress(1);
   }
@@ -320,10 +315,10 @@
     stickers.done = true;
     const { Engine, Bodies, Composite, Mouse, MouseConstraint } = Matter;
 
-    box.insertAdjacentHTML('beforeend', STICKERS.map((s) => {
-      if (s.src) return `<div class="sticker sticker--img" data-cursor="¡Arrástrame!"><img src="${s.src}" alt="" draggable="false"></div>`;
-      return `<div class="sticker sticker--text${s.shape === 'pill' ? ' sticker--pill' : ''}" data-cursor="¡Arrástrame!" data-boil="s">${esc(s.text)}</div>`;
-    }).join(''));
+    box.insertAdjacentHTML('beforeend', STICKERS.map((s) => `
+      <div class="sticker${s.outline ? ' sticker--outline' : ''}" data-cursor="¡Arrástrame!"${s.src.endsWith('.png') ? ' data-boil="s"' : ''}>
+        <img src="${s.src}" alt="" draggable="false">
+      </div>`).join(''));
     const els = $$('.sticker', box);
 
     const engine = Engine.create();
@@ -357,16 +352,12 @@
         const x = w * 0.15 + Math.random() * w * 0.7;
         const y = -size - i * size * 0.7;
         const opts = { restitution: 0.4, friction: 0.25, frictionAir: 0.012, angle: (Math.random() - 0.5) * 0.9 };
-        if (s.shape === 'pill') {
-          const ph = Math.round(size * 0.34);
-          el.style.width = `${size}px`; el.style.height = `${ph}px`; el.style.fontSize = `${ph * 0.42}px`;
-          sizes.push([size, ph]);
-          return Bodies.rectangle(x, y, size, ph, { ...opts, chamfer: { radius: ph / 2 } });
-        }
-        el.style.width = el.style.height = `${size}px`;
-        if (s.text) el.style.fontSize = `${size * 0.24}px`;
-        sizes.push([size, size]);
-        return Bodies.circle(x, y, size / 2, opts);
+        const ph = Math.round(size * (s.h / s.w));
+        el.style.width = `${size}px`;
+        el.style.height = `${ph}px`;
+        sizes.push([size, ph]);
+        if (s.shape === 'circle') return Bodies.circle(x, y, Math.min(size, ph) / 2, opts);
+        return Bodies.rectangle(x, y, size, ph, { ...opts, chamfer: { radius: Math.min(size, ph) * 0.12 } });
       });
 
       Composite.add(engine.world, [...walls, ...bodies, grab]);
@@ -424,49 +415,44 @@
   }
 
   /* ------------------------------------------------------------------------
-     8. NAVEGACIÓN INFERIOR (pastilla con indicador rosa)
+     8. MENÚ SUPERIOR (sección activa + progreso)
      ------------------------------------------------------------------------ */
-  function pillNav() {
-    const links = $$('.pill__link');
-    const indicator = $('.pill__indicator');
-    let current = 0;
-
-    const setActive = (i) => {
-      if (i === current) return;
-      current = i;
-      links.forEach((l, j) => l.classList.toggle('is-active', j === i));
-      gsap.timeline({ defaults: { ease: 'expo.out' } })
-        .to(indicator, { xPercent: i * 100, duration: 0.8 })
-        .to(indicator, { scaleX: 1.12, duration: 0.25, ease: 'power2.out' }, 0)
-        .to(indicator, { scaleX: 1, duration: 0.6, ease: 'elastic.out(1, 0.5)' }, 0.25);
-    };
-
+  function topNav() {
+    const links = $$('.topnav a');
+    const setActive = (i) => links.forEach((l, j) => l.classList.toggle('is-active', j === i));
     ScrollTrigger.create({ trigger: '#sobre-mi', start: 'top 60%', end: 'bottom 60%', onToggle: (s) => s.isActive && setActive(1), onLeaveBack: () => setActive(0) });
     ScrollTrigger.create({ trigger: '#contacto', start: 'top 60%', end: () => ScrollTrigger.maxScroll(window) + 100, onToggle: (s) => s.isActive && setActive(2) });
-    ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (s) => gsap.set('.pill__progress', { scaleX: s.progress }) });
+    // Línea de progreso bajo la barra superior
+    ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (s) => gsap.set('.topbar__progress', { scaleX: s.progress }) });
   }
 
   /* ------------------------------------------------------------------------
      9. MICROINTERACCIONES
      ------------------------------------------------------------------------ */
 
-  // Foto → alter ego animado (hover en ordenador, toque en móvil)
-  function heroCard() {
-    const card = $('.hero__card');
-    const video = $('.hero__alter');
-    const play = () => {
-      if (!video.src) video.src = PROFILE.alterEgo.src;
-      video.play().catch(() => {});
+  // Fotos de perfil alternándose como un stop-motion (más rápido al pasar el ratón)
+  function photos() {
+    const imgs = $$('#photos img');
+    if (imgs.length < 2 || REDUCED) return;
+    let i = 0;
+    let speed = 450;
+    const step = () => {
+      imgs[i].classList.remove('is-on');
+      i = (i + 1) % imgs.length;
+      imgs[i].classList.add('is-on');
+      timer = setTimeout(step, speed);
     };
-    if (CAN_HOVER) {
-      card.addEventListener('mouseenter', play);
-      card.addEventListener('mouseleave', () => video.pause());
-    } else {
-      card.addEventListener('click', () => {
-        card.classList.toggle('is-alter');
-        card.classList.contains('is-alter') ? play() : video.pause();
-      });
-    }
+    let timer = setTimeout(step, speed);
+    $('#photos').addEventListener('mouseenter', () => { speed = 160; });
+    $('#photos').addEventListener('mouseleave', () => { speed = 450; });
+  }
+
+  // Vídeos de "Sobre mí": solo se reproducen cuando se ven
+  function alterVideos() {
+    const io = new IntersectionObserver((entries) => entries.forEach(({ target, isIntersecting }) => {
+      isIntersecting ? target.play().catch(() => {}) : target.pause();
+    }), { threshold: 0.2 });
+    $$('#alter video').forEach((v) => io.observe(v));
   }
 
   // Cursor con etiqueta ("Ver", "¡Arrástrame!"…)
@@ -577,7 +563,7 @@
         </div>
       </header>
 
-      <div class="p-cover">${mediaHTML(p.cover).replace('loading="lazy"', 'loading="eager"')}</div>
+      <div class="p-cover${p.cover.h > p.cover.w ? ' p-cover--tall' : ''}">${mediaHTML(p.cover).replace('loading="lazy"', 'loading="eager"')}</div>
 
       ${p.blocks.map((b) => {
         const hasInfo = b.title || b.text || b.credit;
@@ -686,12 +672,12 @@
   /* ------------------------------------------------------------------------
      ARRANQUE
      ------------------------------------------------------------------------ */
-  naiveLetters();
   lineBoil();
   logoAnimation();
   carousel();
-  pillNav();
-  heroCard();
+  topNav();
+  photos();
+  alterVideos();
   cursor();
   magnetic();
   themeToggle();

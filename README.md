@@ -36,16 +36,21 @@ El orden del array es el orden en la web (y en el carrusel).
 
 Al final de `js/data.js` está `STICKERS`. Cada pegatina es una ilustración redonda (`src`) o un texto (`text`, en forma `circle` o `pill`). Lo ideal: exporta desde Procreate tus dibujos recortados en PNG con fondo transparente, guárdalos en `assets/pegatinas/` y pon esa ruta en `src`.
 
-## Imágenes
+## Imágenes y vídeos
 
-Ahora mismo se cargan desde Cargo (`freight.cargo.site`). **Antes de cancelar Cargo**, descarga tus archivos a `assets/` y cambia las rutas en `data.js`:
+Están en `assets/img/<proyecto>/` y `assets/video/`, ya optimizados a partir de la carpeta del escritorio *PORTFOLIO AYLETA*. Flores todavía se carga desde Cargo: no canceles Cargo sin pasar antes esos archivos a `assets/`.
 
-```js
-img('assets/estrat/portada.jpg', 6000, 4000)   // ancho y alto reales
-vid('assets/flores/video.mp4', 1280, 720)
+Para añadir archivos nuevos sin que la web pese demasiado, usa las herramientas que ya trae el Mac (Terminal):
+
+```bash
+sips -Z 1800 -s format jpeg -s formatOptions 74 "original.png" --out assets/img/proyecto/nombre.jpg
 ```
 
-Consejos: exporta las imágenes a 1600–2000 px de ancho en `.jpg` o `.webp` (calidad 75–80) y los vídeos en `.mp4` H.264, sin audio, de menos de 8–10 MB.
+```bash
+avconvert -s "original.mov" -p Preset1280x720 -o assets/video/nombre.mp4
+```
+
+(Para vídeos verticales o muy largos usa `Preset960x540`.) Usa PNG solo si la imagen tiene fondo transparente, como las pegatinas.
 
 ## Publicar en GitHub Pages
 

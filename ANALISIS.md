@@ -57,3 +57,13 @@ Referencia: la categoría *Portfolio* de awwwards.com (henne.studio, mildsugar, 
 - **Carrusel horizontal**: la portada se queda fija y el scroll pasa los proyectos. La tarjeta activa es grande y las siguientes, pequeñas. Los datos de la izquierda (proyecto, disciplina, año) y el contador 01/12 se actualizan solos. Los vídeos se reproducen en la tarjeta activa.
 - **Pegatinas con física** (Matter.js): tus dibujos caen y se pueden lanzar con el ratón o el dedo. Es la versión personal de las formas geométricas de Juan.
 - Se mantienen el **logo rotulado que vibra**, el plegado de las E, el **rosa** como único acento y la pastilla inferior del Figma.
+
+## 6. Ajustes posteriores
+
+- Una sola tipografía (*Inter*) en toda la web, sin cursivas ni rosa: el contraste lo dan el peso y el tamaño.
+- Logo en Inter muy negrita, con el trazo que vibra. Las E se pliegan recortándose, sin fundidos.
+- Fotos de perfil cuadradas, a color, que se alternan como un stop-motion (más rápido al pasar el ratón).
+- Pantalla de carga con la diablilla de ayleeeeta (también vibra) y el porcentaje debajo, sobre gris claro.
+- Menú arriba (Proyectos · Sobre mí · Contacto) con una línea de progreso, en lugar de la pastilla.
+- Proyectos: Estrat, Sex & The City, CasiCasi, Rocko +, El clan, Flores, Pecado y RRSS.
+- Ayleeeeta pasa a "Sobre mí" y sus pegatinas son las que se arrastran.

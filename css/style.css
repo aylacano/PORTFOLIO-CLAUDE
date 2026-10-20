@@ -1,7 +1,7 @@
 /* ==========================================================================
    AYLEEEETA — estilos
    Dirección: retícula suiza con líneas finas, etiquetas pequeñas,
-   una frase grande en negrita, grano de película… y un logo hecho a mano.
+   una frase grande en negrita, grano de película y una sola tipografía.
 
    1. Variables (colores, tipografía, medidas)
    2. Base, grano y utilidades
@@ -22,14 +22,8 @@
   --muted: #8f8b85;
   --soft: #33312f;
   --line: rgba(243, 241, 236, 0.14);
-  --pink: #ff8ab6;
-  --pink-ink: #3a0d1f;
 
   --sans: 'Inter', system-ui, sans-serif;
-  /* Cursiva fina para destacar palabras */
-  --accent: 'Instrument Serif', Georgia, serif;
-  /* Logo: rotulador naif (prueba también 'Sedgwick Ave Display' o 'Londrina Solid') */
-  --logo-font: 'Permanent Marker', 'Comic Sans MS', cursive;
 
   --side: clamp(240px, 25vw, 420px);  /* ancho de la columna lateral */
   --bar: 46px;                        /* alto de la barra superior */
@@ -68,9 +62,9 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3, p, figure, dl, dd { margin: 0; }
-em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
-::selection { background: var(--pink); color: var(--pink-ink); }
-:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; border-radius: 4px; }
+em { font-style: normal; }
+::selection { background: var(--ink); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
 
 .skip-link {
   position: fixed; top: 8px; left: 8px; z-index: 500;
@@ -99,37 +93,32 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
 .meta dd { color: var(--ink); }
 .meta--right { text-align: right; }
 .tiny-btn { display: inline-block; transition: color 0.25s; }
-.tiny-btn:hover { color: var(--pink); }
+.tiny-btn:hover { color: var(--muted); }
 .underline { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Enlace con texto que "rueda" al pasar el ratón */
 .link-roll { display: inline-block; overflow: hidden; vertical-align: bottom; }
 .link-roll span { display: inline-block; position: relative; transition: transform 0.5s var(--ease-out); }
-.link-roll span::after { content: attr(data-text); position: absolute; left: 0; top: 100%; color: var(--pink); }
+.link-roll span::after { content: attr(data-text); position: absolute; left: 0; top: 100%; }
 .link-roll:hover span { transform: translateY(-100%); }
 
 /* 3. PRELOADER Y CURSOR --------------------------------------------------- */
 .loader {
   position: fixed; inset: 0; z-index: 300;
-  display: grid; place-items: center;
-  background: var(--bg); color: var(--ink);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: #ecebe6; color: #1b1a19; /* gris clarito, igual en modo claro y oscuro */
 }
-.loader__word {
-  display: flex; font-family: var(--logo-font); font-size: clamp(48px, 12vw, 200px); line-height: 1.15;
-  letter-spacing: 0.01em; text-transform: uppercase; filter: url(#boil-l-0);
-}
-.loader__word span { display: inline-block; }
-.loader__word .e { color: var(--pink); }
-.loader__count { position: absolute; right: var(--pad); bottom: var(--pad); font-size: 11px; font-weight: 550; }
+.loader__img { width: min(240px, 52vw); height: auto; filter: url(#boil-l-0); }
+.loader__count { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
 
 .cursor {
   position: fixed; top: 0; left: 0; z-index: 450; pointer-events: none;
   width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%;
-  background: var(--pink);
+  background: var(--ink);
   display: grid; place-items: center;
   transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out);
 }
-.cursor__label { font-size: 11px; font-weight: 600; color: var(--pink-ink); opacity: 0; white-space: nowrap; transition: opacity 0.2s; }
+.cursor__label { font-size: 11px; font-weight: 600; color: var(--bg); opacity: 0; white-space: nowrap; transition: opacity 0.2s; }
 .cursor.is-big { width: 78px; height: 78px; margin: -39px 0 0 -39px; }
 .cursor.is-big .cursor__label { opacity: 1; }
 .cursor.is-hidden { width: 0; height: 0; margin: 0; }
@@ -143,35 +132,22 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
   transition: background-color 0.5s var(--ease);
 }
 .topbar__side { padding: 0 var(--pad); height: 100%; display: flex; align-items: center; border-right: 1px solid var(--line); }
-.topbar__mid { padding: 0 var(--pad); }
+.topnav { padding: 0 var(--pad); display: flex; gap: 14px; }
+.topnav a { color: var(--muted); transition: color 0.25s; }
+.topnav a:hover, .topnav a.is-active { color: var(--ink); }
+.topbar__progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
 .topbar__right { padding: 0 var(--pad); display: flex; gap: 18px; }
 
-/* Logo rotulado a mano: el trazo "vibra" (ver filtros SVG en index.html) */
+/* Logo: misma tipografía que la web, más gordita, con el trazo que vibra (filtros SVG en index.html) */
 .logo {
   display: flex; align-items: baseline;
-  font-family: var(--logo-font); font-size: 22px; line-height: 1.1; letter-spacing: 0.02em;
+  font-size: 21px; font-weight: 850; line-height: 1; letter-spacing: -0.045em;
   text-transform: uppercase; filter: url(#boil-s-0);
 }
-.logo span { display: inline-block; transform-origin: 50% 100%; }
-.logo .e { color: var(--pink); }
-/* Las "E" de más: se pliegan hasta dejar una sola */
-.logo .e-extra, .loader__word .e-extra { overflow: hidden; vertical-align: bottom; max-width: 1em; }
+.logo span { display: inline-block; white-space: nowrap; }
+/* Las "E" de más: se pliegan (se recortan) hasta dejar una sola */
+.logo .e-extra { overflow: hidden; vertical-align: bottom; }
 
-/* Pastilla inferior: el rectángulo rosa del Figma */
-.pill {
-  position: fixed; left: 50%; bottom: 16px; z-index: 50;
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  width: min(380px, calc(100vw - 32px)); height: 42px; padding: 4px;
-  border-radius: 99px;
-  background: color-mix(in srgb, var(--soft) 85%, transparent);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  transform: translateX(-50%);
-  overflow: hidden;
-}
-.pill__link { position: relative; z-index: 1; display: grid; place-items: center; border-radius: 99px; font-size: 12px; font-weight: 550; transition: color 0.3s; }
-.pill__link.is-active { color: var(--pink-ink); }
-.pill__indicator { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 3); border-radius: 99px; background: var(--pink); }
-.pill__progress { position: absolute; left: 20px; right: 20px; bottom: 2px; height: 2px; border-radius: 2px; background: var(--ink); opacity: 0.3; transform-origin: 0 50%; transform: scaleX(0); }
 
 /* 5. RETÍCULA ------------------------------------------------------------- */
 /* Columna lateral + columna principal, separadas por líneas finas */
@@ -191,13 +167,11 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
 
 /* Presentación */
 .side__top { display: flex; justify-content: space-between; align-items: flex-start; }
-.hero__card { position: relative; width: min(46%, 150px); aspect-ratio: 3 / 4; overflow: hidden; background: var(--soft); cursor: pointer; }
-.hero__photo, .hero__alter { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.hero__photo { filter: grayscale(1) contrast(1.05); transition: filter 0.5s var(--ease); }
-.hero__alter { opacity: 0; background: #fff; transition: opacity 0.35s var(--ease); }
-.hero__card:hover .hero__photo { filter: none; }
-.hero__card:hover .hero__alter, .hero__card.is-alter .hero__alter { opacity: 1; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 0 var(--pink); animation: pulse 2.4s infinite; }
+/* Fotos de perfil: cuadradas, a color, alternándose como un stop-motion */
+.hero__card { position: relative; width: min(46%, 150px); aspect-ratio: 1; overflow: hidden; background: var(--soft); }
+.hero__card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; visibility: hidden; }
+.hero__card img.is-on { visibility: visible; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 0 var(--ink); animation: pulse 2.4s infinite; }
 @keyframes pulse { 70% { box-shadow: 0 0 0 9px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 
 .hero__main { justify-content: space-between; }
@@ -207,7 +181,6 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
   font-size: clamp(26px, 2.95vw, 58px); line-height: 0.95; font-weight: 700; letter-spacing: -0.035em;
   text-indent: 2.2em; max-width: 24ch;
 }
-.statement em { font-weight: 400; font-size: 1.06em; color: var(--pink); }
 
 /* Proyectos */
 .work__side { justify-content: flex-start; }
@@ -227,14 +200,9 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
   visibility: hidden;
 }
 .sticker:active { cursor: grabbing; }
-.sticker--img { border-radius: 50%; overflow: hidden; border: 4px solid #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); background: #fff; }
-.sticker--img img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-.sticker--text {
-  border-radius: 50%; background: var(--pink); color: var(--pink-ink);
-  font-family: var(--logo-font); text-transform: uppercase; font-size: 15px; line-height: 1;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}
-.sticker--pill { border-radius: 99px; background: var(--ink); color: var(--bg); }
+.sticker img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25)); }
+.sticker--outline { border: 5px solid #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); background: #fff; }
+.sticker--outline img { object-fit: cover; filter: none; }
 
 .work__main { gap: 10px; padding-bottom: 64px; } /* hueco para la pastilla */
 .track { position: relative; flex: 1; min-height: 0; overflow: hidden; }
@@ -245,7 +213,7 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
 }
 .card img, .card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .card video { opacity: 0; transition: opacity 0.4s var(--ease); }
-.card.is-active video.is-playing { opacity: 1; }
+.card.is-active video.is-playing, .card video.is-still { opacity: 1; }
 .card__label {
   position: absolute; left: 8px; bottom: 8px; display: flex; gap: 6px;
   padding: 4px 8px; border-radius: 99px; background: var(--bg); color: var(--ink);
@@ -270,18 +238,26 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
 .cv__what { font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; }
 .cv__where { font-size: 13px; color: var(--muted); }
 
+/* Ayleeeeta, el alter ego */
+.alter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr); gap: var(--pad); border-top: 1px solid var(--line); padding-top: var(--pad); }
+.alter__info { display: grid; gap: 10px; align-content: start; }
+.alter__title { font-size: clamp(22px, 2vw, 32px); line-height: 1; font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; }
+.alter__text { font-size: 14px; max-width: 36ch; }
+.alter__grid { columns: 3; column-gap: 10px; }
+.alter__grid > * { break-inside: avoid; margin-bottom: 10px; background: var(--soft); }
+.alter__grid img, .alter__grid video { width: 100%; height: auto; }
+
 /* 8. CONTACTO ------------------------------------------------------------- */
 .contact { min-height: calc(100svh - var(--bar)); }
 .contact__main { padding-bottom: 76px; }
 .contact__title { font-size: clamp(44px, 7vw, 132px); line-height: 0.9; font-weight: 700; letter-spacing: -0.045em; margin-top: clamp(30px, 5vw, 70px); }
-.contact__title em { font-weight: 400; color: var(--pink); }
 .contact__email {
   align-self: flex-start; display: inline-flex; align-items: center; gap: 14px;
   padding: 14px 24px; border-radius: 99px; border: 1px solid var(--ink);
   font-size: clamp(16px, 1.8vw, 26px); font-weight: 600; letter-spacing: -0.02em;
   transition: background-color 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s;
 }
-.contact__email:hover { background: var(--pink); color: var(--pink-ink); border-color: var(--pink); }
+.contact__email:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .contact__email-icon { display: inline-block; transition: transform 0.5s var(--ease-out); }
 .contact__email:hover .contact__email-icon { transform: rotate(45deg); }
 .footer { padding-top: var(--pad); border-top: 1px solid var(--line); margin: 0 calc(var(--pad) * -1); padding-inline: var(--pad); }
@@ -298,7 +274,7 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
 /* 9. VISTA DE PROYECTO ---------------------------------------------------- */
 .project { position: fixed; inset: 0; z-index: 100; }
 .project[hidden] { display: none; }
-.project__wipe { position: absolute; inset: 0; background: var(--pink); z-index: 2; pointer-events: none; }
+.project__wipe { position: absolute; inset: 0; background: var(--ink); z-index: 2; pointer-events: none; }
 .project__scroller { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; background: var(--bg); }
 .project__close {
   position: fixed; top: 10px; right: var(--pad); z-index: 3;
@@ -314,6 +290,9 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
 
 .p-cover { margin-top: var(--pad); overflow: hidden; background: var(--soft); }
 .p-cover > * { width: 100%; max-height: 86vh; object-fit: cover; }
+/* Portadas verticales: enteras, en la columna principal */
+.p-cover--tall { width: min(460px, 100%); margin-left: var(--side); background: none; }
+.p-cover--tall > *, .p-cover--tall img, .p-cover--tall video { max-height: none; object-fit: contain; }
 
 .p-block { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); margin-top: clamp(50px, 8vw, 110px); border-top: 1px solid var(--line); }
 .p-block__info { padding: var(--pad) var(--pad) var(--pad) 0; align-self: start; position: sticky; top: calc(var(--bar) + 10px); }
@@ -334,7 +313,6 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
   transition: transform 0.7s var(--ease-out);
 }
 .p-next:hover .p-next__title { transform: translateX(2vw); }
-.p-next__title em { color: var(--pink); font-weight: 400; }
 
 .fade-img { opacity: 0; transition: opacity 0.6s var(--ease); }
 .fade-img.is-loaded { opacity: 1; }
@@ -344,7 +322,8 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
   :root { --side: 100%; }
   .topbar { grid-template-columns: 1fr auto; }
   .topbar__side { border-right: 0; }
-  .topbar__mid { display: none; }
+  .topbar__right { display: none; }
+  .topnav { justify-content: flex-end; }
 
   .grid { grid-template-columns: 1fr; }
   .side { border-right: 0; border-bottom: 1px solid var(--line); }
@@ -369,11 +348,14 @@ em { font-family: var(--accent); font-style: italic; font-weight: 400; letter-sp
 
   .about .main { padding-top: 30px; }
   .cv { grid-template-columns: 1fr; }
+  .alter { grid-template-columns: 1fr; }
+  .alter__grid { columns: 2; }
   .cv__col + .cv__col { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
 
   .p-head, .p-block { grid-template-columns: 1fr; }
   .p-head__meta { border-right: 0; border-bottom: 1px solid var(--line); grid-template-columns: repeat(3, 1fr); }
   .p-block__info { position: static; }
+  .p-cover--tall { margin-left: 0; }
   .p-block__media, .p-block--no-info .p-block__media { grid-template-columns: repeat(2, 1fr); }
 }
 

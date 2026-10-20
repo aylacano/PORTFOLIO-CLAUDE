@@ -14,11 +14,10 @@
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 
-  <!-- Tipografías: Inter (grotesca, versión Display en tamaños grandes),
-       Instrument Serif (cursiva para destacar) y Permanent Marker (logo) -->
+  <!-- Tipografía: Inter para todo (usa su versión Display en tamaños grandes) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
 
   <link rel="preconnect" href="https://freight.cargo.site">
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
@@ -41,9 +40,9 @@
       <filter id="boil-s-0" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter>
       <filter id="boil-s-1" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="17" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter>
       <filter id="boil-s-2" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <filter id="boil-l-0" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <filter id="boil-l-1" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="17" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <filter id="boil-l-2" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <filter id="boil-l-0" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <filter id="boil-l-1" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="17" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <filter id="boil-l-2" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
     </defs>
   </svg>
 
@@ -52,9 +51,7 @@
 
   <!-- ============ PRELOADER ============ -->
   <div class="loader" aria-hidden="true">
-    <div class="loader__word" data-boil="l">
-      <span>a</span><span>y</span><span>l</span><span class="e">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span>t</span><span>a</span>
-    </div>
+    <img class="loader__img" src="assets/img/perfil/diablilla.png" alt="" width="640" height="742" data-boil="l">
     <div class="loader__count"><span class="loader__num">0</span>%</div>
   </div>
 
@@ -68,11 +65,15 @@
         <span>a</span><span>y</span><span>l</span><span class="e">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span>t</span><span>a</span>
       </a>
     </div>
-    <p class="topbar__mid tiny"><span class="muted">Diseño gráfico &amp; multimedia —</span> Madrid</p>
+    <nav class="topnav tiny" aria-label="Secciones">
+      <a href="#proyectos" class="is-active">Proyectos</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
     <div class="topbar__right tiny">
       <button class="tiny-btn" id="theme-toggle" type="button" data-cursor="Tema">Modo claro</button>
-      <a class="tiny-btn underline" href="#contacto">Contacto</a>
     </div>
+    <span class="topbar__progress" aria-hidden="true"></span>
   </header>
 
   <main>
@@ -83,14 +84,11 @@
       <section class="grid hero" id="hola" aria-label="Presentación">
         <aside class="side">
           <div class="side__top">
-            <figure class="hero__card" data-cursor="Alter ego">
-              <img class="hero__photo" alt="Retrato de Ayla Cano" width="1086" height="1448">
-              <video class="hero__alter" muted loop playsinline preload="none" aria-hidden="true"></video>
-            </figure>
+            <figure class="hero__card" id="photos" aria-label="Fotos de Ayla Cano"></figure>
             <span class="dot" aria-hidden="true"></span>
           </div>
           <div class="side__row">
-            <dl class="meta"><dt>Servicios:</dt><dd>Diseño Gráfico, Motion Graphics,<br>Ilustración, sBranding, Editorial</dd></dl>
+            <dl class="meta"><dt>Servicios:</dt><dd>Diseño Gráfico, Motion Graphics,<br>Ilustración, Branding, Editorial</dd></dl>
             <ul class="meta meta--right">
               <li><a class="link-roll" id="instagram-link" target="_blank" rel="noopener"><span data-text="Instagram">Instagram</span></a></li>
               <li><a class="link-roll" id="mail-link"><span data-text="Email">Email</span></a></li>
@@ -101,7 +99,7 @@
         <div class="main hero__main">
           <span class="hero__arrow tiny" aria-hidden="true">↳</span>
           <h1 class="statement" data-split>
-            Ayla Cano es diseñadora gráfica y multimedia en Barcelona. Dibuja, anima y le da <em>personalidad</em> a marcas, libros y pantallas.
+            Ayla Cano es diseñadora gráfica y multimedia en Barcelona. Dibuja, anima y le da personalidad a marcas, libros y pantallas.
           </h1>
           <div class="main__row">
             <dl class="meta"><dt>Disponible para proyectos</dt><dd id="available"></dd></dl>
@@ -122,7 +120,7 @@
             <dl class="meta"><dt>Año:</dt><dd data-info="year"></dd></dl>
           </div>
           <div class="stickers" id="stickers">
-            <p class="stickers__hint tiny muted">Arrastra mis dibujos ↓</p>
+            <p class="stickers__hint tiny muted">Arrastra mis pegatinas ↓</p>
           </div>
         </aside>
 
@@ -149,6 +147,14 @@
         <p class="about__statement" data-words>
           Me gradué en Diseño Gráfico y Multimedia en Madrid y me encanta que cada proyecto tenga un personaje, un gesto o un movimiento que lo haga inolvidable.
         </p>
+        <div class="alter">
+          <div class="alter__info">
+            <p class="tiny muted">Alter ego</p>
+            <h3 class="alter__title" id="alter-title"></h3>
+            <p class="alter__text" id="alter-text"></p>
+          </div>
+          <div class="alter__grid" id="alter"></div>
+        </div>
         <div class="cv" id="cv"></div>
       </div>
     </section>
@@ -164,7 +170,7 @@
         </div>
       </aside>
       <div class="main contact__main">
-        <h2 class="contact__title" data-split>¿Hacemos algo <em>bonito</em>?</h2>
+        <h2 class="contact__title" data-split>¿Hacemos algo bonito?</h2>
 
         <button class="contact__email magnetic" type="button" data-cursor="Copiar" id="copy-email">
           <span class="contact__email-text"></span>
@@ -178,15 +184,6 @@
       </div>
     </section>
   </main>
-
-  <!-- ============ NAVEGACIÓN INFERIOR (pastilla rosa del Figma) ============ -->
-  <nav class="pill" aria-label="Secciones">
-    <span class="pill__indicator" aria-hidden="true"></span>
-    <a href="#proyectos" class="pill__link is-active">Proyectos</a>
-    <a href="#sobre-mi" class="pill__link">Sobre mí</a>
-    <a href="#contacto" class="pill__link">Contacto</a>
-    <span class="pill__progress" aria-hidden="true"></span>
-  </nav>
 
   <!-- ============ VISTA DE PROYECTO ============ -->
   <div class="project" role="dialog" aria-modal="true" aria-labelledby="project-title" hidden>
