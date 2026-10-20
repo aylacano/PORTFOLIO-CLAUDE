@@ -158,16 +158,17 @@ const PROJECTS = [
     title: 'Sex & The City',
     kicker: 'Secuencia de créditos',
     tags: ['motion', 'ilustracion'],
-    year: '',
+    year: '2025',
     cover: vid('assets/video/sex-and-the-city.mp4', 1280, 720),
     poster: img('assets/img/sex-and-the-city/frame-1.png', 1536, 1024),
     blocks: [
       {
         text: [
-          'Un giro moderno y algo más punk para los créditos de ‘Sex and the City’: elementos gráficos dinámicos y una paleta rosa vibrante, fiel a la estética original de la serie.',
-          'La secuencia se desarrolla en un escenario en forma de L que representa Nueva York. El recorrido fluye por distintas áreas mostrando a cada protagonista, con ilustraciones originales para darle un toque personal y rebelde.',
-          'Los textos están en constante movimiento para mantener el ritmo punk; las transiciones rápidas y el espacio tridimensional subrayan la vida cambiante de la ciudad.',
+          'Mi versión de los créditos de ‘Sex and the City’: más punk, rosa a tope y con ilustraciones mías.',
+          'Un escenario en forma de L recorre Nueva York y va presentando a cada protagonista, con textos que no paran de moverse.',
         ],
+        // layout: 'strip' = las imágenes en fila, como una tira de película
+        layout: 'strip',
         media: [
           img('assets/img/sex-and-the-city/frame-1.png', 1536, 1024),
           img('assets/img/sex-and-the-city/frame-2.png', 1536, 1024),

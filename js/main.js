@@ -636,14 +636,14 @@
   // Botón para activar/silenciar el sonido de cada vídeo
   const SOUND_BTN = `<button class="p-media__sound tiny" type="button" aria-pressed="false">Sin sonido</button>`;
 
-  const mediaHTML = (m) => {
+  const mediaHTML = (m, poster) => {
     const wide = m.w / m.h > 1.3 ? ' is-wide' : '';
     // Varias fotos del mismo objeto: stop-motion
     if (m.type === 'flipbook') {
       return `<figure class="p-media flipbook${wide}" style="aspect-ratio:${m.w} / ${m.h}">${m.frames.map((f, i) => `<img src="${f.src}" alt="" loading="lazy" decoding="async"${i ? '' : ' class="is-on"'}>`).join('')}</figure>`;
     }
     if (m.type === 'video') {
-      return `<figure class="p-media is-video${wide}" data-cursor="Sonido"><video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video>${SOUND_BTN}</figure>`;
+      return `<figure class="p-media is-video${wide}" data-cursor="Sonido"><video src="${m.src}"${poster ? ` poster="${poster.src}"` : ''} muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video>${SOUND_BTN}</figure>`;
     }
     return `<figure class="p-media${wide}"><img class="fade-img" src="${m.src}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}"></figure>`;
   };
@@ -664,7 +664,7 @@
         </div>
       </header>
 
-      <div class="p-cover${p.cover.h > p.cover.w ? ' p-cover--tall' : ''}">${mediaHTML(p.cover).replace('loading="lazy"', 'loading="eager"')}</div>
+      <div class="p-cover${p.cover.h > p.cover.w ? ' p-cover--tall' : ''}">${mediaHTML(p.cover, p.poster).replace('loading="lazy"', 'loading="eager"')}</div>
 
       ${p.blocks.map((b) => {
         const hasInfo = b.title || b.text || b.credit;
@@ -678,7 +678,7 @@
             ${b.credit ? `<p class="p-block__credit">${esc(b.credit)}</p>` : ''}
             ${b.text ? `<div class="p-block__text">${b.text.map((t) => `<p>${esc(t)}</p>`).join('')}</div>` : ''}
           </div>` : ''}
-          <div class="p-block__media">${media.map(mediaHTML).join('')}</div>
+          <div class="p-block__media${b.layout === 'strip' ? ' p-block__media--strip' : ''}">${media.map((m) => mediaHTML(m)).join('')}</div>
         </section>`;
       }).join('')}
 
