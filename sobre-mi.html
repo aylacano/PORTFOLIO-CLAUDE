@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://freight.cargo.site">
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
   <!-- ?v= obliga al navegador a descargar la versión nueva cuando cambia (súbelo en cada cambio) -->
-  <link rel="stylesheet" href="css/style.css?v=2026102801">
+  <link rel="stylesheet" href="css/style.css?v=2026102901">
 
   <!-- Tema: claro por defecto, o el que se haya elegido antes -->
   <script>
@@ -56,14 +56,14 @@
   <!-- ============ BARRA SUPERIOR ============ -->
   <header class="topbar">
     <div class="topbar__side">
-      <a class="logo" href="index.html?v=2026102801" aria-label="Ayleeeeta, volver al inicio">
+      <a class="logo" href="index.html?v=2026102901" aria-label="Ayleeeeta, volver al inicio">
         <span>A</span><span>y</span><span>l</span><span class="e">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span>t</span><span>a</span>
       </a>
     </div>
     <nav class="topnav tiny" aria-label="Páginas">
-      <a href="index.html?v=2026102801">Proyectos</a>
-      <a href="sobre-mi.html?v=2026102801" class="is-active" aria-current="page">Sobre mí</a>
-      <a href="lab.html?v=2026102801">Archivo</a>
+      <a href="index.html?v=2026102901">Proyectos</a>
+      <a href="sobre-mi.html?v=2026102901" class="is-active" aria-current="page">Sobre mí</a>
+      <a href="lab.html?v=2026102901">Archivo</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <div class="topbar__right tiny" data-cursor-hide>
@@ -80,9 +80,9 @@
   <!-- ============ MENÚ EN PASTILLA (móvil) ============ -->
   <nav class="pill" aria-label="Páginas" style="--i: 1">
     <span class="pill__indicator" aria-hidden="true"></span>
-    <a href="index.html?v=2026102801" class="pill__link">Proyectos</a>
-    <a href="sobre-mi.html?v=2026102801" class="pill__link is-active">Sobre mí</a>
-    <a href="lab.html?v=2026102801" class="pill__link">Archivo</a>
+    <a href="index.html?v=2026102901" class="pill__link">Proyectos</a>
+    <a href="sobre-mi.html?v=2026102901" class="pill__link is-active">Sobre mí</a>
+    <a href="lab.html?v=2026102901" class="pill__link">Archivo</a>
     <a href="#contacto" class="pill__link">Contacto</a>
   </nav>
 
@@ -91,15 +91,19 @@
     <section class="grid about" id="sobre-mi">
       <aside class="side">
         <div class="side__sticky">
-          <p class="tiny muted">Sobre mí</p>
+          <figure class="hero__card about__photo" id="photos" aria-label="Fotos de Ayla Cano"></figure>
+          <dl class="meta"><dt>Ahora:</dt><dd>En Madrid · disponible para proyectos (<span id="available"></span>)</dd></dl>
+          <dl class="meta"><dt>Hago:</dt><dd>Diseño gráfico, ilustración, motion graphics, branding y editorial</dd></dl>
           <dl class="meta"><dt>Idiomas:</dt><dd id="languages"></dd></dl>
           <div class="meta"><p class="muted">Herramientas:</p><ul class="chips" id="tools"></ul></div>
+          <a class="cv-btn" href="assets/cv/CV_AylaCano.pdf" download data-cursor="Descargar">Descargar CV (PDF) <span aria-hidden="true">↓</span></a>
         </div>
       </aside>
       <div class="main">
         <p class="about__statement" data-words>
-          Me gradué en Diseño Gráfico y Multimedia en Madrid y me encanta que cada proyecto tenga un personaje, un gesto o un movimiento que lo haga inolvidable.
+          <span class="statement__indent" aria-hidden="true"></span>Empecé llenando de garabatos los márgenes de los cuadernos y acabé estudiando Diseño Gráfico y Multimedia en Madrid. Ahora esos garabatos se mueven.
         </p>
+        <div class="cv" id="cv"></div>
         <div class="alter">
           <div class="alter__info">
             <p class="tiny muted">Alter ego</p>
@@ -108,7 +112,6 @@
           </div>
           <div class="alter__grid" id="alter"></div>
         </div>
-        <div class="cv" id="cv"></div>
       </div>
     </section>
 
@@ -146,7 +149,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
-  <script src="js/data.js?v=2026102801"></script>
-  <script src="js/main.js?v=2026102801"></script>
+  <script src="js/data.js?v=2026102901"></script>
+  <script src="js/main.js?v=2026102901"></script>
 </body>
 </html>

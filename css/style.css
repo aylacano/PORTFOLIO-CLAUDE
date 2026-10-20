@@ -189,7 +189,6 @@ em { font-style: normal; }
 
 /* Páginas Sobre mí y Lab: empiezan debajo de la barra */
 .page { padding-top: var(--bar); }
-.page .about .main { padding-top: clamp(30px, 5vw, 70px); }
 
 /* 6. PORTADA -------------------------------------------------------------- */
 .home {
@@ -278,8 +277,16 @@ em { font-style: normal; }
 .card:hover .card__label span { color: var(--pink-ink); }
 
 /* 7. SOBRE MÍ ------------------------------------------------------------- */
-.about .main { gap: clamp(50px, 8vw, 120px); padding-top: clamp(40px, 6vw, 90px); padding-bottom: clamp(60px, 8vw, 120px); }
-.about__statement { font-size: clamp(24px, 2.5vw, 46px); line-height: 1; font-weight: 700; letter-spacing: -0.03em; max-width: 26ch; text-indent: 2.2em; }
+.about .main { justify-content: flex-start; gap: clamp(40px, 6vw, 90px); padding-top: clamp(24px, 3vw, 44px); padding-bottom: clamp(60px, 8vw, 120px); }
+.about__statement { font-size: clamp(24px, 2.5vw, 46px); line-height: 1; font-weight: 700; letter-spacing: -0.03em; max-width: 26ch; }
+/* Foto grande en Sobre mí y botón del CV */
+.about__photo { width: 100%; max-width: 280px; }
+.cv-btn {
+  justify-self: start; display: inline-flex; gap: 8px; align-items: center; padding: 9px 14px; border-radius: 99px;
+  border: 1px solid var(--ink); font-size: 12px; font-weight: 600;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.cv-btn:hover { background: var(--pink); color: var(--pink-ink); border-color: var(--pink); }
 .about__statement .word { display: inline-block; text-indent: 0; }
 .cv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
 .cv__col { padding: var(--pad) var(--pad) 0 0; }
