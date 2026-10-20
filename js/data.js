@@ -32,7 +32,7 @@ const PROFILE = {
   alias: 'ayleeeeta',
   email: 'aylacanolopez@gmail.com',
   instagram: 'https://www.instagram.com/ayleeeeta/',
-  city: 'Barcelona',
+  city: 'Madrid',
   // Fotos de perfil: se van alternando como un stop-motion
   photos: [
     'assets/img/perfil/foto-1.jpg',
@@ -46,6 +46,8 @@ const PROFILE = {
       ['2018—2020', 'Bachillerato Artístico', 'Escola d’Art Pau Gargallo, Badalona'],
     ],
     Experiencia: [
+      ['', 'Libro ‘Rocker’ de Marco Antonio López Vilaplana', 'Fotografía · 66 RPM Edicions'],
+      ['2025', 'Escola Miguel de Unamuno', 'Diseño del logotipo'],
       ['2025', 'Séducation', 'Gestión y comunicación de RRSS'],
       ['2024', 'Padawan Branding & Carolina Kairos', 'Prácticas en diseño gráfico, multimedia y RRSS'],
       ['2022', 'Festival Cruïlla, Barcelona', 'Voluntariado'],
@@ -315,17 +317,8 @@ const PROJECTS = [
 
 /* --------------------------------------------------------------------------
    PEGATINAS ARRASTRABLES (caja de abajo a la izquierda en la portada)
-   · src: imagen (mejor PNG recortado con fondo transparente)
-   · w, h: proporción de la imagen
-   · size: ancho relativo a la caja (0.4 = 40 %)
-   · shape: 'circle' para formas redondeadas (la estrella), 'rect' para el resto
-   · outline: true si la imagen es cuadrada y necesita borde de pegatina
+   La pegatina de ayleeeeta (sin el borde blanco) repetida varias veces.
+   · size: ancho relativo a la caja (0.3 = 30 %)
    -------------------------------------------------------------------------- */
-const STICKERS = [
-  { src: 'assets/img/perfil/diablilla.png', w: 640, h: 742, size: 0.36, shape: 'rect' },
-  { src: 'assets/img/ayleeeeta/pegatina.jpg', w: 545, h: 662, size: 0.3, shape: 'rect' },
-  { src: 'assets/img/ayleeeeta/estrella.png', w: 296, h: 288, size: 0.2, shape: 'circle' },
-  { src: 'assets/img/ayleeeeta/pegatina-rosa.jpg', w: 1400, h: 1400, size: 0.3, shape: 'rect', outline: true },
-  { src: 'assets/img/ayleeeeta/estrella.png', w: 296, h: 288, size: 0.14, shape: 'circle' },
-  { src: 'assets/img/ayleeeeta/pegatina-gris.jpg', w: 1400, h: 1400, size: 0.27, shape: 'rect', outline: true },
-];
+const STICKER = { src: 'assets/img/ayleeeeta/pegatina-recortada.jpg', w: 469, h: 588 };
+const STICKERS = [0.3, 0.24, 0.27, 0.2, 0.25, 0.22].map((size) => ({ ...STICKER, size, shape: 'rect' }));

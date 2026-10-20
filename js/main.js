@@ -49,7 +49,7 @@
           </div>`).join('')}
       </div>`).join('');
 
-    $('#tools').innerHTML = PROFILE.tools.join(', ');
+    $('#tools').innerHTML = PROFILE.tools.map((t) => `<li>${t}</li>`).join('');
     $('#languages').innerHTML = PROFILE.languages.join('<br>');
 
     // Ayleeeeta en "Sobre mí"
@@ -122,7 +122,7 @@
     setInterval(() => {
       frame = (frame + 1) % 3;
       $$('[data-boil]').forEach((el) => { el.style.filter = `url(#boil-${el.dataset.boil}-${frame})`; });
-    }, 125);
+    }, 170);
   }
 
   // Las "E" se pliegan recortándose (sin fundidos ni deformaciones): AYLEEEETA → AYLETA
@@ -493,12 +493,23 @@
   function themeToggle() {
     const btn = $('#theme-toggle');
     const root = document.documentElement;
-    const label = () => { btn.textContent = root.dataset.theme === 'dark' ? 'Modo claro' : 'Modo oscuro'; };
+    const label = () => btn.setAttribute('aria-label', root.dataset.theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
     label();
     btn.addEventListener('click', () => {
       root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
       try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
       label();
+      gsap.fromTo('#theme-toggle svg', { rotate: 0 }, { rotate: 180, duration: 0.6, ease: 'expo.out' });
+    });
+  }
+
+  // Sonido: de momento solo cambia el icono (lo activaremos más adelante)
+  function soundToggle() {
+    const btn = $('#sound-toggle');
+    btn.addEventListener('click', () => {
+      const on = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', on);
+      toast(on ? 'Sonido: muy pronto 🔊' : 'Sonido desactivado');
     });
   }
 
@@ -521,7 +532,7 @@
     });
   }
 
-  // Hora de Barcelona
+  // Hora de Madrid
   function clock() {
     const fmt = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' });
     const tick = () => { $('#clock').textContent = fmt.format(new Date()); };
@@ -681,6 +692,7 @@
   cursor();
   magnetic();
   themeToggle();
+  soundToggle();
   copyEmail();
   clock();
   intro();

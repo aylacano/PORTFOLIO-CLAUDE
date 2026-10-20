@@ -67,3 +67,13 @@ Referencia: la categoría *Portfolio* de awwwards.com (henne.studio, mildsugar, 
 - Menú arriba (Proyectos · Sobre mí · Contacto) con una línea de progreso, en lugar de la pastilla.
 - Proyectos: Estrat, Sex & The City, CasiCasi, Rocko +, El clan, Flores, Pecado y RRSS.
 - Ayleeeeta pasa a "Sobre mí" y sus pegatinas son las que se arrastran.
+
+## 7. Ajustes
+
+- Vibración más suave en el logo y la ilustración de carga.
+- Logo escrito *Ayleeeeta* (solo la primera en mayúscula); al hacer scroll queda *Ayleta*.
+- Rosa solo en el cursor y en los hovers.
+- Foto de perfil más grande, recortada en cuadrado sobre la cara y con grano propio.
+- Botones redondos de tema y de sonido (este último se activará más adelante). La web empieza en modo claro.
+- Herramientas en pastillas. Pegatinas: la ilustración de ayleeeeta sin el borde blanco, repetida.
+- Currículum ampliado y ubicación en Madrid.
