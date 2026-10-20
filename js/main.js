@@ -646,6 +646,10 @@
     if (m.type === 'video') {
       return `<figure class="p-media is-video${wide}" data-cursor="Sonido"><video src="${m.src}"${poster ? ` poster="${poster.src}"` : ''} muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video>${SOUND_BTN}</figure>`;
     }
+    // Imagen recortada (crop: proporción y qué parte se ve)
+    if (m.crop) {
+      return `<figure class="p-media is-cropped" style="aspect-ratio:${m.crop.ratio}"><img class="fade-img" src="${m.src}" alt="" loading="lazy" decoding="async" style="object-position:${m.crop.pos}"></figure>`;
+    }
     return `<figure class="p-media${wide}"><img class="fade-img" src="${m.src}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}"></figure>`;
   };
 

@@ -202,13 +202,11 @@ const PROJECTS = [
           img('assets/img/casicasi/foto-2.jpg', 1199, 1800),
           vid('assets/video/casicasi.mp4', 720, 1280),
           img('assets/img/casicasi/foto-3.jpg', 1200, 1800),
-          // Las dobles páginas: se pasan como hojas al pasar el ratón
-          flip([
-            'assets/img/casicasi/foto-4.jpg',
-            'assets/img/casicasi/foto-5.jpg',
-            'assets/img/casicasi/foto-6.jpg',
-          ], 1800, 1574),
-          img('assets/img/casicasi/foto-7.jpg', 1200, 1800),
+          img('assets/img/casicasi/foto-4.jpg', 1800, 1574),
+          img('assets/img/casicasi/foto-5.jpg', 1800, 1574),
+          img('assets/img/casicasi/foto-6.jpg', 1800, 1574),
+          // crop: recorta la foto (aquí, quita un trozo de arriba)
+          { ...img('assets/img/casicasi/foto-7.jpg', 1200, 1800), crop: { ratio: '4 / 5', pos: '50% 100%' } },
         ],
       },
     ],
