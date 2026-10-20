@@ -217,8 +217,9 @@ em { font-style: normal; }
 /* La frase grande: negrita, apretada, con sangría en la primera línea */
 .statement {
   font-size: clamp(26px, 2.95vw, 58px); line-height: 0.95; font-weight: 700; letter-spacing: -0.035em;
-  text-indent: 2.2em; max-width: 24ch;
+  max-width: 24ch;
 }
+.statement__indent { display: inline-block; width: 2.2em; }
 
 /* Proyectos */
 .work__side { justify-content: flex-start; }

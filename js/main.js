@@ -208,9 +208,9 @@
     if (lines) tl.from(lines.lines, { yPercent: 110, stagger: 0.06 }, '<');
     if (has('.hero__card')) tl.from('.hero__card', { clipPath: 'inset(100% 0 0 0)', duration: 1.1 }, '<0.1');
     if (has('.card')) tl.from('.card', { y: 50, opacity: 0, stagger: 0.04 }, '<0.1');
-    if (has('.page .side__sticky')) tl.from('.page .side__sticky > *', { y: 16, opacity: 0, stagger: 0.04, duration: 0.8 }, '<0.1');
+    if (has('.about .side__sticky')) tl.from('.about .side__sticky > *', { y: 16, opacity: 0, stagger: 0.04, duration: 0.8 }, '<0.1');
     if (has('.board__item')) tl.from('.board__item .board__media, .board__info > *', { scale: 0.6, opacity: 0, stagger: { each: 0.012, from: 'random' }, duration: 0.9, clearProps: 'opacity,transform' }, '<');
-    tl.from('.side .meta, .main__row, .work__info, .stickers__hint, .dot', { opacity: 0, y: 10, stagger: 0.02, duration: 0.7 }, '<0.15');
+    if (has('.home')) tl.from('.hero .meta, .home .main__row, .work__info, .stickers__hint, .dot', { opacity: 0, y: 10, stagger: 0.02, duration: 0.7 }, '<0.15');
 
     if (REDUCED) tl.progress(1);
   }
