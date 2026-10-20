@@ -66,19 +66,33 @@ const PROFILE = {
   languages: ['Catalán (nativo)', 'Castellano (nativo)', 'Inglés (básico)'],
 };
 
-/* Ayleeeeta, mi alter ego (va en "Sobre mí") */
+/* Fotos de pequeña (en "Sobre mí") */
+const BETA = [
+  { src: 'assets/img/sobre-mi/peque-1.jpg', w: 699, h: 1000, caption: 'Ayla 1.0 — trenzas y tatuaje falso' },
+  { src: 'assets/img/sobre-mi/peque-2.jpg', w: 748, h: 1000, caption: 'Ayla 1.1 — vestuario de época' },
+  { src: 'assets/img/sobre-mi/peque-3.jpg', w: 748, h: 1000, caption: 'Ayla 1.2 — ya venía con fósiles de serie' },
+];
+
+/* Ayleeeeta, mi alter ego (va en "Sobre mí")
+   · flip(...) = varias imágenes del mismo diseño que se alternan como un stop-motion */
+const flip = (frames, w, h) => ({ type: 'flipbook', frames: frames.map((src) => img(src, w, h)), src: frames[0], w, h });
+
 const ALTER_EGO = {
   title: 'Ayleeeeta',
-  text: 'Mi alter ego artístico: un icono que muestra mi actitud, mi estilo y mi manera de ver la vida. Nació de unas ilustraciones para un diario semanal y ahora vive en pegatinas, calendarios y animaciones.',
+  text: 'Mi alter ego: la versión de mí que dice lo que yo me callo. Empezó en un diario semanal y ya tiene pegatinas, calendario y animaciones propias.',
   media: [
     vid('assets/video/ayleeeeta.mp4', 540, 540),
     img('assets/img/ayleeeeta/pegatina-rosa.jpg', 1400, 1400),
-    img('assets/img/ayleeeeta/calendario-2.jpg', 1011, 1600),
+    flip([
+      'assets/img/ayleeeeta/calendario-1.jpg',
+      'assets/img/ayleeeeta/calendario-2.jpg',
+      'assets/img/ayleeeeta/calendario-3.jpg',
+      'assets/img/ayleeeeta/calendario-4.jpg',
+    ], 1011, 1600),
     img('assets/img/ayleeeeta/pegatinas.jpg', 1800, 1014),
+    vid('assets/video/ayleeeeta-2.mp4', 720, 720),
     img('assets/img/ayleeeeta/pegatina-gris.jpg', 1400, 1400),
-    img('assets/img/ayleeeeta/calendario-1.jpg', 1010, 1600),
-    img('assets/img/ayleeeeta/calendario-3.jpg', 1011, 1600),
-    img('assets/img/ayleeeeta/calendario-4.jpg', 1010, 1600),
+    img('assets/img/ayleeeeta/pegatina.jpg', 545, 662),
   ],
 };
 

@@ -62,9 +62,21 @@
     fill('#alter', (el) => {
       $('#alter-title').textContent = ALTER_EGO.title;
       $('#alter-text').textContent = ALTER_EGO.text;
-      el.innerHTML = ALTER_EGO.media.map((m) => (m.type === 'video'
-        ? `<figure><video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video></figure>`
-        : `<figure><img src="${thumb(m)}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}"></figure>`)).join('');
+      el.innerHTML = ALTER_EGO.media.map((m) => {
+        if (m.type === 'video') return `<figure><video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video></figure>`;
+        // Mismo diseño en varios colores: se alternan como un stop-motion
+        if (m.type === 'flipbook') return `<figure class="flipbook" style="aspect-ratio:${m.w} / ${m.h}">${m.frames.map((f, i) => `<img src="${thumb(f)}" alt="" loading="lazy" decoding="async"${i ? '' : ' class="is-on"'}>`).join('')}</figure>`;
+        return `<figure><img src="${thumb(m)}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}"></figure>`;
+      }).join('');
+    });
+
+    // Fotos de pequeña
+    fill('#beta', (el) => {
+      el.innerHTML = BETA.map((b, i) => `
+        <figure class="beta__item" style="--r:${[-3, 2, -1.5][i % 3]}deg">
+          <img src="${thumb(b)}" alt="Ayla de pequeña" loading="lazy" decoding="async" width="${b.w}" height="${b.h}">
+          <figcaption class="tiny">${b.caption}</figcaption>
+        </figure>`).join('');
     });
   }
 
@@ -492,6 +504,20 @@
     $('#photos').addEventListener('mouseleave', () => { speed = 450; });
   }
 
+  // Calendarios en stop-motion: cambian de color cada medio segundo
+  function flipbooks() {
+    if (REDUCED) return;
+    $$('.flipbook').forEach((fb) => {
+      const frames = $$('img', fb);
+      let i = 0;
+      setInterval(() => {
+        frames[i].classList.remove('is-on');
+        i = (i + 1) % frames.length;
+        frames[i].classList.add('is-on');
+      }, 500);
+    });
+  }
+
   // Vídeos de "Sobre mí": solo se reproducen cuando se ven
   function alterVideos() {
     const io = new IntersectionObserver((entries) => entries.forEach(({ target, isIntersecting }) => {
@@ -884,6 +910,7 @@
   lab();
   topNav();
   photos();
+  flipbooks();
   alterVideos();
   cursor();
   magnetic();

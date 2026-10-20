@@ -178,6 +178,7 @@ const LAB = [
     kicker: 'Mi alter ego: pegatinas, calendario y animación',
     year: '2026',
     tags: ['ilustracion', 'motion'],
-    media: ALTER_EGO.media,
+    // Los calendarios (stop-motion) se reparten como piezas sueltas
+    media: ALTER_EGO.media.flatMap((m) => (m.type === 'flipbook' ? m.frames : [m])),
   },
 ];
