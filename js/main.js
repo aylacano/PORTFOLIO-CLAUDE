@@ -716,7 +716,8 @@
         count.textContent = `${i + 1}/${frames.length}`;
       };
       if (REDUCED) return;
-      if (CAN_HOVER) {
+      // flipAuto: el proyecto pide que se mueva solo (despacio, sin pasar el ratón)
+      if (CAN_HOVER && !p.flipAuto) {
         let t = null;
         fb.addEventListener('mouseenter', () => { step(); t = setInterval(step, 900); });
         fb.addEventListener('mouseleave', () => clearInterval(t));

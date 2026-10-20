@@ -245,6 +245,8 @@ const PROJECTS = [
     year: '2024',
     // Foto principal: el merch, que enseña los tres libros a la vez
     cover: img('assets/img/el-clan/pagina-7.jpg', 1600, 1066),
+    // Los stop-motion de este proyecto se mueven solos (sin pasar el ratón)
+    flipAuto: true,
     // En la portada de la web: el primer libro (El clan del oso cavernario)
     card: img('assets/img/el-clan/pagina-1.jpg', 1600, 1066),
     blocks: [
