@@ -52,6 +52,10 @@ avconvert -s "original.mov" -p Preset1280x720 -o assets/video/nombre.mp4
 
 (Para vídeos verticales o muy largos usa `Preset960x540`.) Usa PNG solo si la imagen tiene fondo transparente, como las pegatinas.
 
+## Si no ves los cambios online
+
+El navegador guarda copias de la web. En `index.html`, los archivos llevan `?v=2026102101`: cambia ese número (en los 3 sitios) cada vez que subas cambios y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
+
 ## Publicar en GitHub Pages
 
 1. Crea un repositorio en GitHub (por ejemplo `ayleeeeta.github.io` para que la URL sea `https://ayleeeeta.github.io` — cambia `ayleeeeta` por tu usuario de GitHub).

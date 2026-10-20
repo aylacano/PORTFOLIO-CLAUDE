@@ -489,17 +489,16 @@
     });
   }
 
-  // Modo claro / oscuro
+  // Modo claro / oscuro (interruptor)
   function themeToggle() {
     const btn = $('#theme-toggle');
     const root = document.documentElement;
-    const label = () => btn.setAttribute('aria-label', root.dataset.theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
-    label();
+    const sync = () => btn.setAttribute('aria-checked', root.dataset.theme === 'dark');
+    sync();
     btn.addEventListener('click', () => {
       root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
       try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
-      label();
-      gsap.fromTo('#theme-toggle svg', { rotate: 0 }, { rotate: 180, duration: 0.6, ease: 'expo.out' });
+      sync();
     });
   }
 
