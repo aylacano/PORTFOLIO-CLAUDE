@@ -631,10 +631,13 @@
   let lastFocus = null;
   let mediaObserver = null;
 
+  // Botón para activar/silenciar el sonido de cada vídeo
+  const SOUND_BTN = `<button class="p-media__sound" type="button" aria-pressed="false" aria-label="Activar sonido" data-cursor="Sonido"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" fill="currentColor"/><path class="sound-on" d="M15.5 9.5a3.5 3.5 0 0 1 0 5M18 7.5a6.5 6.5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="sound-off" d="M15.5 10l4 4M19.5 10l-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>`;
+
   const mediaHTML = (m) => {
     const wide = m.w / m.h > 1.3 ? ' is-wide' : '';
     const inner = m.type === 'video'
-      ? `<video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video>`
+      ? `<video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video>${SOUND_BTN}`
       : `<img class="fade-img" src="${m.src}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}">`;
     return `<figure class="p-media${wide}">${inner}</figure>`;
   };
@@ -766,6 +769,22 @@
   }
 
   if (overlay) {
+    // Sonido de los vídeos: al activar uno, los demás se silencian
+    content.addEventListener('click', (e) => {
+      const btn = e.target.closest('.p-media__sound');
+      if (!btn) return;
+      const video = $('video', btn.parentElement);
+      const on = video.muted;
+      $$('.p-media__sound', content).forEach((b) => {
+        b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('aria-label', 'Activar sonido');
+        $('video', b.parentElement).muted = true;
+      });
+      video.muted = !on;
+      if (on) video.play().catch(() => {});
+      btn.setAttribute('aria-pressed', on);
+      btn.setAttribute('aria-label', on ? 'Silenciar' : 'Activar sonido');
+    });
     window.addEventListener('hashchange', openFromHash);
     $('.project__close').addEventListener('click', closeProject);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProject(); });
