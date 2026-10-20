@@ -421,6 +421,10 @@ body[data-page='lab'] #theme-toggle { display: none; }
 .p-block--no-info .p-block__media { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
 .p-media { position: relative; background: var(--soft); }
 
+/* Una debajo de otra, a todo el ancho de la columna */
+.p-block__media--stack, .p-block--no-info .p-block__media--stack { grid-template-columns: 1fr; gap: 14px; }
+.p-block__media--stack .p-media.is-wide { grid-column: auto; }
+
 /* En fila: todas las piezas del mismo tamaño, una al lado de otra */
 .p-block__media--row .p-media, .p-block__media--row .p-media.is-wide { grid-column: auto; }
 

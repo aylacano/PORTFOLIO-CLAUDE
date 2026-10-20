@@ -255,8 +255,8 @@ const PROJECTS = [
           'Una edición especial con un toque prehistórico: sobrecubiertas limpias y geométricas que esconden tapas ilustradas con motivos de pinturas rupestres.',
           'Y para acompañar, merch: tote bags, marcapáginas, pegatinas y un mini mapa para no perderse.',
         ],
-        // layout: 'row' = todas en fila, del mismo tamaño
-        layout: 'row',
+        // layout: 'stack' = una debajo de otra, a todo el ancho (más grandes)
+        layout: 'stack',
         // Cada libro: de la sobrecubierta a la tapa (stop-motion al pasar el ratón)
         media: [
           flip(['assets/img/el-clan/pagina-1.jpg', 'assets/img/el-clan/pagina-5.jpg'], 1600, 1066), // El clan del oso cavernario
