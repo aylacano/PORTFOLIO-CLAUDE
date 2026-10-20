@@ -275,7 +275,7 @@ const PROJECTS = [
     cover: vid('assets/video/flores.mp4', 1280, 720),
     // En la portada de la web: el fotograma del paso de cebra (con el semáforo)
     cardVideo: false,
-    card: img('assets/img/flores/portada.jpg', 720, 720),
+    card: img('assets/img/flores/portada.jpg', 576, 720),
     blocks: [
       {
         text: [
