@@ -185,23 +185,27 @@ const PROJECTS = [
     title: 'CasiCasi',
     kicker: 'Creación de una revista',
     tags: ['editorial'],
-    year: '',
+    year: '2025',
     cover: img('assets/img/casicasi/foto-1.jpg', 1199, 1800),
+    // Imagen de la portada de la web (_MG_9893 recortada en cuadrado)
+    card: img('assets/img/casicasi/portada.jpg', 900, 900),
     blocks: [
       {
         credit: 'En colaboración con Eva Sahuquillo, Laura Lozano y Sara Sánchez',
         text: [
-          'Nuestro concepto nace de esas obras inacabadas que nunca salieron a la luz. Queremos que la revista sea un lugar donde disfrutar de la belleza del proceso creativo.',
-          'A veces hay mucha presión para que un proyecto salga perfecto, pero hay procesos que, aunque no lleguen a terminarse, son completos en sí mismos y hasta más inspiradores.',
-          'El objetivo es crear una comunidad de diseñadores y artistas donde compartir y descubrir proyectos inacabados: ver procesos, inspirarse, sentirse identificado y conocer a otros creadores.',
+          'Una revista para lo que se queda a medias: bocetos, procesos y proyectos que nunca salieron a la luz, porque a veces inspiran más que el resultado final.',
+          'La idea es crear una comunidad donde artistas y diseñadores compartan lo que tienen sin terminar.',
         ],
         media: [
           img('assets/img/casicasi/foto-2.jpg', 1199, 1800),
           vid('assets/video/casicasi.mp4', 720, 1280),
           img('assets/img/casicasi/foto-3.jpg', 1200, 1800),
-          img('assets/img/casicasi/foto-4.jpg', 1800, 1574),
-          img('assets/img/casicasi/foto-5.jpg', 1800, 1574),
-          img('assets/img/casicasi/foto-6.jpg', 1800, 1574),
+          // Las dobles páginas: se pasan como hojas al pasar el ratón
+          flip([
+            'assets/img/casicasi/foto-4.jpg',
+            'assets/img/casicasi/foto-5.jpg',
+            'assets/img/casicasi/foto-6.jpg',
+          ], 1800, 1574),
           img('assets/img/casicasi/foto-7.jpg', 1800, 1200),
         ],
       },

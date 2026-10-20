@@ -22,7 +22,8 @@
   const esc = (s = '') => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   // Imagen de la tarjeta del carrusel: la portada, o su "poster" si la portada es un vídeo
-  const cardImage = (p) => (p.cover.type === 'image' ? p.cover : (p.poster || p.blocks[0].media.find((m) => m.type === 'image')));
+  // (o la imagen de "card" si el proyecto la define)
+  const cardImage = (p) => p.card || (p.cover.type === 'image' ? p.cover : (p.poster || p.blocks[0].media.find((m) => m.type === 'image')));
 
   // Rellena un elemento solo si existe en esta página
   const fill = (sel, fn) => { const el = $(sel); if (el) fn(el); };
