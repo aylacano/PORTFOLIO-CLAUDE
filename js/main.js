@@ -311,6 +311,25 @@
     });
   }
 
+  /* Trazo que vibra: cambia de "dibujo" 8 veces por segundo (como un GIF de 3 frames) */
+  function lineBoil() {
+    if (REDUCED) return;
+    const targets = [[$('.logo'), 'boil-s'], [$('.loader__word'), 'boil-l']];
+    let frame = 0;
+    setInterval(() => {
+      frame = (frame + 1) % 3;
+      targets.forEach(([el, id]) => { el.style.filter = `url(#${id}-${frame})`; });
+    }, 125);
+  }
+
+  // Letras un poco torcidas, como rotuladas a mano
+  function naiveLetters() {
+    const tilt = [-4, 3, -2, 2, -3, 4, -2, 3, -3];
+    ['.logo', '.loader__word'].forEach((s) => {
+      $$('span', $(s)).forEach((l, i) => gsap.set(l, { rotation: tilt[i % tilt.length], y: (i % 2 ? -1 : 1) * 0.03 + 'em' }));
+    });
+  }
+
   function logoAnimation() {
     const logo = $('.logo');
     let collapsed = false;
@@ -662,6 +681,8 @@
   marquee();
   pillNav();
   autoHideHeader();
+  naiveLetters();
+  lineBoil();
   logoAnimation();
   heroCard();
   cursor();
