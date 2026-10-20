@@ -80,7 +80,7 @@
     if (!$('#track')) return;
     $('#track').innerHTML = PROJECTS.map((p, i) => {
       const still = cardImage(p);
-      const isVideo = p.cover.type === 'video';
+      const isVideo = p.cover.type === 'video' && p.cardVideo !== false;
       // Si no hay imagen (p. ej. RRSS), la tarjeta muestra un fotograma del propio vídeo
       return `
       <a class="card" href="#/proyecto/${p.slug}" data-index="${i}" data-cursor="Ver">

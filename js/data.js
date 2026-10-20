@@ -160,7 +160,9 @@ const PROJECTS = [
     tags: ['motion', 'ilustracion'],
     year: '2025',
     cover: vid('assets/video/sex-and-the-city.mp4', 1280, 720),
-    poster: img('assets/img/sex-and-the-city/frame-1.png', 1536, 1024),
+    // En la portada se ve esta foto (205F152C…-3) y no el vídeo
+    cardVideo: false,
+    poster: img('assets/img/sex-and-the-city/frame-2.png', 1536, 1024),
     blocks: [
       {
         text: [
