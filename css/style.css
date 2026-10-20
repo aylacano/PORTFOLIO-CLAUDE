@@ -220,6 +220,9 @@ em { font-style: normal; }
   max-width: 24ch;
 }
 .statement__indent { display: inline-block; width: 2.2em; }
+/* "hablemos" lleva al contacto: subrayado que se vuelve rosa */
+.statement__link { text-decoration: underline; text-decoration-thickness: 0.07em; text-underline-offset: 0.12em; transition: color 0.25s; }
+.statement__link:hover { color: var(--pink); }
 
 /* Proyectos */
 .work__side { justify-content: flex-start; }
