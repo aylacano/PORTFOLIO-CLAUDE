@@ -706,14 +706,15 @@
     // en móvil cambia despacio y cada pieza empieza en un momento distinto
     $$('.flipbook', content).forEach((fb, k) => {
       const frames = $$('img', fb);
-      fb.insertAdjacentHTML('beforeend', `<span class="flipbook__count tiny">1/${frames.length}</span>`);
+      // El contador (1/3) solo sale cuando hay que pasar el ratón; si se mueve solo, no
+      if (!p.flipAuto) fb.insertAdjacentHTML('beforeend', `<span class="flipbook__count tiny">1/${frames.length}</span>`);
       const count = $('.flipbook__count', fb);
       let i = 0;
       const step = () => {
         frames[i].classList.remove('is-on');
         i = (i + 1) % frames.length;
         frames[i].classList.add('is-on');
-        count.textContent = `${i + 1}/${frames.length}`;
+        if (count) count.textContent = `${i + 1}/${frames.length}`;
       };
       if (REDUCED) return;
       // flipAuto: el proyecto pide que se mueva solo (despacio, sin pasar el ratón)
