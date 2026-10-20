@@ -8,7 +8,7 @@ Web estática (HTML + CSS + JavaScript) sin proceso de build: se publica tal cua
 ```
 index.html        → estructura: presentación, proyectos y contacto
 css/style.css     → estilos (colores y tipografías en las variables del principio)
-js/data.js        → TODO el contenido: textos, CV y proyectos  ← lo que más vas a editar
+js/data.js        → TODO el contenido: textos, CV, proyectos y pegatinas  ← lo que más vas a editar
 js/main.js        → animaciones e interacciones
 assets/           → favicon y, en el futuro, tus imágenes y vídeos
 ```
@@ -30,7 +30,11 @@ Abre `js/data.js`, copia un bloque `{ slug: ..., title: ..., ... }` dentro de `P
 - `cover`: la imagen o vídeo principal
 - `blocks`: uno o varios bloques con `title`, `subtitle`, `text` (párrafos) y `media` (imágenes/vídeos)
 
-El orden del array es el orden en la web.
+El orden del array es el orden en la web (y en el carrusel).
+
+## Pegatinas arrastrables
+
+Al final de `js/data.js` está `STICKERS`. Cada pegatina es una ilustración redonda (`src`) o un texto (`text`, en forma `circle` o `pill`). Lo ideal: exporta desde Procreate tus dibujos recortados en PNG con fondo transparente, guárdalos en `assets/pegatinas/` y pon esa ruta en `src`.
 
 ## Imágenes
 
@@ -67,5 +71,6 @@ git push -u origin main
 | --- | --- |
 | [GSAP 3.13](https://gsap.com) + ScrollTrigger + SplitText | animaciones, revelado de textos, efectos con scroll (gratis desde 2025, también los plugins) |
 | [Lenis](https://lenis.darkroom.engineering) | scroll suave |
+| [Matter.js](https://brm.io/matter-js/) | física de las pegatinas arrastrables |
 
 Se cargan desde CDN, así que no hay que instalar nada.

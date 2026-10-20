@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ayleeeeta — Ayla Cano · Diseño gráfico, ilustración y motion</title>
   <meta name="description" content="Portfolio de Ayla Cano (ayleeeeta): diseño gráfico, ilustración, motion graphics, branding y editorial. Barcelona.">
-  <meta name="theme-color" content="#f5f2ec">
+  <meta name="theme-color" content="#262524">
 
   <!-- Open Graph: así se ve el enlace al compartirlo -->
   <meta property="og:title" content="Ayleeeeta — Ayla Cano">
@@ -14,23 +14,21 @@
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 
-  <!-- Tipografías -->
+  <!-- Tipografías: Inter (grotesca, versión Display en tamaños grandes),
+       Instrument Serif (cursiva para destacar) y Permanent Marker (logo) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap" rel="stylesheet">
-
-  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Instrument+Serif:ital@0;1&family=Permanent+Marker&display=swap" rel="stylesheet">
 
   <link rel="preconnect" href="https://freight.cargo.site">
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- Aplica el tema guardado antes de pintar (evita parpadeo) -->
+  <!-- Tema: oscuro por defecto, o el que se haya elegido antes -->
   <script>
     let t = null;
     try { t = localStorage.getItem('theme'); } catch (e) {}
-    if (!t && matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
-    if (t) document.documentElement.dataset.theme = t;
+    document.documentElement.dataset.theme = t || 'dark';
   </script>
 </head>
 <body class="is-loading">
@@ -49,9 +47,12 @@
     </defs>
   </svg>
 
+  <!-- Grano de película por encima de todo -->
+  <div class="grain" aria-hidden="true"></div>
+
   <!-- ============ PRELOADER ============ -->
   <div class="loader" aria-hidden="true">
-    <div class="loader__word">
+    <div class="loader__word" data-boil="l">
       <span>a</span><span>y</span><span>l</span><span class="e">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span>t</span><span>a</span>
     </div>
     <div class="loader__count"><span class="loader__num">0</span>%</div>
@@ -60,109 +61,129 @@
   <!-- ============ CURSOR ============ -->
   <div class="cursor is-hidden" aria-hidden="true"><span class="cursor__label"></span></div>
 
-  <!-- ============ CABECERA ============ -->
-  <a class="logo" href="#hola" aria-label="Ayleeeeta, volver al inicio">
-    <span>a</span><span>y</span><span>l</span><span class="e">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span>t</span><span>a</span>
-  </a>
-  <header class="header">
-    <div class="header__actions">
-      <button class="round-btn" id="theme-toggle" type="button" aria-label="Cambiar entre modo claro y oscuro" data-cursor="Tema">
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
-      </button>
-      <a class="round-btn" href="#contacto" aria-label="Ir a contacto" data-cursor="Hola!">
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16v10H4z M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  <!-- ============ BARRA SUPERIOR ============ -->
+  <header class="topbar">
+    <div class="topbar__side">
+      <a class="logo" href="#proyectos" aria-label="Ayleeeeta, volver al inicio" data-boil="s">
+        <span>a</span><span>y</span><span>l</span><span class="e">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span class="e e-extra">e</span><span>t</span><span>a</span>
       </a>
+    </div>
+    <p class="topbar__mid tiny"><span class="muted">Diseño gráfico &amp; multimedia —</span> Barcelona</p>
+    <div class="topbar__right tiny">
+      <button class="tiny-btn" id="theme-toggle" type="button" data-cursor="Tema">Modo claro</button>
+      <a class="tiny-btn underline" href="#contacto">Contacto</a>
     </div>
   </header>
 
   <main>
-    <!-- ============ PRESENTACIÓN ============ -->
-    <section class="hero" id="hola" data-section="0">
-      <div class="hero__text">
-        <p class="hero__eyebrow"><span class="dot"></span> Diseñadora gráfica y multimedia · Barcelona</p>
-        <h1 class="hero__title" data-split>
-          Hola, soy Ayla. Dibujo, animo y doy <em>personalidad</em> a marcas, libros y pantallas.
-        </h1>
-      </div>
+    <!-- ============ PORTADA: presentación + carrusel (se queda fija mientras pasan los proyectos) ============ -->
+    <div class="home" id="proyectos">
 
-      <figure class="hero__card" data-cursor="Alter ego">
-        <div class="hero__card-inner">
-          <img class="hero__photo" alt="Retrato de Ayla Cano" width="1086" height="1448">
-          <video class="hero__alter" muted loop playsinline preload="none" aria-hidden="true"></video>
+      <!-- Presentación -->
+      <section class="grid hero" id="hola" aria-label="Presentación">
+        <aside class="side">
+          <div class="side__top">
+            <figure class="hero__card" data-cursor="Alter ego">
+              <img class="hero__photo" alt="Retrato de Ayla Cano" width="1086" height="1448">
+              <video class="hero__alter" muted loop playsinline preload="none" aria-hidden="true"></video>
+            </figure>
+            <span class="dot" aria-hidden="true"></span>
+          </div>
+          <div class="side__row">
+            <dl class="meta"><dt>Servicios:</dt><dd>Ilustración, Motion,<br>Branding, Editorial</dd></dl>
+            <ul class="meta meta--right">
+              <li><a class="link-roll" id="instagram-link" target="_blank" rel="noopener"><span data-text="Instagram">Instagram</span></a></li>
+              <li><a class="link-roll" id="mail-link"><span data-text="Email">Email</span></a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <div class="main hero__main">
+          <span class="hero__arrow tiny" aria-hidden="true">↳</span>
+          <h1 class="statement" data-split>
+            Ayla Cano es diseñadora gráfica y multimedia en Barcelona. Dibuja, anima y le da <em>personalidad</em> a marcas, libros y pantallas.
+          </h1>
+          <div class="main__row">
+            <dl class="meta"><dt>Disponible para proyectos</dt><dd id="available"></dd></dl>
+            <span class="tiny muted">Scroll ↓</span>
+          </div>
         </div>
-        <figcaption><span>Ayla</span><span class="hero__card-hint">pasa el ratón ↗</span></figcaption>
-      </figure>
+      </section>
 
-    </section>
+      <!-- Proyectos -->
+      <section class="grid work" aria-label="Proyectos">
+        <aside class="side work__side">
+          <div class="work__info" aria-live="polite">
+            <div class="side__row side__row--top">
+              <dl class="meta"><dt>Proyecto:</dt><dd data-info="title"></dd></dl>
+              <a class="tiny-btn" id="work-open" data-cursor="Ver">Ver proyecto</a>
+            </div>
+            <dl class="meta"><dt>Disciplina:</dt><dd data-info="tags"></dd></dl>
+            <dl class="meta"><dt>Año:</dt><dd data-info="year"></dd></dl>
+          </div>
+          <div class="stickers" id="stickers">
+            <p class="stickers__hint tiny muted">Arrastra mis dibujos ↓</p>
+          </div>
+        </aside>
 
-    <!-- Cinta de disciplinas -->
-    <div class="marquee" aria-label="Disciplinas">
-      <div class="marquee__track">
-        <span>Ilustración</span><i>✶</i><span>Motion graphics</span><i>✶</i><span>Branding</span><i>✶</i><span>Editorial</span><i>✶</i><span>Packaging</span><i>✶</i><span>Fotografía</span><i>✶</i>
-      </div>
+        <div class="main work__main">
+          <div class="main__row main__row--top">
+            <span class="tiny muted">Proyectos seleccionados</span>
+            <span class="tiny" id="counter">01/12</span>
+          </div>
+          <div class="track" id="track"></div>
+        </div>
+      </section>
     </div>
 
     <!-- ============ SOBRE MÍ ============ -->
-    <section class="about" id="sobre-mi" data-section="0">
-      <p class="about__statement" data-words>
-        Me gradué en Diseño Gráfico y Multimedia en Madrid y me encanta que cada proyecto tenga un personaje, un gesto o un movimiento que lo haga inolvidable. Aquí tienes una selección de mi trabajo: mi estilo, mi forma de pensar y mi técnica.
-      </p>
-
-      <div class="about__grid">
-        <div class="cv" id="cv"></div>
-        <div class="about__tools">
-          <h3 class="label">Herramientas</h3>
-          <ul class="chips" id="tools"></ul>
-          <h3 class="label">Idiomas</h3>
-          <ul class="plain" id="languages"></ul>
+    <section class="grid about" id="sobre-mi">
+      <aside class="side">
+        <div class="side__sticky">
+          <p class="tiny muted">Sobre mí</p>
+          <dl class="meta"><dt>Idiomas:</dt><dd id="languages"></dd></dl>
+          <dl class="meta"><dt>Herramientas:</dt><dd id="tools"></dd></dl>
         </div>
-      </div>
-    </section>
-
-    <!-- ============ PROYECTOS ============ -->
-    <section class="work" id="proyectos" data-section="1">
-      <header class="work__head">
-        <h2 class="section-title" data-split>Proyectos <sup id="project-count"></sup></h2>
-        <div class="filters" role="toolbar" aria-label="Filtrar proyectos" id="filters"></div>
-      </header>
-
-      <ol class="work__list" id="project-list"></ol>
-
-      <!-- Previsualización flotante que sigue al cursor (frame 2 del Figma) -->
-      <div class="preview" aria-hidden="true">
-        <div class="preview__inner"></div>
+      </aside>
+      <div class="main">
+        <p class="about__statement" data-words>
+          Me gradué en Diseño Gráfico y Multimedia en Madrid y me encanta que cada proyecto tenga un personaje, un gesto o un movimiento que lo haga inolvidable.
+        </p>
+        <div class="cv" id="cv"></div>
       </div>
     </section>
 
     <!-- ============ CONTACTO ============ -->
-    <section class="contact" id="contacto" data-section="2">
-      <p class="label">¿Tienes un proyecto en mente?</p>
-      <h2 class="contact__title" data-split>¿Hacemos algo <em>bonito</em>?</h2>
+    <section class="grid contact" id="contacto">
+      <aside class="side">
+        <div class="side__sticky">
+          <p class="tiny muted">Contacto</p>
+          <dl class="meta"><dt>Email:</dt><dd><a class="link-roll" id="mail-link-2"><span></span></a></dd></dl>
+          <dl class="meta"><dt>Instagram:</dt><dd><a class="link-roll" id="instagram-link-2" target="_blank" rel="noopener"><span data-text="@ayleeeeta">@ayleeeeta</span></a></dd></dl>
+          <dl class="meta"><dt>Hora local:</dt><dd>Barcelona <span id="clock">--:--</span></dd></dl>
+        </div>
+      </aside>
+      <div class="main contact__main">
+        <h2 class="contact__title" data-split>¿Hacemos algo <em>bonito</em>?</h2>
 
-      <button class="contact__email magnetic" type="button" data-cursor="Copiar" id="copy-email">
-        <span class="contact__email-text"></span>
-        <span class="contact__email-icon" aria-hidden="true">↗</span>
-      </button>
+        <button class="contact__email magnetic" type="button" data-cursor="Copiar" id="copy-email">
+          <span class="contact__email-text"></span>
+          <span class="contact__email-icon" aria-hidden="true">↗</span>
+        </button>
 
-      <ul class="contact__links">
-        <li><a class="link-roll" id="instagram-link" target="_blank" rel="noopener"><span data-text="Instagram">Instagram</span></a></li>
-        <li><a class="link-roll" id="mail-link"><span data-text="Email">Email</span></a></li>
-        <li><a class="link-roll" href="#sobre-mi"><span data-text="Currículum">Currículum</span></a></li>
-      </ul>
-
-      <footer class="footer">
-        <span>© <span id="year"></span> Ayla Cano López</span>
-        <span>Barcelona <span id="clock">--:--</span></span>
-        <button type="button" class="link-roll" id="back-top"><span data-text="Volver arriba ↑">Volver arriba ↑</span></button>
-      </footer>
+        <footer class="main__row footer">
+          <span class="tiny muted">© <span id="year"></span> Ayla Cano López</span>
+          <button type="button" class="tiny-btn link-roll" id="back-top"><span data-text="Volver arriba ↑">Volver arriba ↑</span></button>
+        </footer>
+      </div>
     </section>
   </main>
 
-  <!-- ============ NAVEGACIÓN INFERIOR (pastilla del Figma) ============ -->
+  <!-- ============ NAVEGACIÓN INFERIOR (pastilla rosa del Figma) ============ -->
   <nav class="pill" aria-label="Secciones">
     <span class="pill__indicator" aria-hidden="true"></span>
-    <a href="#hola" class="pill__link is-active">Hola</a>
-    <a href="#proyectos" class="pill__link">Proyectos</a>
+    <a href="#proyectos" class="pill__link is-active">Proyectos</a>
+    <a href="#sobre-mi" class="pill__link">Sobre mí</a>
     <a href="#contacto" class="pill__link">Contacto</a>
     <span class="pill__progress" aria-hidden="true"></span>
   </nav>
@@ -171,7 +192,7 @@
   <div class="project" role="dialog" aria-modal="true" aria-labelledby="project-title" hidden>
     <div class="project__wipe" aria-hidden="true"></div>
     <div class="project__scroller" data-lenis-prevent>
-      <button class="project__close round-btn" type="button" aria-label="Cerrar proyecto" data-cursor="Cerrar">✕</button>
+      <button class="project__close tiny-btn" type="button" aria-label="Cerrar proyecto" data-cursor="Cerrar">Cerrar ✕</button>
       <article class="project__content"></article>
     </div>
   </div>
@@ -183,6 +204,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>

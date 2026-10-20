@@ -510,3 +510,20 @@ const PROJECTS = [
     ],
   },
 ];
+
+/* --------------------------------------------------------------------------
+   PEGATINAS ARRASTRABLES (caja de abajo a la izquierda en la portada)
+   · shape: 'circle' (ilustración o texto) o 'pill' (etiqueta alargada)
+   · size: tamaño relativo al ancho de la caja (0.4 = 40 %)
+   Consejo: si exportas ilustraciones recortadas en PNG con fondo
+   transparente, usa  src: 'assets/pegatinas/mi-dibujo.png'
+   -------------------------------------------------------------------------- */
+const STICKERS = [
+  { shape: 'circle', size: 0.42, src: `${CARGO}/w/400/i/I2466861497748726202353561557388/Ilustracion_sin_titulo-3-2.jpg` },
+  { shape: 'circle', size: 0.3, text: '¡hola!' },
+  { shape: 'circle', size: 0.36, src: `${CARGO}/w/400/i/C2466861602913614166571715320204/Ilustracion_sin_titulo-5-2.jpg` },
+  { shape: 'pill', size: 0.5, text: 'ilustración' },
+  { shape: 'circle', size: 0.32, src: `${CARGO}/w/400/i/E2466826624880031129247194470796/Ilustracion_sin_titulo-1-2.jpg` },
+  { shape: 'pill', size: 0.42, text: 'motion ✶' },
+  { shape: 'circle', size: 0.28, src: `${CARGO}/w/400/i/D2466861574007566203068847937932/Ilustracion_sin_titulo-1-3.jpg` },
+];

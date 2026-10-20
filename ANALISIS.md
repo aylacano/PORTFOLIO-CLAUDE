@@ -48,3 +48,12 @@ Referencia: la categoría *Portfolio* de awwwards.com (henne.studio, mildsugar, 
 - Paleta: papel cálido `#f5f2ec`, tinta `#161514` y el rosa del Figma `#ff8ab6` como único acento.
 - Tipografías (referencia: khasiyev.com): *General Sans* en peso normal con espaciado ajustado (-0.03em) + serif cursiva fina para destacar palabras. El original usa *PP Editorial New Ultralight Italic* (de pago para uso comercial); aquí va *Instrument Serif Italic* (gratis y muy parecida); se cambia en la variable `--accent` de `css/style.css`. El logo y la pantalla de carga usan *Permanent Marker* (rotulador naif) con un *line boil* como el de forticheprod.com: tres filtros SVG que deforman el borde y se alternan 8 veces por segundo, más letras ligeramente torcidas. Se cambia en `--logo-font`.
 - Logo: *ayleeeeta* arriba a la izquierda; al bajar, las cuatro "e" se pliegan en una (*ayleta*) y al subir o pasar el ratón se despliegan.
+
+## 5. Rediseño inspirado en juanmoraromero.com
+
+- **Retícula suiza** con líneas finas: columna lateral (datos) + columna principal (contenido).
+- **Etiquetas pequeñas** (11 px, gris + valor) frente a **una frase grande en negrita** con sangría, como contraste tipográfico. Tipografía: *Inter* (versión Display automática en tamaños grandes) en lugar de *Neue Haas Grotesk Display*, que es de Adobe Fonts. Si la activas desde Adobe Fonts con tu cuenta de Creative Cloud, se cambia en `--sans`.
+- **Grano de película** animado por encima de todo.
+- **Carrusel horizontal**: la portada se queda fija y el scroll pasa los proyectos. La tarjeta activa es grande y las siguientes, pequeñas. Los datos de la izquierda (proyecto, disciplina, año) y el contador 01/12 se actualizan solos. Los vídeos se reproducen en la tarjeta activa.
+- **Pegatinas con física** (Matter.js): tus dibujos caen y se pueden lanzar con el ratón o el dedo. Es la versión personal de las formas geométricas de Juan.
+- Se mantienen el **logo rotulado que vibra**, el plegado de las E, el **rosa** como único acento y la pastilla inferior del Figma.
