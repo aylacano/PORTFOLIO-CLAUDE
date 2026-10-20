@@ -127,17 +127,17 @@ const PROJECTS = [
           'Aquellas excursiones en familia eran mucho más que una actividad: eran una forma de aprender, de explorar la naturaleza y de descubrir historias que existían mucho antes que nosotros. Me quedé con lo que me transmitieron: preservar la cultura, entender nuestras raíces y mirar el pasado como una pieza esencial del presente.',
           'Sentí que el museo tenía un valor que no podía quedarse apagado y que, desde el diseño, podía devolverle una identidad más fuerte, actual y emocional.',
         ],
+        // flip([...]) = fotos del mismo objeto que se alternan como un stop-motion
         media: [
           vid('assets/video/estrat-spot.mp4', 720, 1280),
           img('assets/img/estrat/logo.png', 1600, 805),
-          img('assets/img/estrat/foto-20.jpg', 1800, 1311),
-          img('assets/img/estrat/foto-03.jpg', 1200, 1800),
-          img('assets/img/estrat/foto-10.jpg', 1800, 1200),
-          img('assets/img/estrat/foto-14.jpg', 1800, 1200),
-          img('assets/img/estrat/foto-15.jpg', 1200, 1800),
-          img('assets/img/estrat/foto-08.jpg', 1800, 1200),
-          img('assets/img/estrat/foto-06.jpg', 1800, 1200),
-          img('assets/img/estrat/foto-16.jpg', 1800, 1200),
+          flip(['assets/img/estrat/foto-02.jpg', 'assets/img/estrat/foto-05.jpg', 'assets/img/estrat/foto-03.jpg'], 1200, 1800), // la caja abriéndose
+          flip(['assets/img/estrat/foto-19.jpg', 'assets/img/estrat/foto-20.jpg'], 1800, 1311), // el kit completo
+          flip(['assets/img/estrat/foto-06.jpg', 'assets/img/estrat/foto-07.jpg', 'assets/img/estrat/foto-08.jpg', 'assets/img/estrat/foto-04.jpg'], 1800, 1200), // papelería
+          flip(['assets/img/estrat/foto-12.jpg', 'assets/img/estrat/foto-13.jpg'], 1200, 1800), // caja de cartón
+          flip(['assets/img/estrat/foto-10.jpg', 'assets/img/estrat/foto-11.jpg', 'assets/img/estrat/foto-14.jpg'], 1800, 1200), // cajitas y fósiles
+          flip(['assets/img/estrat/foto-09.jpg', 'assets/img/estrat/foto-15.jpg', 'assets/img/estrat/foto-18.jpg'], 1200, 1800), // cuaderno y kit
+          flip(['assets/img/estrat/foto-16.jpg', 'assets/img/estrat/foto-17.jpg'], 1800, 1200), // el libro
           img('assets/img/estrat/carteles.jpg', 1800, 1194),
         ],
       },
@@ -145,8 +145,8 @@ const PROJECTS = [
         title: 'Web',
         subtitle: 'Archivo del tiempo y museo portátil',
         media: [
-          img('assets/img/estrat/web-inicio.png', 727, 1440),
-          img('assets/img/estrat/web-museo.png', 1440, 1399),
+          flip(['assets/img/estrat/web-inicio.png', 'assets/img/estrat/web-archivo.png'], 727, 1440),
+          flip(['assets/img/estrat/web-museo.png', 'assets/img/estrat/web-contacto.png'], 1440, 1399),
         ],
       },
     ],

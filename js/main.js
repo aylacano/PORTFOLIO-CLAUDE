@@ -513,16 +513,17 @@
   }
 
   // Calendarios en stop-motion: cambian de color cada medio segundo
-  function flipbooks() {
-    if (REDUCED) return;
-    $$('.flipbook').forEach((fb) => {
+  function flipbooks(root = document, speed = 500) {
+    if (REDUCED) return [];
+    return $$('.flipbook', root).filter((fb) => !fb.dataset.flipping).map((fb) => {
+      fb.dataset.flipping = '1';
       const frames = $$('img', fb);
       let i = 0;
-      setInterval(() => {
+      return setInterval(() => {
         frames[i].classList.remove('is-on');
         i = (i + 1) % frames.length;
         frames[i].classList.add('is-on');
-      }, 500);
+      }, speed);
     });
   }
 
@@ -630,16 +631,21 @@
   const wipe = $('.project__wipe');
   let lastFocus = null;
   let mediaObserver = null;
+  let projectFlips = [];
 
   // Botón para activar/silenciar el sonido de cada vídeo
-  const SOUND_BTN = `<button class="p-media__sound" type="button" aria-pressed="false" aria-label="Activar sonido" data-cursor="Sonido"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" fill="currentColor"/><path class="sound-on" d="M15.5 9.5a3.5 3.5 0 0 1 0 5M18 7.5a6.5 6.5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="sound-off" d="M15.5 10l4 4M19.5 10l-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>`;
+  const SOUND_BTN = `<button class="p-media__sound tiny" type="button" aria-pressed="false">Sin sonido</button>`;
 
   const mediaHTML = (m) => {
     const wide = m.w / m.h > 1.3 ? ' is-wide' : '';
-    const inner = m.type === 'video'
-      ? `<video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video>${SOUND_BTN}`
-      : `<img class="fade-img" src="${m.src}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}">`;
-    return `<figure class="p-media${wide}">${inner}</figure>`;
+    // Varias fotos del mismo objeto: stop-motion
+    if (m.type === 'flipbook') {
+      return `<figure class="p-media flipbook${wide}" style="aspect-ratio:${m.w} / ${m.h}">${m.frames.map((f, i) => `<img src="${f.src}" alt="" loading="lazy" decoding="async"${i ? '' : ' class="is-on"'}>`).join('')}</figure>`;
+    }
+    if (m.type === 'video') {
+      return `<figure class="p-media is-video${wide}" data-cursor="Sonido"><video src="${m.src}" muted loop playsinline preload="metadata" width="${m.w}" height="${m.h}"></video>${SOUND_BTN}</figure>`;
+    }
+    return `<figure class="p-media${wide}"><img class="fade-img" src="${m.src}" alt="" loading="lazy" decoding="async" width="${m.w}" height="${m.h}"></figure>`;
   };
 
   function renderProject(p, i) {
@@ -685,6 +691,9 @@
       if (im.complete) im.classList.add('is-loaded');
       else im.addEventListener('load', () => im.classList.add('is-loaded'), { once: true });
     });
+
+    projectFlips.forEach(clearInterval);
+    projectFlips = flipbooks(content, 650);
 
     mediaObserver?.disconnect();
     mediaObserver = new IntersectionObserver((entries) => {
@@ -770,20 +779,23 @@
 
   if (overlay) {
     // Sonido de los vídeos: al activar uno, los demás se silencian
+    // (se activa con la etiqueta "Sin sonido" o haciendo clic en el propio vídeo)
     content.addEventListener('click', (e) => {
-      const btn = e.target.closest('.p-media__sound');
-      if (!btn) return;
-      const video = $('video', btn.parentElement);
+      const fig = e.target.closest('.p-media.is-video');
+      if (!fig) return;
+      const video = $('video', fig);
+      const btn = $('.p-media__sound', fig);
       const on = video.muted;
-      $$('.p-media__sound', content).forEach((b) => {
+      $$('.p-media.is-video', content).forEach((f) => {
+        $('video', f).muted = true;
+        const b = $('.p-media__sound', f);
         b.setAttribute('aria-pressed', 'false');
-        b.setAttribute('aria-label', 'Activar sonido');
-        $('video', b.parentElement).muted = true;
+        b.textContent = 'Sin sonido';
       });
       video.muted = !on;
       if (on) video.play().catch(() => {});
       btn.setAttribute('aria-pressed', on);
-      btn.setAttribute('aria-label', on ? 'Silenciar' : 'Activar sonido');
+      btn.textContent = on ? 'Con sonido' : 'Sin sonido';
     });
     window.addEventListener('hashchange', openFromHash);
     $('.project__close').addEventListener('click', closeProject);
@@ -802,7 +814,8 @@
       if (g.project) {
         const p = PROJECTS.find((x) => x.slug === g.project);
         if (!p) return [];
-        const pool = [p.poster, p.cover, ...p.blocks.flatMap((b) => b.media)].filter(Boolean);
+        const pool = [p.poster, p.cover, ...p.blocks.flatMap((b) => b.media)].filter(Boolean)
+          .flatMap((m) => (m.type === 'flipbook' ? m.frames : [m]));
         const images = pool.filter((m) => m.type === 'image');
         const media = (images.length ? images : pool).filter((m, i, arr) => arr.findIndex((x) => x.src === m.src) === i).slice(0, g.count);
         return media.map((m) => ({ m, title: p.title, year: p.year, tags: p.tags }));
