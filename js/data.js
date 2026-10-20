@@ -186,7 +186,8 @@ const PROJECTS = [
     kicker: 'Creación de una revista',
     tags: ['editorial'],
     year: '2025',
-    cover: img('assets/img/casicasi/foto-1.jpg', 1199, 1800),
+    // Primera foto del proyecto, recortada en horizontal para que se vea grande
+    cover: img('assets/img/casicasi/portada-h.jpg', 1066, 710),
     // Imagen de la portada de la web (_MG_9893), apoyada abajo y cortada por arriba
     card: img('assets/img/casicasi/foto-7.jpg', 1200, 1800),
     cardPosition: '50% 100%',
