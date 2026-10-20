@@ -93,7 +93,7 @@
   let lenis = null;
   // El Lab no hace scroll (se arrastra), así que ahí no hace falta el scroll suave
   if (!REDUCED && document.body.dataset.page !== 'lab') {
-    lenis = new Lenis({ lerp: 0.14, wheelMultiplier: 1.1 });
+    lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 0.85, touchMultiplier: 1 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -137,33 +137,13 @@
     }, 170);
   }
 
-  // Las "E" se pliegan recortándose (sin fundidos ni deformaciones): AYLEEEETA → AYLETA
-  function collapseEs() {
-    return gsap.to($$('.logo .e-extra'), {
-      width: 0, duration: 0.45, ease: 'power2.inOut', stagger: { each: 0.06, from: 'end' }, overwrite: true,
-    });
-  }
-
-  function expandEs() {
-    return gsap.to($$('.logo .e-extra'), {
-      width: (i, el) => el.scrollWidth, duration: 0.45, ease: 'power2.inOut', stagger: 0.06, overwrite: true,
-      onComplete: () => gsap.set($$('.logo .e-extra'), { clearProps: 'width' }),
-    });
-  }
-
+  // Las "E" se pliegan y se despliegan todo el rato (Ayleeeeta ⇄ Ayleta), sin fundidos
   function logoAnimation() {
-    const logo = $('.logo');
-    let collapsed = false;
-    let hovering = false;
-    const set = (c) => {
-      if (c === collapsed) return;
-      collapsed = c;
-      c ? collapseEs() : expandEs();
-    };
-    // Al empezar a hacer scroll → "AYLETA"; arriba del todo → "AYLEEEETA"
-    ScrollTrigger.create({ start: 80, end: () => ScrollTrigger.maxScroll(window) + 100, onToggle: (self) => { if (!hovering) set(self.isActive); } });
-    logo.addEventListener('mouseenter', () => { hovering = true; set(false); });
-    logo.addEventListener('mouseleave', () => { hovering = false; set(window.scrollY > 80); });
+    const extras = $$('.logo .e-extra');
+    if (!extras.length || REDUCED) return;
+    gsap.timeline({ repeat: -1, repeatDelay: 1.6, delay: 1.2 })
+      .to(extras, { width: 0, duration: 0.5, ease: 'power2.inOut', stagger: { each: 0.07, from: 'end' } })
+      .to(extras, { width: (i, el) => el.scrollWidth, duration: 0.5, ease: 'power2.inOut', stagger: 0.07 }, '+=1.6');
   }
 
   /* ------------------------------------------------------------------------
@@ -212,6 +192,7 @@
         lenis?.start();
         ScrollTrigger.refresh();
         stickers();
+        logoAnimation(); // cuando las fuentes ya han cargado (para medir bien las letras)
         openFromHash();
       },
     });
@@ -228,7 +209,7 @@
     if (has('.hero__card')) tl.from('.hero__card', { clipPath: 'inset(100% 0 0 0)', duration: 1.1 }, '<0.1');
     if (has('.card')) tl.from('.card', { y: 50, opacity: 0, stagger: 0.04 }, '<0.1');
     if (has('.page .side__sticky')) tl.from('.page .side__sticky > *', { y: 16, opacity: 0, stagger: 0.04, duration: 0.8 }, '<0.1');
-    if (has('.board__item')) tl.from('.board__item .board__media, .board__info > *', { scale: 0.6, opacity: 0, stagger: { each: 0.012, from: 'random' }, duration: 0.9 }, '<');
+    if (has('.board__item')) tl.from('.board__item .board__media, .board__info > *', { scale: 0.6, opacity: 0, stagger: { each: 0.012, from: 'random' }, duration: 0.9, clearProps: 'opacity,transform' }, '<');
     tl.from('.side .meta, .main__row, .work__info, .stickers__hint, .dot', { opacity: 0, y: 10, stagger: 0.02, duration: 0.7 }, '<0.15');
 
     if (REDUCED) tl.progress(1);
@@ -296,9 +277,9 @@
         p: n - 1, ease: 'none',
         onUpdate: () => { layout(); setActive(Math.round(state.p)); },
         scrollTrigger: {
-          trigger: '.home', start: 'top top', end: () => `+=${(n - 1) * innerHeight * 0.32}`,
-          pin: true, scrub: 0.6, invalidateOnRefresh: true,
-          snap: { snapTo: 1 / (n - 1), duration: { min: 0.2, max: 0.6 }, delay: 0.08, ease: 'power2.inOut' },
+          trigger: '.home', start: 'top top', end: () => `+=${(n - 1) * innerHeight * 0.5}`,
+          pin: true, scrub: 1, invalidateOnRefresh: true,
+          snap: { snapTo: 1 / (n - 1), duration: { min: 0.3, max: 0.8 }, delay: 0.3, ease: 'sine.inOut' },
         },
       });
 
@@ -461,7 +442,15 @@
     if ($('#contacto')) {
       ScrollTrigger.create({
         trigger: '#contacto', start: 'top 60%', end: () => ScrollTrigger.maxScroll(window) + 100,
-        onToggle: (s) => setActive(s.isActive ? 3 : page),
+        onToggle: (s) => {
+          setActive(s.isActive ? 3 : page);
+          // Pastilla del móvil
+          const pill = $('.pill');
+          if (pill) {
+            pill.style.setProperty('--i', s.isActive ? 3 : page);
+            $$('.pill__link').forEach((l, k) => l.classList.toggle('is-active', k === (s.isActive ? 3 : page)));
+          }
+        },
       });
     }
     // Línea de progreso bajo la barra superior
@@ -749,9 +738,9 @@
         const pool = [p.poster, p.cover, ...p.blocks.flatMap((b) => b.media)].filter(Boolean);
         const images = pool.filter((m) => m.type === 'image');
         const media = (images.length ? images : pool).filter((m, i, arr) => arr.findIndex((x) => x.src === m.src) === i).slice(0, g.count);
-        return media.map((m) => ({ m, title: p.title, year: p.year }));
+        return media.map((m) => ({ m, title: p.title, year: p.year, tags: p.tags }));
       }
-      return g.media.map((m) => ({ m, title: g.title, year: g.year }));
+      return g.media.map((m) => ({ m, title: g.title, year: g.year, tags: g.tags }));
     });
     // Intercala los proyectos para que el collage quede variado
     const items = [];
@@ -761,8 +750,8 @@
     // Colocación "desordenada" pero siempre igual (aleatorio con semilla)
     let seed = 7;
     const rand = (a, b) => { seed = (seed * 16807) % 2147483647; return a + ((seed - 1) / 2147483646) * (b - a); };
-    const cellW = 330;
-    const cellH = 370;
+    const cellW = 410;
+    const cellH = 450;
     const cols = Math.ceil(Math.sqrt(items.length * 1.3));
     const rows = Math.ceil(items.length / cols);
     const tileW = cols * cellW;
@@ -771,8 +760,8 @@
 
     const placed = items.map((it, i) => {
       const ratio = it.m.h / it.m.w;
-      let w = ratio < 1 ? rand(210, 270) : rand(150, 200);
-      if (w * ratio > 280) w = 280 / ratio;
+      let w = ratio < 1 ? rand(260, 330) : rand(190, 250);
+      if (w * ratio > 350) w = 350 / ratio;
       const h = w * ratio;
       const col = i % cols;
       const row = Math.floor(i / cols);
@@ -785,7 +774,7 @@
     });
 
     board.innerHTML = placed.map((it) => `
-      <figure class="board__item" style="width:${it.w.toFixed(0)}px; --r:${it.r.toFixed(1)}deg">
+      <figure class="board__item" data-tags="${it.tags.join(' ')}" style="width:${it.w.toFixed(0)}px; --r:${it.r.toFixed(1)}deg">
         <div class="board__media" style="aspect-ratio:${it.m.w} / ${it.m.h}">
           ${it.m.type === 'video'
             ? `<video src="${it.m.src}#t=0.5" muted loop playsinline preload="metadata"></video>`
@@ -795,6 +784,19 @@
       </figure>`).join('');
     const els = $$('.board__item', board);
 
+    // Filtros por disciplina: las piezas que no encajan se apagan
+    const used = Object.keys(FILTERS).filter((k) => items.some((it) => it.tags.includes(k)));
+    const bar = $('#lab-filters');
+    bar.innerHTML = ['todo', ...used].map((k) => `<button type="button" data-filter="${k}" aria-pressed="${k === 'todo'}">${k === 'todo' ? 'Todo' : FILTERS[k]}</button>`).join('');
+    bar.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-filter]');
+      if (!b) return;
+      $$('[data-filter]', bar).forEach((x) => x.setAttribute('aria-pressed', x === b));
+      const k = b.dataset.filter;
+      els.forEach((el) => el.classList.toggle('is-dim', k !== 'todo' && !el.dataset.tags.split(' ').includes(k)));
+      $('#lab-count').textContent = els.filter((el) => !el.classList.contains('is-dim')).length;
+    });
+
     // Movimiento: rueda/trackpad, arrastre con ratón o dedo, y flechas del teclado
     const pos = { x: -(tileW - innerWidth) / 2, y: -(tileH - innerHeight) / 2 };
     const target = { ...pos };
@@ -802,8 +804,8 @@
 
     window.addEventListener('wheel', (e) => {
       e.preventDefault();
-      target.x -= e.deltaX * 1.1;
-      target.y -= e.deltaY * 1.1;
+      target.x -= e.deltaX * 0.7;
+      target.y -= e.deltaY * 0.7;
     }, { passive: false });
 
     let drag = null;
@@ -822,8 +824,8 @@
     });
     const endDrag = () => {
       if (!drag) return;
-      target.x += drag.vx * 12; // inercia al soltar
-      target.y += drag.vy * 12;
+      target.x += drag.vx * 8; // inercia al soltar
+      target.y += drag.vy * 8;
       drag = null;
       board.classList.remove('is-dragging');
     };
@@ -847,7 +849,7 @@
       const dx = target.x - pos.x;
       const dy = target.y - pos.y;
       if (Math.abs(dx) < 0.05 && Math.abs(dy) < 0.05) return; // quieto: no hace falta repintar
-      const ease = drag ? 0.35 : 0.09;
+      const ease = drag ? 0.3 : 0.075;
       pos.x += dx * ease;
       pos.y += dy * ease;
       render();
@@ -864,7 +866,6 @@
      ARRANQUE
      ------------------------------------------------------------------------ */
   lineBoil();
-  logoAnimation();
   carousel();
   lab();
   topNav();

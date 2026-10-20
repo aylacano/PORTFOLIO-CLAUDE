@@ -107,13 +107,6 @@ em { font-style: normal; }
 .link-roll:hover span { transform: translateY(-100%); }
 
 /* 3. PRELOADER Y CURSOR --------------------------------------------------- */
-.loader {
-  position: fixed; inset: 0; z-index: 300;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-  background: #ecebe6; color: #1b1a19; /* gris clarito, igual en modo claro y oscuro */
-}
-.loader__img { width: min(240px, 52vw); height: auto; filter: url(#boil-l-0); }
-.loader__count { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
 
 .cursor {
   position: fixed; top: 0; left: 0; z-index: 450; pointer-events: none;
@@ -141,31 +134,37 @@ em { font-style: normal; }
 .topnav a.is-active { color: var(--ink); }
 .topnav a:hover { color: var(--pink); }
 
-/* Botones de la barra: neutros; se vuelven rosas al pasar el ratón */
-.pink-btn {
-  height: 28px; border-radius: 99px; background: transparent; color: var(--ink); border: 1px solid var(--line);
-  transition: background-color 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+/* Botones redondos (como en la primera versión): gris suave; rosa al pasar el ratón */
+.round-btn {
+  width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--soft); color: var(--ink);
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease), transform 0.4s var(--ease-out);
 }
-.pink-btn:hover { background: var(--pink); color: var(--pink-ink); border-color: var(--pink); }
+.round-btn:hover { background: var(--pink); color: var(--pink-ink); }
+.round-btn:active { transform: scale(0.92); }
+#theme-toggle svg { transition: transform 0.6s var(--ease-out); }
+#theme-toggle[aria-checked='true'] svg { transform: rotate(180deg); }
+#sound-toggle .sound-on { display: none; }
+#sound-toggle[aria-pressed='true'] .sound-on { display: inline; }
+#sound-toggle[aria-pressed='true'] .sound-off { display: none; }
 
-/* Sonido: altavoz (con ondas = encendido, con cruz = apagado) */
-.sound-btn { width: 28px; display: grid; place-items: center; }
-.sound-btn svg { width: 15px; height: 15px; }
-.sound-btn .sound-on { display: none; }
-.sound-btn[aria-pressed='true'] .sound-on { display: inline; }
-.sound-btn[aria-pressed='true'] .sound-off { display: none; }
-
-/* Tema: interruptor con sol y luna y una bolita que se desliza */
-.switch { position: relative; width: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 7px; }
-.switch__icon { width: 12px; height: 12px; position: relative; z-index: 1; transition: color 0.3s; }
-.switch__knob {
-  position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%;
-  background: currentColor; transition: transform 0.45s var(--ease-out);
+/* Menú en pastilla (solo en el móvil) */
+.pill {
+  position: fixed; left: 50%; bottom: 14px; z-index: 70;
+  display: none; grid-template-columns: repeat(4, 1fr);
+  width: min(420px, calc(100vw - 24px)); height: 46px; padding: 4px; border-radius: 99px;
+  background: color-mix(in srgb, var(--soft) 88%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateX(-50%);
 }
-.switch[aria-checked='true'] .switch__knob { transform: translateX(24px); }
-/* El icono que queda encima de la bolita cambia de color para verse */
-.switch[aria-checked='false'] .switch__icon--sun, .switch[aria-checked='true'] .switch__icon--moon { color: var(--bg); }
-.switch:hover[aria-checked='false'] .switch__icon--sun, .switch:hover[aria-checked='true'] .switch__icon--moon { color: var(--pink); }
+.pill__link { position: relative; z-index: 1; display: grid; place-items: center; border-radius: 99px; font-size: 12px; font-weight: 550; transition: color 0.3s; }
+.pill__link.is-active { color: var(--pink-ink); }
+.pill__indicator {
+  position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 4);
+  border-radius: 99px; background: var(--pink);
+  transform: translateX(calc(var(--i, 0) * 100%)); transition: transform 0.6s var(--ease-out);
+}
 .topbar__progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--ink); transform-origin: 0 50%; transform: scaleX(0); }
 .topbar__right { padding: 0 var(--pad); display: flex; align-items: center; gap: 6px; }
 
@@ -303,7 +302,13 @@ em { font-style: normal; }
 .alter__grid img, .alter__grid video { width: 100%; height: auto; }
 
 /* Lab: lienzo infinito que se arrastra, con las piezas giradas como un collage */
-body[data-page='lab'] { overflow: hidden; }
+body[data-page='lab'] {
+  overflow: hidden;
+  /* El Lab siempre en oscuro */
+  --bg: #1c1b1a; --ink: #f3f1ec; --muted: #8f8b85; --soft: #2b2927; --line: rgba(243, 241, 236, 0.14);
+  background: var(--bg); color: var(--ink);
+}
+body[data-page='lab'] #theme-toggle { display: none; }
 .board {
   position: fixed; inset: var(--bar) 0 0 0; overflow: hidden;
   cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; outline: none;
@@ -311,7 +316,7 @@ body[data-page='lab'] { overflow: hidden; }
 .board.is-dragging { cursor: grabbing; }
 .board__item { position: absolute; top: 0; left: 0; margin: 0; will-change: transform; }
 .board__media {
-  background: var(--soft); overflow: hidden;
+  background: var(--soft); overflow: hidden; transition: opacity 0.4s, filter 0.4s;
   transform: rotate(var(--r)); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
   transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
 }
@@ -323,12 +328,19 @@ body[data-page='lab'] { overflow: hidden; }
   transition: opacity 0.3s, transform 0.4s var(--ease-out); pointer-events: none;
 }
 .board__item:hover figcaption { opacity: 1; transform: none; }
+/* Filtro por disciplina: las piezas que no encajan se apagan */
+.board__item.is-dim .board__media { opacity: 0.12; filter: grayscale(1); }
+.board__item.is-dim figcaption { display: none; }
 .board__info {
   position: fixed; left: var(--pad); bottom: var(--pad); z-index: 5; width: min(300px, calc(100vw - 28px));
   display: grid; gap: 8px; padding: 14px; border: 1px solid var(--line);
   background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  pointer-events: none;
 }
+.board__info .chips--buttons { margin-top: 2px; }
+.chips--buttons { display: flex; flex-wrap: wrap; gap: 4px; }
+.chips--buttons button { padding: 4px 9px; border: 1px solid var(--line); border-radius: 99px; font-size: 11px; font-weight: 550; transition: background-color 0.25s, color 0.25s, border-color 0.25s; }
+.chips--buttons button:hover { background: var(--pink); color: var(--pink-ink); border-color: var(--pink); }
+.chips--buttons button[aria-pressed='true'] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .lab__intro { font-size: 14px; }
 
 /* 8. CONTACTO ------------------------------------------------------------- */
@@ -409,14 +421,13 @@ body[data-page='lab'] { overflow: hidden; }
   .topbar__side { padding-right: 0; }
   .logo { font-size: 17px; }
   .topbar__side { padding-left: 12px; }
-  .topnav { justify-content: flex-end; gap: 9px; padding: 0 8px; font-size: 10.5px; }
-  .topnav a { white-space: nowrap; }
+  .topnav { display: none; }
+  .pill { display: grid; }
+  .topbar { grid-template-columns: 1fr auto; }
+  .toast { bottom: 74px; }
+  .contact__main, .about .main { padding-bottom: 90px; }
   .topbar__right { padding-left: 0; }
-  .switch { width: 42px; height: 24px; padding: 0 5px; }
-  .switch[aria-checked='true'] .switch__knob { transform: translateX(18px); }
-  .switch__icon { width: 10px; height: 10px; }
-  .switch__knob { width: 16px; height: 16px; }
-  .sound-btn { width: 24px; height: 24px; }
+  .round-btn { width: 30px; height: 30px; }
 
   .grid { grid-template-columns: 1fr; }
   .side { border-right: 0; border-bottom: 1px solid var(--line); }
@@ -446,6 +457,11 @@ body[data-page='lab'] { overflow: hidden; }
   .p-block__info { position: static; }
   .p-cover--tall { margin-left: 0; }
   .p-block__media, .p-block--no-info .p-block__media { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 899px) {
+  .board__info { bottom: 72px; left: 12px; }
+  .board__info .lab__intro { display: none; }
 }
 
 @media (max-width: 520px) {
