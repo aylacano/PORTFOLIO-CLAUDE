@@ -58,7 +58,7 @@ avconvert -s "original.mov" -p Preset1280x720 -o assets/video/nombre.mp4
 
 ## Si no ves los cambios online
 
-El navegador guarda copias de la web. Los archivos y los enlaces entre páginas llevan `?v=2026102701`: cada vez que subas cambios, busca y reemplaza ese número por uno nuevo en las 3 páginas (`index.html`, `lab.html`, `sobre-mi.html`) y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
+El navegador guarda copias de la web. Los archivos y los enlaces entre páginas llevan `?v=2026102801`: cada vez que subas cambios, busca y reemplaza ese número por uno nuevo en las 3 páginas (`index.html`, `lab.html`, `sobre-mi.html`) y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
 
 ## Publicar en GitHub Pages
 

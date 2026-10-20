@@ -221,7 +221,7 @@ em { font-style: normal; }
 }
 .statement__indent { display: inline-block; width: 2.2em; }
 /* "hablemos" lleva al contacto: se vuelve rosa al pasar el ratón */
-.statement__link { transition: color 0.25s; }
+.statement__link, .statement__link:hover { text-decoration: none; transition: color 0.25s; }
 .statement__link:hover { color: var(--pink); }
 
 /* Proyectos */
