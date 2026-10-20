@@ -73,7 +73,6 @@
     // Fotos de pequeña (en Sobre mí, en lugar de la foto de la portada)
     fill('#kid-photos', (el) => {
       el.innerHTML = BETA.map((b, i) => `<img src="${thumb(b)}" alt="Ayla de pequeña" width="${b.w}" height="${b.h}"${i ? '' : ' class="is-on"'}>`).join('');
-      $('#kid-caption').textContent = BETA[0].caption;
     });
   }
 
@@ -501,7 +500,7 @@
     $('#photos').addEventListener('mouseleave', () => { speed = 450; });
   }
 
-  // Fotos de pequeña: van pasando una a una, con su pie de foto
+  // Fotos de pequeña: van pasando una a una
   function kidPhotos() {
     const imgs = $$('#kid-photos img');
     if (imgs.length < 2 || REDUCED) return;
@@ -510,7 +509,6 @@
       imgs[i].classList.remove('is-on');
       i = (i + 1) % imgs.length;
       imgs[i].classList.add('is-on');
-      $('#kid-caption').textContent = BETA[i].caption;
     }, 1400);
   }
 

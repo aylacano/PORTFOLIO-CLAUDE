@@ -58,7 +58,7 @@ avconvert -s "original.mov" -p Preset1280x720 -o assets/video/nombre.mp4
 
 ## Currículum en PDF
 
-El botón "Descargar CV" de Sobre mí descarga `assets/cv/CV_AylaCano.pdf`. Se genera desde `cv/cv.html`, que usa los mismos datos que la web (`js/data.js`). Si cambias el CV, con la web abierta en local (`npx http-server -p 5173`) ejecuta:
+El botón "Descargar CV" de Sobre mí descarga `assets/cv/CV_AylaCano.pdf`. Se genera desde `cv/cv.html` (mismo diseño que tu CV original; el contenido se edita ahí directamente). Después de cambiarlo, con la web abierta en local (`npx http-server -p 5173`) ejecuta:
 
 ```bash
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --no-pdf-header-footer --virtual-time-budget=8000 --print-to-pdf="$PWD/assets/cv/CV_AylaCano.pdf" http://localhost:5173/cv/cv.html
@@ -66,7 +66,7 @@ El botón "Descargar CV" de Sobre mí descarga `assets/cv/CV_AylaCano.pdf`. Se g
 
 ## Si no ves los cambios online
 
-El navegador guarda copias de la web. Los archivos y los enlaces entre páginas llevan `?v=2026103101`: cada vez que subas cambios, busca y reemplaza ese número por uno nuevo en las 3 páginas (`index.html`, `lab.html`, `sobre-mi.html`) y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
+El navegador guarda copias de la web. Los archivos y los enlaces entre páginas llevan `?v=2026110101`: cada vez que subas cambios, busca y reemplaza ese número por uno nuevo en las 3 páginas (`index.html`, `lab.html`, `sobre-mi.html`) y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
 
 ## Publicar en GitHub Pages
 

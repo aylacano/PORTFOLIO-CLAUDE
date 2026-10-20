@@ -92,7 +92,6 @@ const ALTER_EGO = {
     img('assets/img/ayleeeeta/pegatinas.jpg', 1800, 1014),
     vid('assets/video/ayleeeeta-2.mp4', 720, 720),
     img('assets/img/ayleeeeta/pegatina-gris.jpg', 1400, 1400),
-    img('assets/img/ayleeeeta/pegatina.jpg', 545, 662),
   ],
 };
 
