@@ -239,24 +239,27 @@ const PROJECTS = [
   },
   {
     slug: 'el-clan',
-    title: 'El clan del oso cavernario',
-    kicker: 'Edición especial de la saga Los Hijos de la Tierra',
+    title: 'Los Hijos de la Tierra',
+    kicker: 'Edición especial de la saga',
     tags: ['editorial', 'ilustracion'],
     year: '2024',
-    cover: img('assets/img/el-clan/pagina-1.jpg', 1600, 1066),
+    // Foto principal: el merch, que enseña los tres libros a la vez
+    cover: img('assets/img/el-clan/pagina-7.jpg', 1600, 1066),
+    // En la portada de la web: el primer libro (El clan del oso cavernario)
+    card: img('assets/img/el-clan/pagina-1.jpg', 1600, 1066),
     blocks: [
       {
         text: [
-          'Un toque prehistórico y mágico: una camisa con un estilo limpio y geométrico que contrasta con la portada, donde ilustré elementos inspirados en las pinturas rupestres rodeando al animal protagonista.',
-          'Además, una pequeña línea de merch con tote bags, marcapáginas, pegatinas y hasta un mini mapa para seguir la historia.',
+          'Una edición especial con un toque prehistórico: sobrecubiertas limpias y geométricas que esconden tapas ilustradas con motivos de pinturas rupestres.',
+          'Y para acompañar, merch: tote bags, marcapáginas, pegatinas y un mini mapa para no perderse.',
         ],
+        // layout: 'row' = todas en fila, del mismo tamaño
+        layout: 'row',
+        // Cada libro: de la sobrecubierta a la tapa (stop-motion al pasar el ratón)
         media: [
-          img('assets/img/el-clan/pagina-2.jpg', 1600, 1066),
-          img('assets/img/el-clan/pagina-3.jpg', 1600, 1066),
-          img('assets/img/el-clan/pagina-4.jpg', 1600, 1066),
-          img('assets/img/el-clan/pagina-5.jpg', 1600, 1066),
-          img('assets/img/el-clan/pagina-6.jpg', 1600, 1066),
-          img('assets/img/el-clan/pagina-7.jpg', 1600, 1066),
+          flip(['assets/img/el-clan/pagina-1.jpg', 'assets/img/el-clan/pagina-5.jpg'], 1600, 1066), // El clan del oso cavernario
+          flip(['assets/img/el-clan/pagina-2.jpg', 'assets/img/el-clan/pagina-3.jpg'], 1600, 1066), // El valle de los caballos
+          flip(['assets/img/el-clan/pagina-4.jpg', 'assets/img/el-clan/pagina-6.jpg'], 1600, 1066), // Los cazadores de mamuts
         ],
       },
     ],

@@ -686,7 +686,7 @@
             ${b.credit ? `<p class="p-block__credit">${esc(b.credit)}</p>` : ''}
             ${b.text ? `<div class="p-block__text">${b.text.map((t) => `<p>${esc(t)}</p>`).join('')}</div>` : ''}
           </div>` : ''}
-          <div class="p-block__media${b.layout === 'strip' ? ' p-block__media--strip' : ''}">${media.map((m) => mediaHTML(m)).join('')}</div>
+          <div class="p-block__media${b.layout ? ` p-block__media--${b.layout}` : ''}">${media.map((m) => mediaHTML(m)).join('')}</div>
         </section>`;
       }).join('')}
 

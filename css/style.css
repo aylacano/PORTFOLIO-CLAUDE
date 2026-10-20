@@ -421,6 +421,9 @@ body[data-page='lab'] #theme-toggle { display: none; }
 .p-block--no-info .p-block__media { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
 .p-media { position: relative; background: var(--soft); }
 
+/* En fila: todas las piezas del mismo tamaño, una al lado de otra */
+.p-block__media--row .p-media, .p-block__media--row .p-media.is-wide { grid-column: auto; }
+
 /* Tira de película: fotogramas en fila sobre negro, con perforaciones arriba y abajo */
 .p-block__media--strip {
   grid-template-columns: repeat(4, 1fr); gap: 6px; align-self: start;
