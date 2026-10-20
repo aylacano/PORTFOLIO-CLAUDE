@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://freight.cargo.site">
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
   <!-- ?v= obliga al navegador a descargar la versión nueva cuando cambia (súbelo en cada cambio) -->
-  <link rel="stylesheet" href="css/style.css?v=2026102201">
+  <link rel="stylesheet" href="css/style.css?v=2026102301">
 
   <!-- Tema: claro por defecto, o el que se haya elegido antes -->
   <script>
@@ -64,13 +64,13 @@
       <a href="index.html">Proyectos</a>
       <a href="lab.html" class="is-active" aria-current="page">Lab</a>
       <a href="sobre-mi.html">Sobre mí</a>
-      <a href="#contacto">Contacto</a>
+      <a href="index.html#contacto">Contacto</a>
     </nav>
-    <div class="topbar__right tiny">
-      <button class="pink-btn sound-btn" id="sound-toggle" type="button" aria-label="Sonido (próximamente)" aria-pressed="false" data-cursor="Sonido">
+    <div class="topbar__right tiny" data-cursor-hide>
+      <button class="pink-btn sound-btn" id="sound-toggle" type="button" aria-label="Sonido (próximamente)" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.2h3.6L12 5v14l-4.9-4.2H3.5z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><g class="sound-on" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path d="M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/></g><g class="sound-off" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg>
       </button>
-      <button class="pink-btn switch" id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Modo oscuro" data-cursor="Tema">
+      <button class="pink-btn switch" id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Modo oscuro">
         <svg class="switch__icon switch__icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
         <svg class="switch__icon switch__icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="currentColor"/></svg>
         <span class="switch__knob" aria-hidden="true"></span>
@@ -79,56 +79,16 @@
     <span class="topbar__progress" aria-hidden="true"></span>
   </header>
 
-  <main class="page">
-    <!-- ============ LAB ============ -->
-    <section class="grid lab" id="lab-section">
-      <aside class="side">
-        <div class="side__sticky">
-          <p class="tiny muted">Lab</p>
-          <p class="lab__intro">Todo lo que he hecho: proyectos de clase, encargos, premios, pruebas y cosas que no tienen página propia.</p>
-          <div class="meta"><p class="muted">Filtrar:</p><div class="chips chips--buttons" id="lab-filters" role="toolbar" aria-label="Filtrar por disciplina"></div></div>
-          <p class="tiny muted"><span id="lab-count"></span> piezas</p>
-        </div>
-      </aside>
-      <div class="main">
-        <div class="lab__grid" id="lab"></div>
-      </div>
-    </section>
+  <main class="lab-page">
+    <!-- ============ LAB: lienzo infinito que se arrastra ============ -->
+    <div class="board" id="lab" tabindex="0" aria-label="Lab: arrastra o haz scroll para explorar"></div>
 
-    <!-- ============ CONTACTO ============ -->
-    <section class="grid contact" id="contacto">
-      <aside class="side">
-        <div class="side__sticky">
-          <p class="tiny muted">Contacto</p>
-          <dl class="meta"><dt>Email:</dt><dd><a class="link-roll" id="mail-link-2"><span></span></a></dd></dl>
-          <dl class="meta"><dt>Instagram:</dt><dd><a class="link-roll" id="instagram-link-2" target="_blank" rel="noopener"><span data-text="@ayleeeeta">@ayleeeeta</span></a></dd></dl>
-          <dl class="meta"><dt>Hora local:</dt><dd>Madrid <span id="clock">--:--</span></dd></dl>
-        </div>
-      </aside>
-      <div class="main contact__main">
-        <h2 class="contact__title" data-split>¿Hacemos algo bonito?</h2>
-
-        <button class="contact__email magnetic" type="button" data-cursor="Copiar" id="copy-email">
-          <span class="contact__email-text"></span>
-          <span class="contact__email-icon" aria-hidden="true">↗</span>
-        </button>
-
-        <footer class="main__row footer">
-          <span class="tiny muted">© <span id="year"></span> Ayla Cano López</span>
-          <button type="button" class="tiny-btn link-roll" id="back-top"><span data-text="Volver arriba ↑">Volver arriba ↑</span></button>
-        </footer>
-      </div>
-    </section>
+    <div class="board__info">
+      <p class="tiny muted">Lab</p>
+      <p class="lab__intro">Todo lo que he hecho: proyectos de clase, encargos, premios, pruebas y cosas que no tienen página propia.</p>
+      <p class="tiny muted"><span id="lab-count"></span> piezas · Arrastra o haz scroll para explorar</p>
+    </div>
   </main>
-
-  <!-- ============ VISOR DE IMÁGENES DEL LAB ============ -->
-  <div class="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada" hidden>
-    <button class="lightbox__close tiny-btn" type="button" data-cursor="Cerrar">Cerrar ✕</button>
-    <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Anterior" data-cursor="Anterior">←</button>
-    <figure class="lightbox__figure"></figure>
-    <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Siguiente" data-cursor="Siguiente">→</button>
-    <p class="lightbox__caption tiny"></p>
-  </div>
 
   <div class="toast" role="status" aria-live="polite"></div>
 
@@ -138,8 +98,8 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
-  <script src="js/data.js?v=2026102201"></script>
-  <script src="js/lab-data.js?v=2026102201"></script>
-  <script src="js/main.js?v=2026102201"></script>
+  <script src="js/data.js?v=2026102301"></script>
+  <script src="js/lab-data.js?v=2026102301"></script>
+  <script src="js/main.js?v=2026102301"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 /* ==========================================================================
    LAB — todos mis proyectos, también los que no tienen página propia
    --------------------------------------------------------------------------
-   Cada grupo es un proyecto. Si tiene "link", al hacer clic se abre su página;
-   si no, la imagen se abre en grande.
+   Cada grupo es un proyecto. Las piezas se reparten por un lienzo infinito
+   que se explora arrastrando o con el scroll.
    Para añadir algo nuevo, copia un grupo y cambia los datos.
    ========================================================================== */
 

@@ -324,4 +324,5 @@ const PROJECTS = [
    · size: ancho relativo a la caja (0.3 = 30 %)
    -------------------------------------------------------------------------- */
 const STICKER = { src: 'assets/img/ayleeeeta/pegatina-recortada.jpg', w: 469, h: 588 };
-const STICKERS = [0.3, 0.24, 0.27, 0.2, 0.25, 0.22].map((size) => ({ ...STICKER, size, shape: 'rect' }));
+// Todas del mismo tamaño (0.26 = 26 % del ancho de la caja); cambia el 6 para poner más o menos
+const STICKERS = Array.from({ length: 6 }, () => ({ ...STICKER, size: 0.26, shape: 'rect' }));

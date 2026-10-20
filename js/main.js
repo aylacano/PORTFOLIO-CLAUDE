@@ -78,6 +78,7 @@
       <a class="card" href="#/proyecto/${p.slug}" data-index="${i}" data-cursor="Ver">
         ${still ? `<img src="${thumb(still, 900)}" alt="${esc(p.title)}" ${i > 3 ? 'loading="lazy"' : ''} decoding="async">` : ''}
         ${isVideo ? `<video muted loop playsinline ${still ? `preload="none" data-src="${p.cover.src}"` : `preload="metadata" src="${p.cover.src}#t=0.5" class="is-still"`}></video>` : ''}
+        <span class="card__cover" aria-hidden="true"><b>${pad(i + 1)}</b><strong>${esc(p.title)}</strong></span>
         <span class="card__label"><span>${pad(i + 1)}</span>${esc(p.title)}</span>
       </a>`;
     }).join('');
@@ -90,7 +91,8 @@
      2. SCROLL SUAVE (Lenis) sincronizado con GSAP
      ------------------------------------------------------------------------ */
   let lenis = null;
-  if (!REDUCED) {
+  // El Lab no hace scroll (se arrastra), así que ahí no hace falta el scroll suave
+  if (!REDUCED && document.body.dataset.page !== 'lab') {
     lenis = new Lenis({ lerp: 0.14, wheelMultiplier: 1.1 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
@@ -226,7 +228,7 @@
     if (has('.hero__card')) tl.from('.hero__card', { clipPath: 'inset(100% 0 0 0)', duration: 1.1 }, '<0.1');
     if (has('.card')) tl.from('.card', { y: 50, opacity: 0, stagger: 0.04 }, '<0.1');
     if (has('.page .side__sticky')) tl.from('.page .side__sticky > *', { y: 16, opacity: 0, stagger: 0.04, duration: 0.8 }, '<0.1');
-    if (has('.lab__item')) tl.from('.lab__item', { y: 40, opacity: 0, stagger: 0.025, duration: 0.9 }, '<');
+    if (has('.board__item')) tl.from('.board__item .board__media, .board__info > *', { scale: 0.6, opacity: 0, stagger: { each: 0.012, from: 'random' }, duration: 0.9 }, '<');
     tl.from('.side .meta, .main__row, .work__info, .stickers__hint, .dot', { opacity: 0, y: 10, stagger: 0.02, duration: 0.7 }, '<0.15');
 
     if (REDUCED) tl.progress(1);
@@ -385,7 +387,7 @@
         el.style.height = `${ph}px`;
         sizes.push([size, ph]);
         if (s.shape === 'circle') return Bodies.circle(x, y, Math.min(size, ph) / 2, opts);
-        return Bodies.rectangle(x, y, size, ph, { ...opts, chamfer: { radius: Math.min(size, ph) * 0.12 } });
+        return Bodies.rectangle(x, y, size, ph, opts);
       });
 
       Composite.add(engine.world, [...walls, ...bodies, grab]);
@@ -502,9 +504,11 @@
     const label = $('.cursor__label');
     const xTo = gsap.quickTo(el, 'x', { duration: 0.25, ease: 'power3.out' });
     const yTo = gsap.quickTo(el, 'y', { duration: 0.25, ease: 'power3.out' });
-    window.addEventListener('mousemove', (e) => { xTo(e.clientX); yTo(e.clientY); el.classList.remove('is-hidden'); });
+    window.addEventListener('mousemove', (e) => { xTo(e.clientX); yTo(e.clientY); el.classList.toggle('is-hidden', !!e.target.closest('[data-cursor-hide]')); });
     document.addEventListener('mouseleave', () => el.classList.add('is-hidden'));
+    // Sobre los botones de la barra el cursor se esconde para no taparlos
     document.addEventListener('mouseover', (e) => {
+      el.classList.toggle('is-hidden', !!e.target.closest('[data-cursor-hide]'));
       const t = e.target.closest('[data-cursor]');
       if (t) { label.textContent = t.dataset.cursor; el.classList.add('is-big'); }
     });
@@ -731,13 +735,13 @@
   }
 
   /* ------------------------------------------------------------------------
-     11. LAB: todos los proyectos en una cuadrícula + visor
+     11. LAB: lienzo infinito con todas las piezas (se arrastra en cualquier dirección)
      ------------------------------------------------------------------------ */
   function lab() {
-    const grid = $('#lab');
-    if (!grid || typeof LAB === 'undefined') return;
+    const board = $('#lab');
+    if (!board || typeof LAB === 'undefined') return;
 
-    // Convierte los grupos de lab-data.js en una lista de piezas
+    // Piezas de cada grupo de lab-data.js
     const groups = LAB.map((g) => {
       if (g.project) {
         const p = PROJECTS.find((x) => x.slug === g.project);
@@ -745,99 +749,115 @@
         const pool = [p.poster, p.cover, ...p.blocks.flatMap((b) => b.media)].filter(Boolean);
         const images = pool.filter((m) => m.type === 'image');
         const media = (images.length ? images : pool).filter((m, i, arr) => arr.findIndex((x) => x.src === m.src) === i).slice(0, g.count);
-        return media.map((m) => ({ m, title: p.title, kicker: p.kicker, year: p.year, tags: p.tags, link: `index.html#/proyecto/${p.slug}` }));
+        return media.map((m) => ({ m, title: p.title, year: p.year }));
       }
-      return g.media.map((m) => ({ m, title: g.title, kicker: g.kicker, year: g.year, tags: g.tags }));
+      return g.media.map((m) => ({ m, title: g.title, year: g.year }));
     });
-    // Intercala los proyectos (1.ª pieza de cada uno, luego la 2.ª…) para que la cuadrícula quede variada
+    // Intercala los proyectos para que el collage quede variado
     const items = [];
     for (let r = 0; groups.some((g) => g[r]); r++) groups.forEach((g) => { if (g[r]) items.push(g[r]); });
+    $('#lab-count').textContent = items.length;
 
-    grid.innerHTML = items.map((it, i) => `
-      <figure class="lab__item" data-index="${i}" data-tags="${it.tags.join(' ')}" data-cursor="${it.link ? 'Ver proyecto' : 'Ampliar'}" tabindex="0" role="button" aria-label="${esc(it.title)}">
-        <div class="lab__media" style="aspect-ratio: ${it.m.w} / ${it.m.h}">
+    // Colocación "desordenada" pero siempre igual (aleatorio con semilla)
+    let seed = 7;
+    const rand = (a, b) => { seed = (seed * 16807) % 2147483647; return a + ((seed - 1) / 2147483646) * (b - a); };
+    const cellW = 330;
+    const cellH = 370;
+    const cols = Math.ceil(Math.sqrt(items.length * 1.3));
+    const rows = Math.ceil(items.length / cols);
+    const tileW = cols * cellW;
+    const tileH = rows * cellH;
+    const margin = 320; // zona fuera de pantalla donde las piezas "dan la vuelta"
+
+    const placed = items.map((it, i) => {
+      const ratio = it.m.h / it.m.w;
+      let w = ratio < 1 ? rand(210, 270) : rand(150, 200);
+      if (w * ratio > 280) w = 280 / ratio;
+      const h = w * ratio;
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      return {
+        ...it, w, h,
+        x: col * cellW + rand(10, cellW - w - 10),
+        y: row * cellH + rand(10, cellH - h - 40),
+        r: rand(-4, 4),
+      };
+    });
+
+    board.innerHTML = placed.map((it) => `
+      <figure class="board__item" style="width:${it.w.toFixed(0)}px; --r:${it.r.toFixed(1)}deg">
+        <div class="board__media" style="aspect-ratio:${it.m.w} / ${it.m.h}">
           ${it.m.type === 'video'
             ? `<video src="${it.m.src}#t=0.5" muted loop playsinline preload="metadata"></video>`
-            : `<img src="${thumb(it.m, 700)}" alt="" loading="lazy" decoding="async">`}
+            : `<img src="${thumb(it.m, 600)}" alt="${esc(it.title)}" loading="lazy" decoding="async" draggable="false">`}
         </div>
-        <figcaption class="tiny"><span>${esc(it.title)}</span><span class="muted">${it.year || ''}</span></figcaption>
+        <figcaption class="tiny">${esc(it.title)}${it.year ? ` · ${it.year}` : ''}</figcaption>
       </figure>`).join('');
+    const els = $$('.board__item', board);
 
-    // Filtros por disciplina
-    const used = Object.keys(FILTERS).filter((k) => items.some((it) => it.tags.includes(k)));
-    $('#lab-filters').innerHTML = ['todo', ...used].map((k) => `<button type="button" data-filter="${k}" aria-pressed="${k === 'todo'}">${k === 'todo' ? 'Todo' : FILTERS[k]}</button>`).join('');
-    const els = $$('.lab__item', grid);
-    const count = () => { $('#lab-count').textContent = els.filter((el) => !el.hidden).length; };
-    count();
-    $('#lab-filters').addEventListener('click', (e) => {
-      const b = e.target.closest('[data-filter]');
-      if (!b) return;
-      $$('[data-filter]').forEach((x) => x.setAttribute('aria-pressed', x === b));
-      const k = b.dataset.filter;
-      els.forEach((el) => { el.hidden = k !== 'todo' && !el.dataset.tags.split(' ').includes(k); });
-      count();
-      if (!REDUCED) gsap.fromTo(els.filter((el) => !el.hidden), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'expo.out', stagger: 0.02 });
-      ScrollTrigger.refresh();
+    // Movimiento: rueda/trackpad, arrastre con ratón o dedo, y flechas del teclado
+    const pos = { x: -(tileW - innerWidth) / 2, y: -(tileH - innerHeight) / 2 };
+    const target = { ...pos };
+    const wrap = (v, size) => ((v % size) + size) % size;
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      target.x -= e.deltaX * 1.1;
+      target.y -= e.deltaY * 1.1;
+    }, { passive: false });
+
+    let drag = null;
+    board.addEventListener('pointerdown', (e) => {
+      drag = { x: e.clientX, y: e.clientY, vx: 0, vy: 0 };
+      board.setPointerCapture(e.pointerId);
+      board.classList.add('is-dragging');
+    });
+    board.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      const dy = e.clientY - drag.y;
+      drag = { x: e.clientX, y: e.clientY, vx: dx, vy: dy };
+      target.x += dx;
+      target.y += dy;
+    });
+    const endDrag = () => {
+      if (!drag) return;
+      target.x += drag.vx * 12; // inercia al soltar
+      target.y += drag.vy * 12;
+      drag = null;
+      board.classList.remove('is-dragging');
+    };
+    board.addEventListener('pointerup', endDrag);
+    board.addEventListener('pointercancel', endDrag);
+    board.addEventListener('keydown', (e) => {
+      const k = { ArrowLeft: [120, 0], ArrowRight: [-120, 0], ArrowUp: [0, 120], ArrowDown: [0, -120] }[e.key];
+      if (k) { e.preventDefault(); target.x += k[0]; target.y += k[1]; }
     });
 
-    // Los vídeos de la cuadrícula se mueven solo cuando se ven
-    const io = new IntersectionObserver((entries) => entries.forEach(({ target, isIntersecting }) => {
-      isIntersecting ? target.play().catch(() => {}) : target.pause();
-    }), { threshold: 0.3 });
-    $$('video', grid).forEach((v) => io.observe(v));
-
-    // Visor
-    const box = $('.lightbox');
-    const fig = $('.lightbox__figure');
-    const cap = $('.lightbox__caption');
-    let current = 0;
-    const visible = () => els.filter((el) => !el.hidden).map((el) => +el.dataset.index);
-    const show = (i) => {
-      current = i;
-      const it = items[i];
-      fig.innerHTML = it.m.type === 'video'
-        ? `<video src="${it.m.src}" muted loop playsinline autoplay controls></video>`
-        : `<img src="${it.m.src}" alt="${esc(it.title)}">`;
-      cap.textContent = [it.title, it.kicker, it.year].filter(Boolean).join(' · ');
+    const render = () => {
+      els.forEach((el, i) => {
+        const it = placed[i];
+        const x = wrap(it.x + pos.x + margin, tileW) - margin;
+        const y = wrap(it.y + pos.y + margin, tileH) - margin;
+        el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      });
     };
-    const open = (i) => {
-      show(i);
-      box.hidden = false;
-      lenis?.stop();
-      document.documentElement.style.overflow = 'hidden';
-      if (!REDUCED) gsap.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.3 });
-      $('.lightbox__close').focus({ preventScroll: true });
-    };
-    const close = () => {
-      box.hidden = true;
-      fig.innerHTML = '';
-      document.documentElement.style.overflow = '';
-      lenis?.start();
-      els[current]?.focus({ preventScroll: true });
-    };
-    const step = (d) => {
-      const v = visible();
-      show(v[(v.indexOf(current) + d + v.length) % v.length]);
-    };
-
-    grid.addEventListener('click', (e) => {
-      const el = e.target.closest('.lab__item');
-      if (!el) return;
-      const it = items[+el.dataset.index];
-      if (it.link) location.href = it.link;
-      else open(+el.dataset.index);
+    render();
+    gsap.ticker.add(() => {
+      const dx = target.x - pos.x;
+      const dy = target.y - pos.y;
+      if (Math.abs(dx) < 0.05 && Math.abs(dy) < 0.05) return; // quieto: no hace falta repintar
+      const ease = drag ? 0.35 : 0.09;
+      pos.x += dx * ease;
+      pos.y += dy * ease;
+      render();
     });
-    grid.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.closest('.lab__item')) e.target.click(); });
-    $('.lightbox__close').addEventListener('click', close);
-    $('.lightbox__nav--prev').addEventListener('click', () => step(-1));
-    $('.lightbox__nav--next').addEventListener('click', () => step(1));
-    box.addEventListener('click', (e) => { if (e.target === box) close(); });
-    document.addEventListener('keydown', (e) => {
-      if (box.hidden) return;
-      if (e.key === 'Escape') close();
-      if (e.key === 'ArrowRight') step(1);
-      if (e.key === 'ArrowLeft') step(-1);
-    });
+
+    // Los vídeos solo se mueven cuando se ven
+    const io = new IntersectionObserver((entries) => entries.forEach(({ target: v, isIntersecting }) => {
+      isIntersecting ? v.play().catch(() => {}) : v.pause();
+    }), { root: board, threshold: 0.2 });
+    $$('video', board).forEach((v) => io.observe(v));
   }
 
   /* ------------------------------------------------------------------------
