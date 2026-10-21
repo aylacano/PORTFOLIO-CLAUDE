@@ -10,7 +10,7 @@
    ========================================================================== */
 
 const SFX = (() => {
-  const MASTER = 0.55;
+  const MASTER = 0.4;
   let ctx = null, out = null, noise = null;
   let on = false;
   try { on = localStorage.getItem('sound') === 'on'; } catch (e) {}
@@ -96,68 +96,68 @@ const SFX = (() => {
     // Scroll: un "tic" suave, como una rueda dentada
     tick(speed = 1) {
       if (!ready() || !every('tick', 45)) return;
-      tone({ type: 'triangle', f1: vary(2200, 0.1), f2: 1500, dur: 0.03, peak: Math.min(0.05, 0.015 + speed * 0.004) });
+      tone({ f1: vary(880, 0.08), f2: 640, dur: 0.035, peak: Math.min(0.028, 0.01 + speed * 0.003) });
     },
 
     // Cambio de proyecto en el carrusel: "clac" de tarjeta, más agudo cuanto más avanzas
     card(i = 0) {
       if (!ready() || !every('card', 90)) return;
-      const f = 330 * Math.pow(2, (i % 8) / 12 * 2);
-      tone({ type: 'triangle', f1: f * 2, f2: f, dur: 0.12, peak: 0.12 });
-      hiss({ filter: 'highpass', f1: 3000, dur: 0.05, peak: 0.05 });
+      const f = 196 * Math.pow(2, (i % 8) / 12);
+      tone({ f1: f * 1.5, f2: f, dur: 0.16, peak: 0.08 });
+      hiss({ filter: 'lowpass', f1: 1200, dur: 0.06, peak: 0.02 });
     },
 
     // Pasar el ratón por encima de algo clicable
     hover() {
       if (!ready() || !every('hover', 70)) return;
-      tone({ f1: vary(1300), f2: vary(1700), dur: 0.05, peak: 0.025 });
+      tone({ f1: vary(600), f2: vary(700), dur: 0.06, peak: 0.014 });
     },
 
     // Clic: una burbuja que hace "pop"
     pop() {
       if (!ready() || !every('pop', 40)) return;
-      tone({ f1: vary(720), f2: 180, dur: 0.09, peak: 0.16 });
+      tone({ f1: vary(420), f2: 140, dur: 0.1, peak: 0.1 });
     },
 
     // Coger una pegatina: sonido de despegarla del papel
     peel() {
       if (!ready() || !every('peel', 80)) return;
-      hiss({ f1: 900, f2: 4200, q: 1.4, dur: 0.22, peak: 0.13 });
-      tone({ f1: 500, f2: 900, dur: 0.08, peak: 0.04 });
+      hiss({ f1: 500, f2: 1800, q: 1, dur: 0.24, peak: 0.07 });
+      tone({ f1: 300, f2: 480, dur: 0.09, peak: 0.025 });
     },
 
     // Soltar una pegatina
     release() {
       if (!ready() || !every('release', 80)) return;
-      tone({ f1: 900, f2: 420, dur: 0.1, peak: 0.07 });
+      tone({ f1: 520, f2: 260, dur: 0.12, peak: 0.05 });
     },
 
     // Golpe de una pegatina contra el suelo, la pared u otra pegatina
     thud(strength = 1) {
       if (!ready() || !every('thud', 35)) return;
-      const peak = Math.min(0.22, 0.02 + strength * 0.018);
-      hiss({ filter: 'lowpass', f1: vary(700, 0.2), dur: 0.09, peak });
-      tone({ f1: vary(160, 0.15), f2: 70, dur: 0.1, peak: peak * 0.8 });
+      const peak = Math.min(0.14, 0.015 + strength * 0.012);
+      hiss({ filter: 'lowpass', f1: vary(450, 0.2), dur: 0.1, peak });
+      tone({ f1: vary(120, 0.15), f2: 55, dur: 0.12, peak: peak * 0.8 });
     },
 
     // Abrir y cerrar un proyecto: una ráfaga de aire que sube o baja
     whoosh(up = true) {
       if (!ready() || !every('whoosh', 150)) return;
-      hiss({ f1: up ? 300 : 2600, f2: up ? 2600 : 300, q: 0.8, dur: 0.38, peak: 0.1 });
+      hiss({ f1: up ? 200 : 1200, f2: up ? 1200 : 200, q: 0.7, dur: 0.42, peak: 0.06 });
     },
 
     // Cambiar a modo claro (sube) u oscuro (baja)
     theme(dark) {
       if (!ready()) return;
-      const [a, b] = dark ? [784, 523] : [523, 784];
-      tone({ type: 'triangle', f1: a, dur: 0.12, peak: 0.09 });
-      tone({ type: 'triangle', f1: b, dur: 0.18, peak: 0.09, delay: 0.08 });
+      const [a, b] = dark ? [440, 330] : [330, 440];
+      tone({ f1: a, dur: 0.16, peak: 0.06 });
+      tone({ f1: b, dur: 0.24, peak: 0.06, delay: 0.09 });
     },
 
     // Algo salió bien (email copiado, sonido activado): tres notas que suben
     chime() {
       if (!ready()) return;
-      [659, 880, 1319].forEach((f, i) => tone({ f1: f, dur: 0.22, peak: 0.08, delay: i * 0.07 }));
+      [440, 554, 659].forEach((f, i) => tone({ f1: f, dur: 0.3, peak: 0.05, delay: i * 0.08 }));
     },
   };
 })();
