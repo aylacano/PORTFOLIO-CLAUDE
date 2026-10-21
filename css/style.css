@@ -428,6 +428,11 @@ body[data-page='lab'] #theme-toggle { display: none; }
 /* En fila: todas las piezas del mismo tamaño, una al lado de otra */
 .p-block__media--row .p-media, .p-block__media--row .p-media.is-wide { grid-column: auto; }
 
+/* Fila de móviles: vídeos verticales del mismo tamaño, con esquinas de pantalla */
+.p-block__media--phones { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.p-block__media--phones .p-media { grid-column: auto; border-radius: 18px; overflow: hidden; background: #000; }
+@media (min-width: 1400px) { .p-block__media--phones { grid-template-columns: repeat(6, 1fr); } }
+
 /* Tira de película: fotogramas en fila sobre negro, con perforaciones arriba y abajo */
 .p-block__media--strip {
   grid-template-columns: repeat(4, 1fr); gap: 6px; align-self: start;
@@ -520,7 +525,7 @@ body[data-page='lab'] #theme-toggle { display: none; }
 @media (max-width: 520px) {
   .p-block__media, .p-block--no-info .p-block__media { grid-template-columns: 1fr; }
   .p-media.is-wide { grid-column: auto; }
-  .p-block__media.p-block__media--strip { grid-template-columns: repeat(2, 1fr); }
+  .p-block__media.p-block__media--strip, .p-block__media.p-block__media--phones { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {

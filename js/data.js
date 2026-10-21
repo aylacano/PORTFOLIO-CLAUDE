@@ -332,22 +332,26 @@ const PROJECTS = [
   },
   {
     slug: 'rrss',
-    title: 'RRSS',
+    title: 'Carolina Kairos',
     kicker: 'Vídeos para redes sociales',
     tags: ['motion', 'rrss'],
-    year: '2025',
-    cover: vid('assets/video/rrss-impostor.mp4', 608, 1080),
+    year: '2024–25',
+    cover: vid('assets/video/rrss-impostor.mp4', 540, 960),
     blocks: [
       {
-        // ✏️ Escribe aquí para quién eran los vídeos y qué hiciste
         text: [
-          'Guion, edición y animación de vídeos verticales para redes sociales.',
+          'Reels para Carolina Kairos, experta en marca personal, durante mis prácticas en Padawan Branding.',
+          'Edición, subtítulos animados, B-roll y piezas de motion: de vídeos a cámara de un minuto a cápsulas tipográficas.',
         ],
+        // layout: 'phones' = vídeos verticales en fila, como pantallas de móvil
+        layout: 'phones',
         media: [
-          vid('assets/video/rrss-vender.mp4', 608, 1080),
-          vid('assets/video/rrss-error.mp4', 608, 1080),
-          vid('assets/video/rrss-branding.mp4', 608, 1080),
-          vid('assets/video/rrss-trucos.mp4', 608, 1080),
+          vid('assets/video/rrss-vender.mp4', 540, 960),
+          vid('assets/video/rrss-error.mp4', 540, 960),
+          vid('assets/video/rrss-branding.mp4', 540, 960),
+          vid('assets/video/rrss-trucos.mp4', 540, 960),
+          vid('assets/video/rrss-trucos-2.mp4', 540, 960),
+          vid('assets/video/rrss-trucos-3.mp4', 540, 960),
         ],
       },
     ],
