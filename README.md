@@ -13,6 +13,7 @@ css/style.css     → estilos (colores y medidas en las variables del principio)
 js/data.js        → contenido: textos, CV, proyectos y pegatinas  ← lo que más vas a editar
 js/lab-data.js    → piezas del Lab (incluye proyectos sin página propia)
 js/main.js        → animaciones e interacciones (sirve para las 3 páginas)
+js/sound.js       → sonidos de la web (scroll, clics, pegatinas…), hechos con código: el volumen está arriba (MASTER)
 assets/img        → imágenes optimizadas · assets/thumbs → miniaturas de 700 px
 assets/video      → vídeos optimizados
 ```
@@ -66,7 +67,7 @@ El botón "Descargar CV" de Sobre mí descarga `assets/cv/CV_AylaCano.pdf`. Se g
 
 ## Si no ves los cambios online
 
-El navegador guarda copias de la web. Los archivos y los enlaces entre páginas llevan `?v=2026111315`: cada vez que subas cambios, busca y reemplaza ese número por uno nuevo en las 3 páginas (`index.html`, `lab.html`, `sobre-mi.html`) y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
+El navegador guarda copias de la web. Los archivos y los enlaces entre páginas llevan `?v=2026111320`: cada vez que subas cambios, busca y reemplaza ese número por uno nuevo en las 3 páginas (`index.html`, `lab.html`, `sobre-mi.html`) y todo el mundo verá la versión nueva. Para comprobarlo tú, recarga con **Cmd + Shift + R**.
 
 ## Publicar en GitHub Pages
 

@@ -110,7 +110,26 @@
     window.lenis = lenis; // útil para depurar desde la consola
     // Si la página cambia de alto (p. ej. al fijar el carrusel), Lenis recalcula hasta dónde se puede bajar
     ScrollTrigger.addEventListener('refresh', () => lenis.resize());
+    // Sonido del scroll: un "tic" cada ~110 px recorridos
+    let scrolled = 0;
+    lenis.on('scroll', ({ velocity }) => {
+      scrolled += Math.abs(velocity);
+      if (scrolled > 110) { scrolled = 0; SFX.tick(Math.abs(velocity)); }
+    });
   }
+
+  // Sonidos al pasar por encima y al pulsar enlaces, botones y tarjetas
+  let hovered = null;
+  document.addEventListener('pointerover', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    const el = e.target.closest('a, button, .card, .sticker, .board__item');
+    if (el && el !== hovered) SFX.hover();
+    hovered = el;
+  });
+  document.addEventListener('pointerdown', (e) => {
+    const el = e.target.closest('a, button');
+    if (el && !el.matches('#sound-toggle, #theme-toggle')) SFX.pop();
+  });
 
   const scrollToTarget = (target) => {
     if (lenis) lenis.scrollTo(target, { duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4) });
@@ -239,6 +258,7 @@
     const setActive = (i) => {
       i = gsap.utils.clamp(0, n - 1, i);
       if (i === active) return;
+      if (active !== -1) SFX.card(i);
       active = i;
       const p = PROJECTS[i];
 
@@ -364,6 +384,21 @@
     mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
     mouse.element.removeEventListener('wheel', mouse.mousewheel);
     const grab = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.18, damping: 0.1 } });
+
+    // Sonidos: despegar al coger, soltar, y un golpe al chocar (más fuerte cuanto más rápido)
+    let holding = false;
+    Matter.Events.on(grab, 'startdrag', () => { holding = true; SFX.peel(); });
+    // Soltar en cualquier parte de la ventana: si sueltas fuera de la caja, Matter no se entera
+    // y la pegatina se quedaría pegada al cursor
+    window.addEventListener('pointerup', () => {
+      mouse.button = -1;
+      if (holding) { holding = false; SFX.release(); }
+    });
+    Matter.Events.on(engine, 'collisionStart', (e) => {
+      if (!visible) return;
+      const hit = Math.max(...e.pairs.map((p) => Math.max(p.bodyA.speed, p.bodyB.speed)));
+      if (hit > 2) SFX.thud(hit);
+    });
 
     let bodies = [];
     let sizes = [];
@@ -581,17 +616,19 @@
     btn.addEventListener('click', () => {
       root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
       try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+      SFX.theme(root.dataset.theme === 'dark');
       sync();
     });
   }
 
-  // Sonido: de momento solo cambia el icono (lo activaremos más adelante)
+  // Sonido de la web (ver js/sound.js): apagado al entrar; la web recuerda la elección
   function soundToggle() {
     const btn = $('#sound-toggle');
+    btn.setAttribute('aria-pressed', SFX.on);
     btn.addEventListener('click', () => {
-      const on = btn.getAttribute('aria-pressed') !== 'true';
+      const on = SFX.toggle();
       btn.setAttribute('aria-pressed', on);
-      toast(on ? 'Sonido: muy pronto 🔊' : 'Sonido desactivado');
+      toast(on ? 'Sonido activado 🔊' : 'Sonido desactivado');
     });
   }
 
@@ -608,6 +645,7 @@
       try {
         await navigator.clipboard.writeText(PROFILE.email);
         toast('Email copiado ✓');
+        SFX.chime();
       } catch (e) {
         location.href = `mailto:${PROFILE.email}`;
       }
@@ -747,6 +785,7 @@
     const p = PROJECTS[i];
     const alreadyOpen = !overlay.hidden;
     if (!alreadyOpen) lastFocus = document.activeElement;
+    SFX.whoosh(true);
 
     overlay.hidden = false;
     lenis?.stop();
@@ -774,6 +813,7 @@
 
   function closeProject() {
     if (overlay.hidden) return;
+    SFX.whoosh(false);
     if (location.hash.startsWith('#/')) history.pushState('', '', location.pathname + location.search);
     document.title = 'Ayleeeeta — Ayla Cano · Diseño gráfico, ilustración y motion';
 
@@ -914,10 +954,13 @@
     const target = { ...pos };
     const wrap = (v, size) => ((v % size) + size) % size;
 
+    let wheeled = 0; // para el sonido: un "tic" cada ~110 px
     window.addEventListener('wheel', (e) => {
       e.preventDefault();
       target.x -= e.deltaX * 0.7;
       target.y -= e.deltaY * 0.7;
+      wheeled += Math.abs(e.deltaX) + Math.abs(e.deltaY);
+      if (wheeled > 110) { wheeled = 0; SFX.tick(); }
     }, { passive: false });
 
     let drag = null;
@@ -930,7 +973,8 @@
       if (!drag) return;
       const dx = e.clientX - drag.x;
       const dy = e.clientY - drag.y;
-      drag = { x: e.clientX, y: e.clientY, vx: dx, vy: dy };
+      drag = { x: e.clientX, y: e.clientY, vx: dx, vy: dy, moved: (drag.moved || 0) + Math.hypot(dx, dy) };
+      if (drag.moved > 90) { drag.moved = 0; SFX.tick(Math.hypot(dx, dy) / 3); }
       target.x += dx;
       target.y += dy;
     });
