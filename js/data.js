@@ -358,13 +358,24 @@ const PROJECTS = [
       },
       {
         title: 'Diseño',
-        subtitle: 'Guías, ebooks, tickets y mockups para sus lanzamientos',
+        subtitle: 'Libros y guías para sus lanzamientos',
         media: [
-          img('assets/img/carolina/guia.jpg', 1800, 1200),
-          img('assets/img/carolina/libro.jpg', 1800, 1201),
+          img('assets/img/carolina/sesgos.jpg', 1800, 1200), // libro de sesgos ‘Vende éxtasis’
           img('assets/img/carolina/ebook.jpg', 1200, 1800),
-          img('assets/img/carolina/tickets.jpg', 1800, 1350),
-          img('assets/img/carolina/high-tickets.jpg', 1800, 1200),
+          img('assets/img/carolina/guia.jpg', 1800, 1200),
+        ],
+      },
+      {
+        title: 'Posts',
+        subtitle: 'Carruseles para Instagram',
+        layout: 'row',
+        media: [
+          img('assets/img/carolina/post-1.jpg', 960, 1200),
+          img('assets/img/carolina/post-2.jpg', 960, 1200),
+          img('assets/img/carolina/post-3.jpg', 960, 1200),
+          img('assets/img/carolina/post-4.jpg', 960, 1200),
+          img('assets/img/carolina/post-5.jpg', 960, 1200),
+          img('assets/img/carolina/post-6.jpg', 960, 1200),
         ],
       },
       {
