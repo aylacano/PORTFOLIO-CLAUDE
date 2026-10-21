@@ -333,10 +333,12 @@ const PROJECTS = [
   {
     slug: 'rrss',
     title: 'Carolina Kairos',
-    kicker: 'Vídeos para redes sociales',
-    tags: ['motion', 'rrss'],
+    kicker: 'Reels y diseño para una marca personal',
+    tags: ['motion', 'rrss', 'branding'],
     year: '2024–25',
     cover: vid('assets/video/rrss-impostor.mp4', 540, 960),
+    // En la página principal se ve la guía amarilla (más llamativa que un fotograma)
+    card: img('assets/img/carolina/portada.jpg', 1200, 1500),
     blocks: [
       {
         text: [
@@ -352,6 +354,27 @@ const PROJECTS = [
           vid('assets/video/rrss-trucos.mp4', 540, 960),
           vid('assets/video/rrss-trucos-2.mp4', 540, 960),
           vid('assets/video/rrss-trucos-3.mp4', 540, 960),
+        ],
+      },
+      {
+        title: 'Diseño',
+        subtitle: 'Guías, ebooks, tickets y mockups para sus lanzamientos',
+        media: [
+          img('assets/img/carolina/guia.jpg', 1800, 1200),
+          img('assets/img/carolina/libro.jpg', 1800, 1201),
+          img('assets/img/carolina/ebook.jpg', 1200, 1800),
+          img('assets/img/carolina/tickets.jpg', 1800, 1350),
+          img('assets/img/carolina/high-tickets.jpg', 1800, 1200),
+        ],
+      },
+      {
+        title: 'Banners',
+        subtitle: 'Extras del libro',
+        layout: 'row',
+        media: [
+          img('assets/img/carolina/banner-arquetipos.jpg', 974, 596),
+          img('assets/img/carolina/banner-brandboard.jpg', 974, 596),
+          img('assets/img/carolina/banner-colores.jpg', 974, 596),
         ],
       },
     ],
