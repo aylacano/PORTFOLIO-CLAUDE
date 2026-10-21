@@ -297,20 +297,35 @@ const PROJECTS = [
     title: 'Pecado',
     kicker: 'Packaging para una línea de cervezas',
     tags: ['packaging', 'ilustracion'],
-    year: '',
-    cover: img('assets/img/pecado/lujuria.jpg', 1050, 1400),
+    year: '2026',
+    cover: img('assets/img/pecado/botellas.jpg', 1900, 958),
+    card: img('assets/img/pecado/lujuria.jpg', 1050, 1400),
     blocks: [
       {
-        // ✏️ Escribe aquí la explicación del proyecto
         text: [
-          'Una línea de cervezas inspirada en los pecados capitales: cada etiqueta tiene su propio diablillo ilustrado. Lujuria, avaricia y soberbia.',
+          'Packaging para una cerveza fermentada por demonios: cada pecado capital es un estilo y cada etiqueta, su diablillo ilustrado.',
+          'Avaricia (IPA), Soberbia (Belgian Tripel) y Lujuria (Fruit Sour).',
         ],
         media: [
-          img('assets/img/pecado/lujuria-2.jpg', 1050, 1400),
           img('assets/img/pecado/avaricia.jpg', 1050, 1400),
-          img('assets/img/pecado/avaricia-2.jpg', 1050, 1400),
           img('assets/img/pecado/soberbia.jpg', 1050, 1400),
+          img('assets/img/pecado/lujuria.jpg', 1050, 1400),
+          img('assets/img/pecado/avaricia-2.jpg', 1050, 1400),
           img('assets/img/pecado/soberbia-2.jpg', 1050, 1400),
+          img('assets/img/pecado/lujuria-2.jpg', 1050, 1400),
+        ],
+      },
+      {
+        title: 'Etiquetas',
+        subtitle: 'Frontal y contraetiqueta',
+        layout: 'row',
+        media: [
+          img('assets/img/pecado/etiqueta-avaricia.jpg', 914, 1200),
+          img('assets/img/pecado/etiqueta-soberbia.jpg', 914, 1200),
+          img('assets/img/pecado/etiqueta-lujuria.jpg', 914, 1200),
+          img('assets/img/pecado/contra-avaricia.jpg', 914, 1200),
+          img('assets/img/pecado/contra-soberbia.jpg', 914, 1200),
+          img('assets/img/pecado/contra-lujuria.jpg', 914, 1200),
         ],
       },
     ],
