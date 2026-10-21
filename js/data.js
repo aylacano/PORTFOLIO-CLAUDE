@@ -337,7 +337,7 @@ const PROJECTS = [
     tags: ['motion', 'rrss', 'branding'],
     year: '2024–25',
     cover: vid('assets/video/rrss-impostor.mp4', 540, 960),
-    // En la página principal se ve la guía amarilla (más llamativa que un fotograma)
+    // En la página principal se ve el patrón azul de Branding Nation (más llamativo que un fotograma)
     card: img('assets/img/carolina/portada.jpg', 1200, 1500),
     blocks: [
       {
@@ -361,8 +361,18 @@ const PROJECTS = [
         subtitle: 'Libros y guías para sus lanzamientos',
         media: [
           img('assets/img/carolina/sesgos.jpg', 1800, 1200), // libro de sesgos ‘Vende éxtasis’
-          img('assets/img/carolina/ebook.jpg', 1200, 1800),
-          img('assets/img/carolina/guia.jpg', 1800, 1200),
+          img('assets/img/carolina/luxurizacion.jpg', 1376, 1800),
+          img('assets/img/carolina/libro-piedra.jpg', 1800, 1350),
+        ],
+      },
+      {
+        title: 'Branding Nation',
+        subtitle: 'Identidad para su academia',
+        layout: 'row',
+        media: [
+          img('assets/img/carolina/bn-patron.jpg', 1800, 1320),
+          img('assets/img/carolina/bn-tarjeta.jpg', 1800, 1200),
+          img('assets/img/carolina/bn-tote.jpg', 1800, 1200),
         ],
       },
       {
