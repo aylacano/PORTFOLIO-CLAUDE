@@ -163,7 +163,7 @@ const PROJECTS = [
     // En la portada se ve esta foto (205F152C…-3) y no el vídeo
     cardVideo: false,
     poster: img('assets/img/sex-and-the-city/frame-2.png', 1536, 1024),
-    card: img('assets/img/sex-and-the-city/portada.jpg', 720, 900), // recorte centrado en la chica
+    card: img('assets/img/sex-and-the-city/portada.jpg', 1536, 1024), // el mismo dibujo, centrado
     blocks: [
       {
         text: [
