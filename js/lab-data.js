@@ -72,12 +72,12 @@ const LAB = [
       img('assets/img/archivo/la-roja-1.jpg', 990, 1400),
       img('assets/img/archivo/la-roja-2.jpg', 990, 1400),
       img('assets/img/archivo/la-roja-3.jpg', 1000, 1000),
-      img('assets/img/archivo/la-roja-4.png', 1000, 1000),
+      img('assets/img/archivo/la-roja-4.jpg', 1000, 1000),
       img('assets/img/archivo/la-roja-5.jpg', 1000, 1000),
-      img('assets/img/archivo/la-roja-6.png', 1000, 708),
-      img('assets/img/archivo/la-roja-7.png', 1000, 707),
-      img('assets/img/archivo/la-roja-8.png', 1000, 708),
-      img('assets/img/archivo/la-roja-9.png', 1000, 707),
+      img('assets/img/archivo/la-roja-6.jpg', 1000, 708),
+      img('assets/img/archivo/la-roja-7.jpg', 1000, 707),
+      img('assets/img/archivo/la-roja-8.jpg', 1000, 708),
+      img('assets/img/archivo/la-roja-9.jpg', 1000, 707),
     ],
   },
   {
@@ -86,10 +86,10 @@ const LAB = [
     year: '2025',
     tags: ['packaging', 'ilustracion'],
     media: [
-      img('assets/img/archivo/vi-novell-1.png', 749, 1000),
-      img('assets/img/archivo/vi-novell-2.png', 750, 1000),
-      img('assets/img/archivo/vi-novell-3.png', 750, 1000),
-      img('assets/img/archivo/vi-novell-4.png', 750, 1000),
+      img('assets/img/archivo/vi-novell-1.jpg', 749, 1000),
+      img('assets/img/archivo/vi-novell-2.jpg', 750, 1000),
+      img('assets/img/archivo/vi-novell-3.jpg', 750, 1000),
+      img('assets/img/archivo/vi-novell-4.jpg', 750, 1000),
       img('assets/img/archivo/vi-novell-5.jpg', 1120, 1400),
       img('assets/img/archivo/vi-novell-6.jpg', 1120, 1400),
       img('assets/img/archivo/vi-novell-7.jpg', 1400, 934),
@@ -191,10 +191,10 @@ const LAB = [
     year: '',
     tags: ['branding'],
     media: [
-      img('assets/img/archivo/tote-1.png', 1000, 666),
-      img('assets/img/archivo/tote-2.png', 1000, 666),
-      img('assets/img/archivo/tote-3.png', 1000, 666),
-      img('assets/img/archivo/tote-4.png', 1000, 750),
+      img('assets/img/archivo/tote-1.jpg', 1000, 666),
+      img('assets/img/archivo/tote-2.jpg', 1000, 666),
+      img('assets/img/archivo/tote-3.jpg', 1000, 666),
+      img('assets/img/archivo/tote-4.jpg', 1000, 750),
     ],
   },
   {
@@ -224,7 +224,7 @@ const LAB = [
     year: '',
     tags: ['rrss'],
     media: [
-      img('assets/img/archivo/rrss-1.png', 1000, 727),
+      img('assets/img/archivo/rrss-1.jpg', 1000, 727),
     ],
   },
   {
@@ -255,8 +255,8 @@ const LAB = [
     year: '',
     tags: ['ilustracion', 'editorial'],
     media: [
-      img('assets/img/archivo/comic-la-llamada-1.png', 807, 1000),
-      img('assets/img/archivo/comic-la-llamada-2.png', 1000, 715),
+      img('assets/img/archivo/comic-la-llamada-1.jpg', 807, 1000),
+      img('assets/img/archivo/comic-la-llamada-2.jpg', 1000, 715),
     ],
   },
   {
